@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kuotunyu.github.io/rebas2026-when-to-challenge/sitemap.xml

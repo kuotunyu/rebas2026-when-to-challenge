@@ -2,102 +2,227 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>挑戰研究員｜中職挑戰決策門檻卡</title>
 <meta name="description" content="這一次值不值得挑戰？用一條公式和兩張門檻卡回答中職的重播挑戰與好壞球挑戰決策。2026 野革盃台灣棒球數據黑客松初審提案的互動附件：門檻卡、計算機、規則試算沙盤。">
 <meta property="og:title" content="挑戰研究員｜中職挑戰決策門檻卡">
 <meta property="og:description" content="改判的把握超過門檻就挑。門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://kuotunyu.github.io/rebas2026-when-to-challenge/og-card.png">
+<meta name="theme-color" content="#0f3b45">
 <style>
-:root{--bg:#f7f8fa;--card:#fff;--ink:#16202c;--mute:#5b6878;--line:#dfe4ea;--brand:#12355b;--accent:#c8501e;--soft:#eaf0f7;--good:#1c7a4a}
-@media (prefers-color-scheme:dark){:root{--bg:#0f151c;--card:#18212b;--ink:#e8edf3;--mute:#9aa8b8;--line:#2b3846;--brand:#8fbbe8;--accent:#f08a5d;--soft:#1f2c3a;--good:#6fd39b}}
+:root{--bg:#f6f2e9;--panel:#fffdf8;--ink:#263538;--mute:#5f6f72;--line:#d9d2c2;--brand:#0f3b45;--brand-ink:#f3eee2;--accent:#b3541e;--gold:#a8842c;--teal:#1d7a80;--soft:#ece6d8;--hero:#0f3b45;--hero-ink:#efe9dc;--t1:#12303a;--t1ink:#f3eee2;--t2:#c9d5d6;--t2ink:#12303a;--t3:#fffdf8;--t3ink:#12303a}
+:root[data-theme="dark"]{--bg:#0e2129;--panel:#15303a;--ink:#dfd8c9;--mute:#9db0b2;--line:#2c4954;--brand:#8fd0d4;--brand-ink:#0e2129;--accent:#f0a06a;--gold:#e0c070;--teal:#7fd0c8;--soft:#1b3a45;--hero:#0a1a20;--hero-ink:#e9e2d2;--t1:#0a1a20;--t1ink:#e9e2d2;--t2:#2c4954;--t2ink:#e9e2d2;--t3:#3d6470;--t3ink:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e2129;--panel:#15303a;--ink:#dfd8c9;--mute:#9db0b2;--line:#2c4954;--brand:#8fd0d4;--brand-ink:#0e2129;--accent:#f0a06a;--gold:#e0c070;--teal:#7fd0c8;--soft:#1b3a45;--hero:#0a1a20;--hero-ink:#e9e2d2;--t1:#0a1a20;--t1ink:#e9e2d2;--t2:#2c4954;--t2ink:#e9e2d2;--t3:#3d6470;--t3ink:#fff}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
-main{max-width:920px;margin:0 auto;padding:0 16px 64px}
-header{background:var(--brand);color:#fff;padding:44px 16px 36px}
-@media (prefers-color-scheme:dark){header{background:#12355b}}
-header div{max-width:920px;margin:0 auto}
-header p.k{margin:0 0 6px;font-size:14px;letter-spacing:.08em;opacity:.85}
-h1{margin:0 0 10px;font-size:clamp(28px,5.2vw,44px);line-height:1.25}
-header p.s{margin:0 0 20px;font-size:18px;opacity:.95;max-width:40em}
-.btns{display:flex;flex-wrap:wrap;gap:10px}
-.btns a{background:#fff;color:#12355b;text-decoration:none;font-weight:700;padding:9px 16px;border-radius:8px}
-.btns a.o{background:transparent;color:#fff;border:1.5px solid #ffffffaa}
-h2{font-size:24px;margin:44px 0 12px;padding-top:8px;border-top:3px solid var(--brand);display:inline-block}
-h3{font-size:18px;margin:22px 0 6px}
-section>p,li{max-width:44em}
-.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
-.formula{font-size:clamp(19px,3.6vw,26px);font-weight:700;text-align:center;padding:10px 0;color:var(--brand)}
-.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
-.three .box{margin:0}
-.big{font-size:30px;font-weight:800;color:var(--accent);line-height:1.2}
-.scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
-th,td{border:1px solid var(--line);padding:7px 9px;text-align:center;white-space:nowrap}
-thead th,tbody th{background:var(--soft);font-weight:700}
-td small{display:block;font-size:12px;color:var(--mute);font-weight:400}
-caption{caption-side:top;text-align:left;font-weight:700;padding:6px 0}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:14px}
-.two>*,.three>*{min-width:0}
-label{display:block;font-size:14px;color:var(--mute);margin-top:8px}
-select,input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
-.out{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--soft)}
-.out b{font-size:30px;color:var(--accent)}
-.note{color:var(--mute);font-size:15px}
+html{scroll-behavior:smooth;scroll-padding-top:68px}
+body{margin:0;background:var(--bg);color:var(--ink);font:19px/1.8 ui-sans-serif,system-ui,-apple-system,"Segoe UI","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;-webkit-text-size-adjust:100%}
+a{color:var(--teal)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+/* 導覽 */
+.nav{position:sticky;top:0;z-index:50;background:var(--hero);color:var(--hero-ink);border-bottom:1px solid #ffffff22}
+.nav .wrap{display:flex;align-items:center;gap:18px;height:56px}
+.brand{font-weight:800;letter-spacing:.04em;color:var(--hero-ink);text-decoration:none;white-space:nowrap}
+.nav nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto}
+.nav nav a{color:var(--hero-ink);text-decoration:none;font-size:16px;padding:6px 10px;border-radius:8px;white-space:nowrap;opacity:.86}
+.nav nav a:hover,.nav nav a.on{background:#ffffff1f;opacity:1}
+.tgl{background:transparent;color:var(--hero-ink);border:1px solid #ffffff55;border-radius:8px;font:inherit;font-size:15px;padding:4px 10px;cursor:pointer;white-space:nowrap}
+/* 開頭 */
+.hero{background:var(--hero);color:var(--hero-ink);padding:44px 0 34px}
+.kicker{font-size:14px;letter-spacing:.14em;color:#d9b96a;margin:0 0 8px}
+h1{font-size:clamp(30px,5.4vw,50px);line-height:1.22;margin:0 0 12px;font-weight:800}
+.lead{font-size:clamp(18px,2.2vw,22px);margin:0 0 22px;max-width:36em;opacity:.95}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
+.cta a{background:#f1e7c9;color:#12303a;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:10px}
+.cta a.o{background:transparent;color:var(--hero-ink);border:1.5px solid #ffffff77}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.key{background:#ffffff12;border-top:4px solid #d9b96a;border-radius:0 0 10px 10px;padding:12px 14px;font-size:16px;line-height:1.55}
+.key:nth-child(2){border-top-color:#7fd0c8}.key:nth-child(3){border-top-color:#f0a06a}.key:nth-child(4){border-top-color:#c9b6e8}
+.key b{display:block;font-size:13px;letter-spacing:.08em;opacity:.8;font-weight:600}
+.key strong{display:block;font-size:22px;line-height:1.3;margin:2px 0 4px}
+/* 區塊 */
+section{padding:46px 0 8px}
+h2{font-size:clamp(24px,3.4vw,32px);line-height:1.3;margin:0 0 6px;color:var(--brand)}
+.sec-no{font-size:13px;letter-spacing:.16em;color:var(--gold);font-weight:700}
+h3{font-size:21px;margin:26px 0 8px;color:var(--brand)}
+p{margin:0 0 14px}
+.prose{max-width:40em}
+.note{color:var(--mute);font-size:16px;line-height:1.7}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:16px 0}
+.formula{font-size:clamp(20px,3.4vw,30px);font-weight:800;text-align:center;color:var(--accent);padding:6px 0 2px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px}
+.grid3>*,.grid2>*{min-width:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}
+.big{font-size:34px;font-weight:800;color:var(--accent);line-height:1.2}
+ul.tight{padding-left:1.15em;margin:0 0 14px}ul.tight li{margin-bottom:8px}
+/* 表格 */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:17px}
+th,td{border:1px solid var(--line);padding:7px 8px;text-align:center;white-space:nowrap}
+thead th,tbody th{background:var(--soft);font-weight:700;color:var(--brand)}
+td small{display:block;font-size:12px;color:var(--mute);font-weight:400;line-height:1.2}
+td.t1{background:var(--t1);color:var(--t1ink)}td.t2{background:var(--t2);color:var(--t2ink)}td.t3{background:var(--t3);color:var(--t3ink)}
+td.t1 small,td.t2 small,td.t3 small{color:inherit;opacity:.72}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:15px;color:var(--mute);margin:8px 0 0}
+.legend i{display:inline-block;width:16px;height:14px;border:1px solid var(--line);vertical-align:-2px;margin-right:5px}
+/* 選擇按鈕 */
+.seg{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.seg button{font:inherit;font-size:17px;padding:8px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);cursor:pointer;min-height:44px}
+.seg button.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:700}
+.seg.inn button{min-width:44px;padding:8px 0;flex:1 0 44px}
+.lab{font-size:14px;letter-spacing:.06em;color:var(--mute);font-weight:600}
+.out{margin-top:6px;padding:14px 16px;border-radius:12px;background:var(--soft)}
+.out .v{font-size:46px;font-weight:800;color:var(--accent);line-height:1.1}
+input[type=number]{font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;min-height:44px}
+input[type=range]{width:100%;accent-color:var(--accent);height:34px}
+.btn{font:inherit;font-size:17px;padding:8px 16px;border-radius:10px;border:1.5px solid var(--brand);background:var(--brand);color:var(--brand-ink);cursor:pointer;font-weight:700;min-height:44px}
+.btn.g{background:transparent;color:var(--brand)}
+/* 動畫：一個判決的兩條路 */
+.story{display:grid;grid-template-columns:1.05fr 1fr;gap:22px;align-items:center}
+.story svg{width:100%;height:auto;display:block}
+.steps{display:flex;gap:6px;margin:10px 0}
+.steps i{flex:1;height:5px;border-radius:3px;background:var(--line)}.steps i.on{background:var(--accent)}
+.cap{min-height:5.6em}
+.bar{transition:width .9s cubic-bezier(.2,.7,.2,1),opacity .5s}.fade{transition:opacity .6s}
+/* 天平 */
+#beam{transition:transform .5s cubic-bezier(.2,.7,.2,1);transform-origin:200px 70px}
+.pan{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion:reduce){.bar,.fade,#beam,.pan{transition:none}html{scroll-behavior:auto}}
+/* 手機：這一局的卡 */
+.inn-card{display:none}
+.six{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:center;font-size:17px}
+.six .h{font-size:14px;color:var(--mute);text-align:center}
+.six .n{background:var(--soft);border-radius:10px;padding:8px 4px;text-align:center;font-size:26px;font-weight:800;color:var(--brand);line-height:1.15}
+.six .n small{display:block;font-size:12px;font-weight:400;color:var(--mute)}
+details{margin:10px 0}summary{cursor:pointer;color:var(--teal);font-weight:700;padding:8px 0}
 img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
-footer{border-top:1px solid var(--line);margin-top:48px;padding-top:16px;color:var(--mute);font-size:15px}
-a{color:var(--brand)}
+footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;color:var(--mute);font-size:15.5px;line-height:1.7}
+.tab{display:none}
+@media (max-width:820px){
+  body{font-size:18px}
+  .nav nav{display:none}.nav .wrap{height:50px}.tgl{margin-left:auto}
+  html{scroll-padding-top:58px}
+  .hero{padding:28px 0 24px}
+  .keys{grid-template-columns:1fr 1fr}
+  .grid2,.story{grid-template-columns:1fr}
+  section{padding:34px 0 4px}
+  .full-tables{display:none}.inn-card{display:block}
+  .tab{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--hero);border-top:1px solid #ffffff22;padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+  .tab a{flex:1;text-align:center;color:var(--hero-ink);text-decoration:none;font-size:14px;padding:9px 2px;border-radius:8px;opacity:.82}
+  .tab a.on{background:#ffffff1f;opacity:1;font-weight:700}
+  .out .v{font-size:52px}
+}
+@media (max-width:420px){.keys{grid-template-columns:1fr}}
+@media print{.nav,.tab,.cta{display:none}}
 </style>
 </head>
 <body>
-<header><div>
-<p class="k">2026 野革盃 台灣棒球數據黑客松｜初審提案互動附件｜隊伍：挑戰研究員</p>
+<div class="nav"><div class="wrap">
+<a class="brand" href="#top">挑戰研究員</a>
+<nav id="topnav"><a href="#story">一個判決</a><a href="#formula">公式</a><a href="#try">查門檻</a><a href="#cards">門檻卡</a><a href="#method">方法</a><a href="#check">檢驗</a><a href="#limits">邊界</a><a href="#tools">工具</a></nav>
+<button class="tgl" id="tgl" type="button" aria-label="切換淺色或深色">深色</button>
+</div></div>
+
+<header class="hero" id="top"><div class="wrap">
+<p class="kicker">2026 野革盃 台灣棒球數據黑客松｜初審提案互動附件</p>
 <h1>這一次，值不值得挑戰？</h1>
-<p class="s">把中職的重播挑戰和好壞球挑戰，變成教練場上查得到、球員賽前可以準備的門檻卡。</p>
-<div class="btns">
-<a href="#try">直接查門檻</a>
-<a href="demo/">互動 Demo（沙盤）</a>
-<a class="o" href="calculator/">門檻計算機</a>
-<a class="o" href="card/">門檻卡 A6 列印版</a>
+<p class="lead">把中職的重播挑戰和好壞球挑戰，變成教練場上查得到、球員賽前可以準備的門檻卡。</p>
+<div class="cta"><a href="#try">直接查門檻</a><a href="demo/">互動 Demo（沙盤）</a><a class="o" href="calculator/">門檻計算機</a><a class="o" href="card/">門檻卡 A6 列印版</a></div>
+<div class="keys">
+<div class="key"><b>一條公式</b><strong>把握超過門檻就挑</strong>門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）</div>
+<div class="key"><b>重播挑戰</b><strong>還剩 2 次：1–2%</strong>只剩 1 次時，從一局的 13% 降到九局的 2%</div>
+<div class="key"><b>好壞球挑戰（試算）</b><strong>108 格，不能套重播</strong>依局數、球數、壘上有沒有人分格</div>
+<div class="key"><b>成品</b><strong>兩張卡、沙盤、計算機</strong>全部可以在這個網站直接操作</div>
 </div>
 </div></header>
-<main>
 
-<section>
-<h2>一句話</h2>
-<p>改判的把握超過門檻，就挑。門檻只由兩個數決定：這個判決改過來值多少（判決價值），和這次挑輸了會損失多少（挑戰權價值）。</p>
-<div class="box"><div class="formula">門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）</div>
-<p class="note" style="text-align:center;margin:0">適用「成功保留、失敗扣一次」的規則；兩個價值的單位都是勝率百分點。</p></div>
-<div class="three">
-<div class="box"><h3>判決價值 ΔW</h3>改判後的勝率減原判的勝率。從中職 2023–2026 例行賽 1,362 場、390,489 顆投球建的勝率表查出來。</div>
-<div class="box"><h3>挑戰權價值 C</h3>少一次挑戰權，後面會損失多少勝率。從九局下往回一個半局一個半局推出來（動態規劃）。</div>
-<div class="box"><h3>把握 p</h3>現場的人對「會改判」的判斷。模型不替人判斷，只回答要多少把握才夠。</div>
+<main class="wrap">
+
+<section id="story">
+<div class="sec-no">01</div><h2>一個判決，兩條路</h2>
+<p class="prose">2026-06-07，味全龍對台鋼雄鷹。8 局下兩出局、一二壘有人，台鋼落後 1 分。二壘跑者衝本壘，原判安全、追平。味全的總教練有 30 秒決定要不要挑戰。</p>
+<div class="panel"><div class="story">
+<svg viewBox="0 0 420 250" role="img" aria-label="判安全時台鋼勝率 62.1%，判出局時 12.7%，相差 49.4 個百分點">
+<text x="8" y="22" font-size="13" fill="currentColor" opacity=".7">台鋼雄鷹的勝率</text>
+<text x="8" y="62" font-size="15" fill="currentColor">維持安全（追平）</text>
+<rect x="8" y="70" height="30" rx="5" class="bar" id="b1" width="0" fill="#1d7a80"/><text x="16" y="91" font-size="16" font-weight="700" fill="#fff" class="fade" id="t1" opacity="0">62.1%</text>
+<text x="8" y="132" font-size="15" fill="currentColor">改判出局（半局結束）</text>
+<rect x="8" y="140" height="30" rx="5" class="bar" id="b2" width="0" fill="#b3541e"/><text x="16" y="161" font-size="16" font-weight="700" fill="#fff" class="fade" id="t2" opacity="0">12.7%</text>
+<g class="fade" id="g3" opacity="0"><line x1="58.8" y1="182" x2="256.4" y2="182" stroke="#a8842c" stroke-width="3"/><line x1="58.8" y1="176" x2="58.8" y2="188" stroke="#a8842c" stroke-width="3"/><line x1="256.4" y1="176" x2="256.4" y2="188" stroke="#a8842c" stroke-width="3"/><text x="157" y="204" font-size="15" font-weight="700" fill="#a8842c" text-anchor="middle">判決價值 49.4 個百分點</text></g>
+<g class="fade" id="g4" opacity="0"><rect x="8" y="218" width="3" height="20" fill="currentColor"/><text x="18" y="233" font-size="15" fill="currentColor">挑戰失敗的代價：0.02 個百分點（還剩 2 次）</text></g>
+</svg>
+<div>
+<div class="steps" id="stdots"><i></i><i></i><i></i><i></i></div>
+<p class="cap" id="stcap"></p>
+<button class="btn" id="stnext" type="button">下一步</button> <button class="btn g" id="stre" type="button">重來</button>
+</div>
+</div></div>
+<p class="note">勝率來自中職 2023–2026 的勝率模型；挑戰權價值是模型算的。那一次味全提出挑戰，改判出局。</p>
+</section>
+
+<section id="formula">
+<div class="sec-no">02</div><h2>公式：把握超過門檻就挑</h2>
+<p class="prose">挑成功，拿回判決價值 ΔW；挑失敗，損失一次挑戰權的價值 C。把握是 p 時，預期賺到 p × ΔW，預期賠掉（1 − p）× C。兩邊相等時的 p 就是門檻。</p>
+<div class="panel"><div class="formula">門檻 ＝ C ÷（ΔW ＋ C）</div>
+<p class="note" style="text-align:center;margin:0">適用「成功保留、失敗扣一次」的規則；ΔW 和 C 的單位都是勝率百分點。</p></div>
+<div class="grid2">
+<div class="panel" style="margin:0">
+<h3 style="margin-top:0">拖動把握，看天平往哪邊倒</h3>
+<svg viewBox="0 0 400 190" role="img" aria-label="天平：左邊是挑成功的預期收益，右邊是挑失敗的預期損失" style="width:100%;height:auto">
+<polygon points="200,70 186,170 214,170" fill="currentColor" opacity=".25"/><rect x="150" y="168" width="100" height="8" rx="3" fill="currentColor" opacity=".35"/>
+<g id="beam"><rect x="50" y="66" width="300" height="8" rx="4" fill="#a8842c"/>
+<g class="pan" id="panL"><line x1="70" y1="72" x2="70" y2="104" stroke="currentColor" opacity=".5"/><rect x="26" y="104" width="88" height="34" rx="8" fill="#1d7a80"/><text x="70" y="126" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" id="tL">賺</text></g>
+<g class="pan" id="panR"><line x1="330" y1="72" x2="330" y2="104" stroke="currentColor" opacity=".5"/><rect x="286" y="104" width="88" height="34" rx="8" fill="#b3541e"/><text x="330" y="126" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" id="tR">賠</text></g></g>
+<text x="70" y="24" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">挑成功：p × ΔW</text><text x="330" y="24" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">挑失敗：(1−p) × C</text>
+</svg>
+<div class="lab">改判的把握 p：<b id="pv">10</b>%</div>
+<input type="range" id="p" min="0" max="100" step="0.5" value="10" aria-label="改判的把握">
+<div class="out" id="verdict" style="font-size:18px"></div>
+</div>
+<div class="panel" style="margin:0">
+<h3 style="margin-top:0">自己代數字</h3>
+<div class="lab">判決價值 ΔW（勝率百分點）</div><input id="dw" type="number" step="0.01" min="0" value="17.19" inputmode="decimal">
+<div class="lab" style="margin-top:10px">挑戰權價值 C（勝率百分點）</div><input id="c" type="number" step="0.001" min="0" value="0.630" inputmode="decimal">
+<div class="out"><div class="lab">門檻</div><div class="v" id="fout">–</div></div>
+<p class="note" style="margin:10px 0 0">預設值是提案裡的例子：六局上、主隊領先 1 分的壘上判決值 17.19 個百分點。只剩 1 次時 C ＝ 0.630，門檻 3.5%；還剩 2 次時 C ＝ 0.045，門檻 0.3%。</p>
+<div class="seg" style="margin-top:8px"><button type="button" data-c="0.630" class="on">只剩 1 次</button><button type="button" data-c="0.045">還剩 2 次</button></div>
+</div>
+</div>
+<div class="grid3" style="margin-top:16px">
+<div class="panel" style="margin:0"><h3 style="margin-top:0">判決價值 ΔW</h3>改判後的勝率減原判的勝率。從中職 2023–2026 例行賽 1,362 場、390,489 顆投球建的勝率表查出來。</div>
+<div class="panel" style="margin:0"><h3 style="margin-top:0">挑戰權價值 C</h3>少一次挑戰權，後面會損失多少勝率。從九局下往回一個半局一個半局推出來（動態規劃）。</div>
+<div class="panel" style="margin:0"><h3 style="margin-top:0">把握 p</h3>現場的人對「會改判」的判斷。模型不替人判斷，只回答要多少把握才夠。</div>
 </div>
 </section>
 
 <section id="try">
-<h2>直接查門檻</h2>
-<div class="two">
-<div class="box">
-<h3>查門檻卡</h3>
-<label>挑戰種類<select id="kind"><option value="replay">重播挑戰（壘上判決）</option><option value="abs">好壞球挑戰（試算）</option></select></label>
-<label>局數<select id="inn"></select></label>
-<label>還剩幾次挑戰權<select id="rem"><option value="2">還剩 2 次</option><option value="1">只剩 1 次</option></select></label>
-<label id="cntl" hidden>球數<select id="cnt"><option value="0">滿球數</option><option value="1">兩好球或三壞球（不含滿球數）</option><option value="2">其他球數</option></select></label>
-<label id="onl" hidden>壘上<select id="on"><option value="0">無人</option><option value="1">有人</option></select></label>
-<div class="out">卡片上的門檻：<b id="cardout">–</b><div class="note" id="cardsay"></div></div>
+<div class="sec-no">03</div><h2>直接查門檻</h2>
+<div class="panel">
+<div class="lab">挑戰種類</div><div class="seg" id="s-kind"><button type="button" data-v="replay" class="on">重播挑戰</button><button type="button" data-v="abs">好壞球挑戰（試算）</button></div>
+<div class="lab">局數</div><div class="seg inn" id="s-inn"></div>
+<div class="lab">還剩幾次挑戰權</div><div class="seg" id="s-rem"><button type="button" data-v="2" class="on">還剩 2 次</button><button type="button" data-v="1">只剩 1 次</button></div>
+<div id="absopt" hidden>
+<div class="lab">球數</div><div class="seg" id="s-cnt"><button type="button" data-v="0">滿球數</button><button type="button" data-v="1">兩好球或三壞球（不含滿球數）</button><button type="button" data-v="2" class="on">其他球數</button></div>
+<div class="lab">壘上</div><div class="seg" id="s-on"><button type="button" data-v="0" class="on">無人</button><button type="button" data-v="1">有人</button></div>
 </div>
-<div class="box">
-<h3>自己代數字</h3>
-<label>判決價值 ΔW（勝率百分點）<input id="dw" type="number" step="0.01" min="0" value="17.19"></label>
-<label>挑戰權價值 C（勝率百分點）<input id="c" type="number" step="0.001" min="0" value="0.630"></label>
-<div class="out">門檻：<b id="fout">–</b><div class="note">預設值是提案裡的例 1：這個判決值 17.19 個百分點；只剩 1 次時 C ＝ 0.630，門檻 3.5%；還剩 2 次時 C ＝ 0.045，門檻 0.3%。</div></div>
-</div>
+<div class="out"><div class="lab">卡片上的門檻</div><div class="v" id="cardout">–</div><div class="note" id="cardsay"></div></div>
 </div>
 <p class="note">想看任何局面（局數、分差、壘包、出局、球數）的勝率、判決價值和精確門檻，請開 <a href="demo/">互動 Demo</a> 或 <a href="calculator/">門檻計算機</a>。</p>
 </section>
 
-<section>
-<h2>兩張門檻卡</h2>
+<section id="cards">
+<div class="sec-no">04</div><h2>兩張門檻卡</h2>
+<div class="inn-card panel">
+<h3 style="margin-top:0">這一局要看的數字</h3>
+<div class="lab">局數</div><div class="seg inn" id="m-inn"></div>
+<div class="lab">還剩幾次挑戰權</div><div class="seg" id="m-rem"><button type="button" data-v="2" class="on">還剩 2 次</button><button type="button" data-v="1">只剩 1 次</button></div>
+<div class="lab">重播挑戰</div><div class="out" style="margin:4px 0 14px"><div class="v" id="m-rep">–</div></div>
+<div class="lab">好壞球挑戰（試算）：六個門檻</div>
+<div class="six" id="m-six" style="margin-top:6px"></div>
+<p class="note" style="margin:12px 0 0">大字是卡片上印的整數，小字是未取整的值。同一局挑戰失敗後，要改看「只剩 1 次」。</p>
+</div>
+<details class="mob-full"><summary>看完整的表（可以左右滑）</summary></details>
+<div class="full-tables" id="fulltables">
 <h3>重播門檻卡（18 格）</h3>
 <div class="scroll"><table>
 <thead><tr><th>局</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead>
@@ -105,93 +230,150 @@ a{color:var(--brand)}
 </table></div>
 <p class="note">依 26,279 個實際壘上判決分格。每格是「格內平均挑戰權價值 ÷（平均判決價值 ＋ 平均挑戰權價值）」。大字是卡片上印的整數（最低 1%），小字是未取整的值。</p>
 <h3>好壞球門檻卡（108 格，試算）</h3>
-<div class="two">
-<div class="scroll"><p class="note" style="margin:6px 0"><b>還剩 2 次</b>（欄＝局數）</p><table><thead><tr><th>球數</th><th>壘上</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead><tbody><tr><th rowspan="2">滿球數</th><th>無人</th><td>16%<small>15.7</small></td><td>15%<small>14.7</small></td><td>13%<small>13.4</small></td><td>12%<small>11.7</small></td><td>10%<small>10.2</small></td><td>9%<small>8.7</small></td><td>6%<small>6.4</small></td><td>4%<small>4.1</small></td><td>1%<small>1.3</small></td></tr><tr><th>有人</th><td>10%<small>10.2</small></td><td>9%<small>9.4</small></td><td>9%<small>8.6</small></td><td>7%<small>7.3</small></td><td>6%<small>6.4</small></td><td>5%<small>4.7</small></td><td>4%<small>3.9</small></td><td>3%<small>2.7</small></td><td>1%<small>0.9</small></td></tr><tr><th rowspan="2">兩好球或三壞球（不含滿球數）</th><th>無人</th><td>32%<small>31.8</small></td><td>32%<small>32.3</small></td><td>28%<small>28.5</small></td><td>25%<small>25.5</small></td><td>23%<small>23.0</small></td><td>19%<small>19.4</small></td><td>15%<small>15.3</small></td><td>10%<small>9.9</small></td><td>4%<small>3.9</small></td></tr><tr><th>有人</th><td>19%<small>19.2</small></td><td>18%<small>18.3</small></td><td>16%<small>16.4</small></td><td>14%<small>14.4</small></td><td>13%<small>13.3</small></td><td>10%<small>10.3</small></td><td>8%<small>8.2</small></td><td>5%<small>5.4</small></td><td>2%<small>2.0</small></td></tr><tr><th rowspan="2">其他球數</th><th>無人</th><td>51%<small>51.0</small></td><td>52%<small>51.7</small></td><td>47%<small>47.3</small></td><td>44%<small>43.6</small></td><td>41%<small>40.5</small></td><td>35%<small>35.3</small></td><td>29%<small>28.9</small></td><td>20%<small>19.9</small></td><td>9%<small>8.6</small></td></tr><tr><th>有人</th><td>39%<small>38.7</small></td><td>37%<small>37.3</small></td><td>34%<small>34.2</small></td><td>32%<small>31.5</small></td><td>29%<small>28.6</small></td><td>23%<small>23.3</small></td><td>18%<small>18.3</small></td><td>13%<small>12.8</small></td><td>5%<small>4.8</small></td></tr></tbody></table></div>
-<div class="scroll"><p class="note" style="margin:6px 0"><b>只剩 1 次</b>（欄＝局數）</p><table><thead><tr><th>球數</th><th>壘上</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead><tbody><tr><th rowspan="2">滿球數</th><th>無人</th><td>28%<small>28.2</small></td><td>27%<small>27.0</small></td><td>25%<small>25.5</small></td><td>23%<small>23.1</small></td><td>21%<small>21.3</small></td><td>19%<small>19.4</small></td><td>16%<small>15.9</small></td><td>12%<small>12.1</small></td><td>6%<small>5.7</small></td></tr><tr><th>有人</th><td>19%<small>19.3</small></td><td>18%<small>18.1</small></td><td>17%<small>17.1</small></td><td>15%<small>15.2</small></td><td>14%<small>14.1</small></td><td>11%<small>11.1</small></td><td>10%<small>10.2</small></td><td>8%<small>8.2</small></td><td>4%<small>3.8</small></td></tr><tr><th rowspan="2">兩好球或三壞球（不含滿球數）</th><th>無人</th><td>50%<small>49.5</small></td><td>51%<small>50.6</small></td><td>47%<small>46.7</small></td><td>44%<small>43.8</small></td><td>42%<small>41.6</small></td><td>38%<small>38.0</small></td><td>33%<small>33.3</small></td><td>26%<small>26.1</small></td><td>15%<small>14.9</small></td></tr><tr><th>有人</th><td>33%<small>33.4</small></td><td>33%<small>32.5</small></td><td>30%<small>30.2</small></td><td>28%<small>27.7</small></td><td>27%<small>26.9</small></td><td>23%<small>22.6</small></td><td>20%<small>19.9</small></td><td>16%<small>15.7</small></td><td>8%<small>8.1</small></td></tr><tr><th rowspan="2">其他球數</th><th>無人</th><td>69%<small>68.6</small></td><td>70%<small>69.7</small></td><td>66%<small>66.4</small></td><td>64%<small>63.8</small></td><td>62%<small>61.9</small></td><td>58%<small>58.1</small></td><td>53%<small>53.0</small></td><td>44%<small>44.4</small></td><td>29%<small>28.8</small></td></tr><tr><th>有人</th><td>57%<small>57.0</small></td><td>56%<small>56.0</small></td><td>53%<small>53.4</small></td><td>51%<small>51.2</small></td><td>49%<small>48.9</small></td><td>44%<small>43.6</small></td><td>38%<small>38.3</small></td><td>32%<small>32.1</small></td><td>18%<small>17.8</small></td></tr></tbody></table></div>
+<p class="note" style="margin:6px 0"><b>還剩 2 次</b>（欄＝局數）</p><div class="scroll"><table><thead><tr><th>球數</th><th>壘上</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead><tbody><tr><th rowspan="2">滿球數</th><th>無人</th><td>16%<small>15.7</small></td><td>15%<small>14.7</small></td><td>13%<small>13.4</small></td><td>12%<small>11.7</small></td><td>10%<small>10.2</small></td><td>9%<small>8.7</small></td><td>6%<small>6.4</small></td><td>4%<small>4.1</small></td><td>1%<small>1.3</small></td></tr><tr><th>有人</th><td>10%<small>10.2</small></td><td>9%<small>9.4</small></td><td>9%<small>8.6</small></td><td>7%<small>7.3</small></td><td>6%<small>6.4</small></td><td>5%<small>4.7</small></td><td>4%<small>3.9</small></td><td>3%<small>2.7</small></td><td>1%<small>0.9</small></td></tr><tr><th rowspan="2">兩好球或三壞球（不含滿球數）</th><th>無人</th><td>32%<small>31.8</small></td><td>32%<small>32.3</small></td><td>28%<small>28.5</small></td><td>25%<small>25.5</small></td><td>23%<small>23.0</small></td><td>19%<small>19.4</small></td><td>15%<small>15.3</small></td><td>10%<small>9.9</small></td><td>4%<small>3.9</small></td></tr><tr><th>有人</th><td>19%<small>19.2</small></td><td>18%<small>18.3</small></td><td>16%<small>16.4</small></td><td>14%<small>14.4</small></td><td>13%<small>13.3</small></td><td>10%<small>10.3</small></td><td>8%<small>8.2</small></td><td>5%<small>5.4</small></td><td>2%<small>2.0</small></td></tr><tr><th rowspan="2">其他球數</th><th>無人</th><td>51%<small>51.0</small></td><td>52%<small>51.7</small></td><td>47%<small>47.3</small></td><td>44%<small>43.6</small></td><td>41%<small>40.5</small></td><td>35%<small>35.3</small></td><td>29%<small>28.9</small></td><td>20%<small>19.9</small></td><td>9%<small>8.6</small></td></tr><tr><th>有人</th><td>39%<small>38.7</small></td><td>37%<small>37.3</small></td><td>34%<small>34.2</small></td><td>32%<small>31.5</small></td><td>29%<small>28.6</small></td><td>23%<small>23.3</small></td><td>18%<small>18.3</small></td><td>13%<small>12.8</small></td><td>5%<small>4.8</small></td></tr></tbody></table></div>
+<p class="note" style="margin:14px 0 6px"><b>只剩 1 次</b>（欄＝局數）</p><div class="scroll"><table><thead><tr><th>球數</th><th>壘上</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead><tbody><tr><th rowspan="2">滿球數</th><th>無人</th><td>28%<small>28.2</small></td><td>27%<small>27.0</small></td><td>25%<small>25.5</small></td><td>23%<small>23.1</small></td><td>21%<small>21.3</small></td><td>19%<small>19.4</small></td><td>16%<small>15.9</small></td><td>12%<small>12.1</small></td><td>6%<small>5.7</small></td></tr><tr><th>有人</th><td>19%<small>19.3</small></td><td>18%<small>18.1</small></td><td>17%<small>17.1</small></td><td>15%<small>15.2</small></td><td>14%<small>14.1</small></td><td>11%<small>11.1</small></td><td>10%<small>10.2</small></td><td>8%<small>8.2</small></td><td>4%<small>3.8</small></td></tr><tr><th rowspan="2">兩好球或三壞球（不含滿球數）</th><th>無人</th><td>50%<small>49.5</small></td><td>51%<small>50.6</small></td><td>47%<small>46.7</small></td><td>44%<small>43.8</small></td><td>42%<small>41.6</small></td><td>38%<small>38.0</small></td><td>33%<small>33.3</small></td><td>26%<small>26.1</small></td><td>15%<small>14.9</small></td></tr><tr><th>有人</th><td>33%<small>33.4</small></td><td>33%<small>32.5</small></td><td>30%<small>30.2</small></td><td>28%<small>27.7</small></td><td>27%<small>26.9</small></td><td>23%<small>22.6</small></td><td>20%<small>19.9</small></td><td>16%<small>15.7</small></td><td>8%<small>8.1</small></td></tr><tr><th rowspan="2">其他球數</th><th>無人</th><td>69%<small>68.6</small></td><td>70%<small>69.7</small></td><td>66%<small>66.4</small></td><td>64%<small>63.8</small></td><td>62%<small>61.9</small></td><td>58%<small>58.1</small></td><td>53%<small>53.0</small></td><td>44%<small>44.4</small></td><td>29%<small>28.8</small></td></tr><tr><th>有人</th><td>57%<small>57.0</small></td><td>56%<small>56.0</small></td><td>53%<small>53.4</small></td><td>51%<small>51.2</small></td><td>49%<small>48.9</small></td><td>44%<small>43.6</small></td><td>38%<small>38.3</small></td><td>32%<small>32.1</small></td><td>18%<small>17.8</small></td></tr></tbody></table></div>
+<div class="legend"><span><i class="lg1"></i>10% 以下</span><span><i class="lg2"></i>超過 10%，到 30%</span><span><i class="lg3"></i>超過 30%</span></div>
 </div>
-<p class="note">中職一軍的好壞球挑戰細則還沒有公布。這張卡用 MLB 2026 的逐球資料，套中職的勝率模型試算；中職實施後要用中職資料重做。依局數、球數三類、壘上有沒有人分格。大字是卡片上印的數字（四捨五入到整數，最低 1%），小字是未取整的值。108 格的每一格都由兩套獨立寫的程式算過，結果相同。A6 列印版、互動 Demo 和計算機用的都是這張卡。任何單一局面的精確門檻請用<a href="calculator/">計算機</a>查。</p>
+<p class="note" style="margin-top:14px">中職一軍的好壞球挑戰細則還沒有公布。這張卡用 MLB 2026 的逐球資料，套中職的勝率模型試算；中職實施後要用中職資料重做。依局數、球數三類、壘上有沒有人分格；卡片上印的是四捨五入到整數的門檻（最低 1%）。108 格的每一格都由兩套獨立寫的程式算過，結果相同。A6 列印版、互動 Demo 和計算機用的都是這張卡。任何單一局面的精確門檻請用<a href="calculator/">計算機</a>查。</p>
 </section>
 
-<section>
-<h2>三個發現</h2>
-<div class="three">
-<div class="box"><div class="big">1–2%</div><h3>重播挑戰權很便宜</h3>開賽還剩 2 次時，失去一次只值 0.11 個勝率百分點，卡片門檻只有 1–2%。只剩 1 次時，門檻從一局的 13% 降到九局的 2%。</div>
-<div class="box"><div class="big">5.3%</div><h3>球隊常常沒用完</h3>2024-05-28 改制後例行賽 968 場，九局內球隊挑戰 1,097 次，翻盤率 30.3%；兩次都用完的隊伍場次只有 5.3%。</div>
-<div class="box"><div class="big">不能套用</div><h3>好壞球是另一回事</h3>好壞球挑戰權貴得多（開賽只剩 1 次時值 1.77 個百分點，重播是 0.93），門檻高很多，而且要看球數：2 好 3 壞的球改判價值中位數 4.76 個百分點，0 好 0 壞只有 0.62。</div>
+<section id="findings">
+<div class="sec-no">05</div><h2>三個發現</h2>
+<div class="grid3">
+<div class="panel" style="margin:0"><div class="big">1–2%</div><h3 style="margin-top:6px">重播挑戰權很便宜</h3>開賽還剩 2 次時，失去一次只值 0.11 個勝率百分點，卡片門檻只有 1–2%。只剩 1 次時，門檻從一局的 13% 降到九局的 2%。這是模型的門檻，現場的回報怎麼對上它還要校準。</div>
+<div class="panel" style="margin:0"><div class="big">5.3%</div><h3 style="margin-top:6px">挑戰權常常沒用完</h3>2024-05-28 改制後例行賽 968 場，九局內球隊挑戰 1,097 次，翻盤率 30.3%；兩次都用完的隊伍場次只有 5.3%。多數判決沒有爭議，沒用完本身不是問題。</div>
+<div class="panel" style="margin:0"><div class="big">1.77 對 0.93</div><h3 style="margin-top:6px">好壞球不能套同一個直覺</h3>同樣是開賽只剩最後一次，好壞球的挑戰權值 1.77 個百分點，重播是 0.93。門檻還要看球數：2 好 3 壞的球改判價值中位數 4.76 個百分點，0 好 0 壞只有 0.62。</div>
 </div>
 </section>
 
-<section>
-<h2>方法</h2>
-<ol>
+<section id="method">
+<div class="sec-no">06</div><h2>方法</h2>
+<ol class="prose" style="padding-left:1.2em">
 <li><b>勝率表（兩段拆解）。</b>局面切細後有 46,656 格，33% 沒有資料，直接計次連方向都可能相反。改成先算「這個半局得幾分」，再算「半局結束後的比分會不會贏」。留一年交叉驗證，預測分 10 組，和實際勝率最大差 1.5 個百分點；Brier 分數 0.157。</li>
 <li><b>挑戰權價值（從九局下往回推）。</b>手上 r 次的價值 ＝ 這個半局用掉的預期收益 ＋ 留到下個半局的價值；C ＝ 有 r 次的價值 − 有 r−1 次的價值。</li>
-<li><b>重播的潛在爭議校準。</b>沒被挑的判決對不對沒有人知道，所以假設一群潛在爭議，讓模型的挑戰次數和翻盤率對上實際資料。這組參數定不出唯一的值，是已知限制。</li>
-<li><b>卡片。</b>現場不可能算公式，所以按局數（好壞球再加球數）分格，每格印一個數字。</li>
+<li><b>重播的潛在爭議校準。</b>現有資料無法完整標記沒被挑的判決對不對，所以假設一群潛在爭議，讓模型的挑戰次數和翻盤率對上實際資料。這組參數無法由目前的觀察定出唯一的值，是已知限制。</li>
+<li><b>卡片。</b>現場不可能算公式，所以按局數（好壞球再加球數、壘上有沒有人）分格，每格印一個數字。</li>
 </ol>
 </section>
 
-<section>
-<h2>檢驗</h2>
-<ul>
-<li><b>歷年規則變動。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數（勝率表用到部分同期的比賽，所以不是整套模型完全獨立的留出檢驗）。</li>
-<li><b>局數。</b>模型的門檻越後面越低，被挑判決的翻盤率也隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
-<li><b>卡片和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）；範圍是兩種把握設定的結果，不是每個局面的保證。</li>
+<section id="check">
+<div class="sec-no">07</div><h2>檢驗</h2>
+<ul class="tight prose">
+<li><b>跨規則比較。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數（勝率表用到部分同期的比賽，所以不是整套模型完全獨立的留出檢驗）。這支持模型和跨期的整體行為相容，還不能確認每個局面的門檻都準確。</li>
+<li><b>局數。</b>被挑判決的翻盤率隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
+<li><b>重播卡和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）；範圍是兩種把握設定的結果，不是每個局面的保證。</li>
 <li><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比（24 組亂數；括號是按場重抽的 95% 區間，不含模型設定的不確定性）：「把握過半才挑」−0.65 勝（−0.69～−0.60），照 108 格卡挑 +0.29 勝（0.26～0.31），照精確門檻挑 +0.51 勝（0.47～0.54）。上一版不分壘上有沒有人的 54 格卡是 +0.22 勝（0.20～0.25）；108 格卡比它多 0.06 勝（0.05～0.08）。在比較的這幾種挑法裡，「把握過半才挑」最差。</li>
-<li><b>和球員實際拿回的價值比</b>（九局內）：108 格卡 +0.21 勝（0.13～0.29）。這個增益對模型設定很敏感：感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑會低於球員實際拿回的價值。所以卡片增益的大小還不能確定。</li>
+<li><b>部分分場留出。</b>比賽依編號分成 1,212 場和 1,213 場，只用第一組訂挑戰權價值和卡片，在第二組評分：108 格卡 +0.27 勝（0.23～0.31）。感知、行為基準和中職的勝率模型兩組共用，所以不是整套模型的樣本外檢驗。</li>
+<li><b>和球員實際拿回的價值比</b>（九局內）：主要設定下 108 格卡 +0.21 勝（0.13～0.29）。換成另外兩套感知模型，是 0.05 勝（−0.03～0.14）和 0.07 勝（−0.02～0.15），區間都跨過 0；感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑會低於球員實際拿回的價值。所以相對球員實際的增益，大小和是不是正的，都看感知和把握的設定。</li>
 </ul>
-<p class="note">以上是「和資料一致」的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
-<div class="two">
+<p class="note">以上是模型內的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
+<div class="grid2">
 <figure style="margin:0"><img src="figs/fig1_we_calibration.png" alt="勝率模型的預測勝率和實際勝率對照圖" loading="lazy"><figcaption class="note">勝率模型：預測和實際</figcaption></figure>
 <figure style="margin:0"><img src="figs/fig2_overturn_by_inning.png" alt="各局數的挑戰翻盤率" loading="lazy"><figcaption class="note">翻盤率隨局數的變化</figcaption></figure>
 </div>
 </section>
 
-<section>
-<h2>邊界和下一步</h2>
-<ul>
-<li>門檻卡沒有在現場試用過。查不查得到、記不記得住、限時內用不用得對，都還沒測。</li>
-<li>把握要靠人判斷。把握偏高或偏低時，卡片的效果會變差，所以規劃搭配賽後對答案的回饋訓練；訓練設計列入決賽前的開發時程。</li>
-<li>重播沒被挑的判決對不對沒有人知道，所以不判定教練是否挑得太少；潛在爭議的參數定不出唯一的值，每個球季要用新資料重新校準。</li>
-<li>好壞球是 MLB 資料套中職勝率模型的試算。</li>
-<li>卡片上的數字每個球季要用新資料重跑；公式和方法不變。</li>
+<section id="limits">
+<div class="sec-no">08</div><h2>邊界和下一步</h2>
+<ul class="tight prose">
+<li><b>限時操作和把握的校準還沒有驗證。</b>重播要測查卡和回報，好壞球要測記憶和剩餘次數的切換；這些流程都還沒有做現場測試。決賽前安排試用，記錄反應時間、查錯格、用錯組和決策差異。</li>
+<li><b>把握要靠人判斷。</b>把握偏高或偏低時，卡片的效果會變差，所以規劃搭配賽後對答案的回饋訓練；訓練的設計和效果測試列入決賽前的開發時程。</li>
+<li><b>重播：</b>現有資料無法完整標記沒被挑的判決對不對，所以不用挑戰次數評斷教練的決策；潛在爭議的參數無法定出唯一的值，每個球季要用新資料更新校準。</li>
+<li><b>好壞球：</b>目前評估的是跨聯盟、固定歷史投球順序下的模型價值。感知設定來自 MLB，不是中職球員的實測。</li>
+<li><b>卡片上的數字每個球季要用新資料重跑；</b>公式和方法不變。</li>
 </ul>
 </section>
 
-<section>
-<h2>這個網站有什麼</h2>
-<ul>
-<li><a href="demo/">互動 Demo</a>：規則試算沙盤、門檻卡、可信度檢驗。</li>
-<li><a href="calculator/">挑戰門檻計算機</a>：輸入局面，查勝率、判決價值和門檻；手機可用。</li>
-<li><a href="card/">門檻卡 A6 列印版</a>：兩張雙面共 4 頁（重播 18 格、使用說明、好壞球 108 格分還剩 2 次和只剩 1 次兩面），可以直接列印。</li>
-</ul>
-<p class="note">本站只含統計量和模型輸出表，不含任何逐球原始資料。</p>
+<section id="tools">
+<div class="sec-no">09</div><h2>這個網站有什麼</h2>
+<div class="grid3">
+<a class="panel" style="margin:0;text-decoration:none;color:inherit" href="demo/"><h3 style="margin-top:0">互動 Demo →</h3>規則試算沙盤、門檻卡、可信度檢驗。點壘包、改球數，看門檻怎麼變。</a>
+<a class="panel" style="margin:0;text-decoration:none;color:inherit" href="calculator/"><h3 style="margin-top:0">挑戰門檻計算機 →</h3>輸入局面，查勝率、判決價值和門檻；手機可用。</a>
+<a class="panel" style="margin:0;text-decoration:none;color:inherit" href="card/"><h3 style="margin-top:0">門檻卡 A6 列印版 →</h3>兩張雙面共 4 頁：重播 18 格、使用說明、好壞球 108 格兩面。</a>
+</div>
+<p class="note" style="margin-top:14px">本站只含統計量和模型輸出表，不含任何逐球原始資料。原始碼在 <a href="https://github.com/kuotunyu/rebas2026-when-to-challenge">GitHub</a>。</p>
 </section>
 
 <footer>
 <p>資料來源：野球革命 rebas.tw Open Data（ODC-By 授權）、中職官網文字轉播的統計、MLB StatsAPI、WhartonSABI 開源資料。</p>
-<p>隊伍「挑戰研究員」｜2026 野革盃 台灣棒球數據黑客松 初審提案附件｜數字版本 2026-11-16。本站是參賽作品，不是主辦單位或中華職棒的官方產品。</p>
+<p>隊伍「挑戰研究員」｜2026 野革盃 台灣棒球數據黑客松 初審提案附件｜數字版本 2026-11-17。本站是參賽作品，不是主辦單位或中華職棒的官方產品。</p>
 </footer>
 </main>
+
+<div class="tab" id="tab"><a href="#try">查門檻</a><a href="#cards">門檻卡</a><a href="#formula">公式</a><a href="#check">檢驗</a><a href="#tools">工具</a></div>
+
 <script>
 const CARD={"replayx": {"1": [13.06, 12.95, 11.1, 10.04, 8.71, 7.17, 5.56, 3.79, 1.78], "2": [1.74, 1.61, 1.25, 1.02, 0.77, 0.53, 0.33, 0.16, 0.04]}, "absx": {"1": [[[28.2, 19.3], [49.5, 33.4], [68.6, 57.0]], [[27.0, 18.1], [50.6, 32.5], [69.7, 56.0]], [[25.5, 17.1], [46.7, 30.2], [66.4, 53.4]], [[23.1, 15.2], [43.8, 27.7], [63.8, 51.2]], [[21.3, 14.1], [41.6, 26.9], [61.9, 48.9]], [[19.4, 11.1], [38.0, 22.6], [58.1, 43.6]], [[15.9, 10.2], [33.3, 19.9], [53.0, 38.3]], [[12.1, 8.2], [26.1, 15.7], [44.4, 32.1]], [[5.7, 3.8], [14.9, 8.1], [28.8, 17.8]]], "2": [[[15.7, 10.2], [31.8, 19.2], [51.0, 38.7]], [[14.7, 9.4], [32.3, 18.3], [51.7, 37.3]], [[13.4, 8.6], [28.5, 16.4], [47.3, 34.2]], [[11.7, 7.3], [25.5, 14.4], [43.6, 31.5]], [[10.2, 6.4], [23.0, 13.3], [40.5, 28.6]], [[8.7, 4.7], [19.4, 10.3], [35.3, 23.3]], [[6.4, 3.9], [15.3, 8.2], [28.9, 18.3]], [[4.1, 2.7], [9.9, 5.4], [19.9, 12.8]], [[1.3, 0.9], [3.9, 2.0], [8.6, 4.8]]]}, "replay": {"1": [13, 13, 11, 10, 9, 7, 6, 4, 2], "2": [2, 2, 1, 1, 1, 1, 1, 1, 1]}, "abs": {"1": [[[28, 19], [50, 33], [69, 57]], [[27, 18], [51, 33], [70, 56]], [[25, 17], [47, 30], [66, 53]], [[23, 15], [44, 28], [64, 51]], [[21, 14], [42, 27], [62, 49]], [[19, 11], [38, 23], [58, 44]], [[16, 10], [33, 20], [53, 38]], [[12, 8], [26, 16], [44, 32]], [[6, 4], [15, 8], [29, 18]]], "2": [[[16, 10], [32, 19], [51, 39]], [[15, 9], [32, 18], [52, 37]], [[13, 9], [28, 16], [47, 34]], [[12, 7], [25, 14], [44, 32]], [[10, 6], [23, 13], [41, 29]], [[9, 5], [19, 10], [35, 23]], [[6, 4], [15, 8], [29, 18]], [[4, 3], [10, 5], [20, 13]], [[1, 1], [4, 2], [9, 5]]]}};
 const $=id=>document.getElementById(id);
-for(let i=1;i<=9;i++)$("inn").add(new Option("第 "+i+" 局",i));
+/* 主題 */
+(function(){let t=null;try{t=localStorage.getItem("theme")}catch(e){}
+  const sysDark=matchMedia("(prefers-color-scheme: dark)").matches;
+  function apply(v){document.documentElement.setAttribute("data-theme",v);$("tgl").textContent=v==="dark"?"淺色":"深色"}
+  apply(t||(sysDark?"dark":"light"));
+  $("tgl").addEventListener("click",()=>{const v=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";apply(v);try{localStorage.setItem("theme",v)}catch(e){}});
+})();
+/* 選擇按鈕 */
+function seg(id,cb){const el=$(id);el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;[...el.children].forEach(x=>x.classList.toggle("on",x===b));cb&&cb()});return()=>el.querySelector(".on").dataset.v}
+function inns(id){const el=$(id);for(let i=1;i<=9;i++){const b=document.createElement("button");b.type="button";b.dataset.v=i;b.textContent=i;if(i===1)b.className="on";el.appendChild(b)}}
+inns("s-inn");inns("m-inn");
+const tier=v=>v<=10?"t1":(v<=30?"t2":"t3");
+/* 查門檻 */
+const gKind=seg("s-kind",card),gInn=seg("s-inn",card),gRem=seg("s-rem",card),gCnt=seg("s-cnt",card),gOn=seg("s-on",card);
 function card(){
-  const k=$("kind").value,i=+$("inn").value-1,r=$("rem").value;
-  $("cntl").hidden=k!=="abs";$("onl").hidden=k!=="abs";
-  const v=k==="abs"?CARD.abs[r][i][+$("cnt").value][+$("on").value]:CARD.replay[r][i];
+  const k=gKind(),i=+gInn()-1,r=gRem();$("absopt").hidden=k!=="abs";
+  const v=k==="abs"?CARD.abs[r][i][+gCnt()][+gOn()]:CARD.replay[r][i];
+  const x=k==="abs"?CARD.absx[r][i][+gCnt()][+gOn()]:CARD.replayx[r][i];
   $("cardout").textContent=v+"%";
-  const x=k==="abs"?CARD.absx[r][i][+$("cnt").value][+$("on").value]:CARD.replayx[r][i];
   $("cardsay").textContent="未取整的值是 "+x+"%。改判的把握超過門檻就挑"+(k==="abs"?"（好壞球為試算）。":"。");
 }
-function calc(){
-  const dw=parseFloat($("dw").value),c=parseFloat($("c").value);
-  $("fout").textContent=(dw>=0&&c>=0&&dw+c>0)?(100*c/(dw+c)).toFixed(1)+"%":"–";
+/* 手機：這一局的卡 */
+const mInn=seg("m-inn",mcard),mRem=seg("m-rem",mcard);
+function mcard(){
+  const i=+mInn()-1,r=mRem();$("m-rep").textContent=CARD.replay[r][i]+"%";
+  const N=["滿球數","兩好球或三壞球","其他球數"];let h='<div></div><div class="h">壘上無人</div><div class="h">壘上有人</div>';
+  N.forEach((n,c)=>{h+='<div>'+n+'</div>';[0,1].forEach(o=>{h+='<div class="n">'+CARD.abs[r][i][c][o]+'%<small>'+CARD.absx[r][i][c][o].toFixed(1)+'</small></div>'})});
+  $("m-six").innerHTML=h;
 }
-["kind","inn","rem","cnt","on"].forEach(x=>$(x).addEventListener("change",card));
-["dw","c"].forEach(x=>$(x).addEventListener("input",calc));
-card();calc();
+/* 完整的表：上色；手機收在摺疊裡 */
+document.querySelectorAll("#fulltables td").forEach(td=>{const v=parseInt(td.textContent,10);if(!isNaN(v))td.classList.add(tier(v))});
+(function(){const s=getComputedStyle(document.documentElement);document.querySelectorAll(".lg1").forEach(e=>e.style.background="var(--t1)");document.querySelectorAll(".lg2").forEach(e=>e.style.background="var(--t2)");document.querySelectorAll(".lg3").forEach(e=>e.style.background="var(--t3)")})();
+(function(){const d=document.querySelector("details.mob-full"),f=$("fulltables"),mq=matchMedia("(max-width:820px)");
+  function place(){if(mq.matches){d.hidden=false;d.appendChild(f);f.style.display="block"}else{d.hidden=true;d.after(f);f.style.display=""}}
+  place();mq.addEventListener("change",place)})();
+/* 公式和天平 */
+function calc(){
+  const dw=parseFloat($("dw").value),c=parseFloat($("c").value),p=parseFloat($("p").value)/100;
+  const ok=dw>=0&&c>=0&&dw+c>0,th=ok?c/(dw+c):NaN;
+  $("fout").textContent=ok?(100*th).toFixed(1)+"%":"–";$("pv").textContent=(+$("p").value).toFixed(1).replace(/\.0$/,"");
+  if(!ok){$("verdict").textContent="請填判決價值和挑戰權價值。";return}
+  const gain=p*dw,loss=(1-p)*c,net=gain-loss,ang=Math.max(-12,Math.min(12,(loss-gain)/(Math.max(gain,loss)||1)*12*-1));
+  $("beam").style.transform="rotate("+ang.toFixed(2)+"deg)";$("panL").style.transform="rotate("+(-ang).toFixed(2)+"deg)";$("panR").style.transform="rotate("+(-ang).toFixed(2)+"deg)";
+  $("panL").style.transformOrigin="70px 72px";$("panR").style.transformOrigin="330px 72px";
+  $("tL").textContent="賺 "+gain.toFixed(2);$("tR").textContent="賠 "+loss.toFixed(2);
+  $("verdict").innerHTML=Math.abs(p-th)<1e-9?"剛好打平：把握等於門檻 "+(100*th).toFixed(1)+"%。":(p>th?"<b>值得挑。</b>把握 "+(100*p).toFixed(1)+"% 高於門檻 "+(100*th).toFixed(1)+"%，預期多 "+net.toFixed(2)+" 個百分點。":"<b>不值得挑。</b>把握 "+(100*p).toFixed(1)+"% 低於門檻 "+(100*th).toFixed(1)+"%，預期少 "+(-net).toFixed(2)+" 個百分點。");
+}
+["dw","c","p"].forEach(x=>$(x).addEventListener("input",calc));
+document.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>{$("c").value=b.dataset.c;[...b.parentNode.children].forEach(x=>x.classList.toggle("on",x===b));calc()}));
+/* 一個判決的兩條路 */
+(function(){
+  const W=318,caps=["先看局面：8 局下兩出局，台鋼落後 1 分，二壘跑者衝本壘，原判安全。按「下一步」。","如果維持安全，比賽追平，台鋼的勝率是 62.1%。","如果改判出局，半局結束，台鋼的勝率掉到 12.7%。","兩者相差 49.4 個百分點。這就是這個判決的價值，也是味全挑戰成功能拿回的東西。","味全當時還剩 2 次，挑戰失敗只損失 0.02 個百分點。代價和收益差了兩千多倍，門檻不到 0.1%：有一點懷疑就值得挑。"];
+  let st=0;
+  function draw(){
+    $("b1").setAttribute("width",st>=1?W*0.621:0);$("t1").setAttribute("opacity",st>=1?1:0);
+    $("b2").setAttribute("width",st>=2?W*0.127:0);$("t2").setAttribute("opacity",st>=2?1:0);
+    $("g3").setAttribute("opacity",st>=3?1:0);$("g4").setAttribute("opacity",st>=4?1:0);
+    $("stcap").textContent=caps[st];[...$("stdots").children].forEach((d,i)=>d.classList.toggle("on",i<st));
+    $("stnext").disabled=st>=4;$("stnext").style.opacity=st>=4?.45:1;
+  }
+  const g3=$("g3").querySelectorAll("line");g3[0].setAttribute("x1",8+W*0.127);g3[0].setAttribute("x2",8+W*0.621);g3[1].setAttribute("x1",8+W*0.127);g3[1].setAttribute("x2",8+W*0.127);g3[2].setAttribute("x1",8+W*0.621);g3[2].setAttribute("x2",8+W*0.621);$("g3").querySelector("text").setAttribute("x",8+W*0.374);
+  $("stnext").addEventListener("click",()=>{if(st<4){st++;draw()}});$("stre").addEventListener("click",()=>{st=0;draw()});draw();
+  if("IntersectionObserver" in window){let played=false;new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!played){played=true;let k=0;const t=setInterval(()=>{if(st>=4||k++>3){clearInterval(t);return}st++;draw()},1500)}})},{threshold:.6}).observe($("story"))}
+})();
+/* 導覽目前位置 */
+(function(){const links=[...document.querySelectorAll("#topnav a, #tab a")];if(!("IntersectionObserver" in window))return;
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+e.target.id))}})},{rootMargin:"-40% 0px -55% 0px"});
+  document.querySelectorAll("main section").forEach(s=>io.observe(s))})();
+card();mcard();calc();
 </script>
 </body>
 </html>
