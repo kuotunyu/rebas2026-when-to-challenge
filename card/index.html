@@ -277,13 +277,18 @@
       border: 1px solid #0f172a;
       display: inline-block;
     }
+    .abs108-box { height: 8.6mm; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.05; }
+    .abs108-val { font-size: 12.5pt; font-weight: 800; letter-spacing: -0.3px; }
+    .abs108-x { font-size: 6pt; font-weight: 600; opacity: .75; }
+    .th-on { font-size: 8pt; }
+    .howto { font-size: 8.6pt; line-height: 1.5; color: #0f172a; display: flex; flex-direction: column; gap: 1.6mm; margin: 2mm 0; flex: 1; }
   </style>
 </head>
 <body>
 <div class="noprint" style="background:#12355b;padding:6px 12px;font:14px sans-serif"><a href="../" style="color:#fff;text-decoration:none">← 回首頁</a></div><style>@media print{.noprint{display:none}}</style>
 
   <div class="screen-toolbar">
-    <div><strong>決賽門檻口袋卡（A6 雙面，初審版）</strong>｜列印或存成 PDF：紙張 A6 橫式（148 × 105 mm）、邊界選「無」、不要頁首頁尾</div>
+    <div><strong>門檻口袋卡（A6 橫式，兩張雙面共 4 頁）</strong>｜列印或存成 PDF：紙張 A6 橫式（148 × 105 mm）、邊界選「無」、不要頁首頁尾</div>
     <button class="print-btn" onclick="window.print()">列印此卡</button>
   </div>
 
@@ -291,7 +296,7 @@
   <div class="card-page" id="page-front">
     <div class="card-header">
       <div class="card-title">重播挑戰：把握超過這個數字就挑</div>
-      <div class="card-side-tag">正面（重播）</div>
+      <div class="card-side-tag">第 1 張 正面</div>
     </div>
 
     <div id="front-table-container"></div>
@@ -312,31 +317,54 @@
     </div>
   </div>
 
-  <!-- 背面：好壞球挑戰 -->
-  <div class="card-page" id="page-back">
+  <div class="card-page" id="page-howto">
     <div class="card-header">
-      <div class="card-title">好壞球挑戰（試算版）：把握超過這個數字就挑</div>
-      <div class="card-side-tag">背面（好壞球）</div>
+      <div class="card-title">怎麼讀這兩張卡</div>
+      <div class="card-side-tag">第 1 張 背面</div>
     </div>
-
-    <div class="abs-blocks-container" id="abs-blocks-container"></div>
-
+    <div class="howto">
+      <div><b>把握</b>＝你認為這個判決會改判的機率。把握高於卡上的數字，才提出挑戰。</div>
+      <div><b>門檻怎麼來</b>：門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）。卡上每一格是那一格所有局面的代表值。</div>
+      <div><b>重播卡</b>（第 1 張正面）：先找剩餘次數那一列，再找局數。</div>
+      <div><b>好壞球卡</b>（第 2 張）：還剩 2 次看正面，只剩 1 次看背面；再依球數類別和壘上有沒有人找格子。每局開始前先記住該局的六個數字，場上不查卡。</div>
+      <div><b>球數類別</b>：滿球數（3 壞 2 好）；兩好球或三壞球（不含滿球數）；其他球數。</div>
+      <div><b>單一局面的精確門檻</b>：用計算機查 kuotunyu.github.io/rebas2026-when-to-challenge/calculator/</div>
+      <div><b>限制</b>：好壞球是試算；卡片假設把握大致準確；延長賽不適用；尚未現場試用。</div>
+    </div>
+    <div class="card-footer"><div>挑戰研究員｜2026 野革盃</div><div>版本：2026-11-17</div></div>
+  </div>
+  <div class="card-page" id="page-abs2">
+    <div class="card-header">
+      <div class="card-title">好壞球挑戰（試算）：還剩 2 次</div>
+      <div class="card-side-tag">第 2 張 正面</div>
+    </div>
+    <div id="abs2-container"></div>
     <div class="card-notes">
-      <div>每一局開始前，記住這一局的三個數字。場上不查卡。</div>
-      <div>試算版：合資格的判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和中職勝率模型算；中職一軍 2027 年規則尚未公布。</div>
+      <div>把握超過格子裡的數字才挑。大字是取整後的門檻，小字是未取整的值（%）。挑戰失敗一次後，翻到背面「只剩 1 次」。</div>
+      <div>試算：判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和勝率模型；中職一軍細則尚未公布。108 格為 2026-11-17 試行版。</div>
     </div>
-
-    <div class="card-footer">
-      <div class="tier-legend">
-        <span style="color:#0f172a;">色階標準：</span>
+    <div class="card-footer"><div class="tier-legend"><span style="color:#0f172a;">色階標準：</span>
         <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
         <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
-        <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div>
-      </div>
-      <div id="back-version-text"></div>
+        <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div></div><div>版本：2026-11-17（108 格試行版）</div></div>
+  </div>
+  <div class="card-page" id="page-abs1">
+    <div class="card-header">
+      <div class="card-title">好壞球挑戰（試算）：只剩 1 次</div>
+      <div class="card-side-tag">第 2 張 背面</div>
     </div>
+    <div id="abs1-container"></div>
+    <div class="card-notes">
+      <div>把握超過格子裡的數字才挑。大字是取整後的門檻，小字是未取整的值（%）。這是最後一次挑戰權。</div>
+      <div>試算：判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和勝率模型；中職一軍細則尚未公布。108 格為 2026-11-17 試行版。</div>
+    </div>
+    <div class="card-footer"><div class="tier-legend"><span style="color:#0f172a;">色階標準：</span>
+        <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
+        <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
+        <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div></div><div>版本：2026-11-17（108 格試行版）</div></div>
   </div>
 
+  <script type="application/json" id="card-abs108">[{"r": 1, "i": 1, "c": "滿球數", "on": "無人", "v": 30, "x": 28.2}, {"r": 1, "i": 1, "c": "滿球數", "on": "有人", "v": 20, "x": 19.3}, {"r": 1, "i": 1, "c": "兩好球或三壞球", "on": "無人", "v": 50, "x": 49.5}, {"r": 1, "i": 1, "c": "兩好球或三壞球", "on": "有人", "v": 35, "x": 33.4}, {"r": 1, "i": 1, "c": "其他球數", "on": "無人", "v": 70, "x": 68.6}, {"r": 1, "i": 1, "c": "其他球數", "on": "有人", "v": 55, "x": 57.0}, {"r": 1, "i": 2, "c": "滿球數", "on": "無人", "v": 25, "x": 27.0}, {"r": 1, "i": 2, "c": "滿球數", "on": "有人", "v": 20, "x": 18.1}, {"r": 1, "i": 2, "c": "兩好球或三壞球", "on": "無人", "v": 50, "x": 50.6}, {"r": 1, "i": 2, "c": "兩好球或三壞球", "on": "有人", "v": 35, "x": 32.5}, {"r": 1, "i": 2, "c": "其他球數", "on": "無人", "v": 70, "x": 69.7}, {"r": 1, "i": 2, "c": "其他球數", "on": "有人", "v": 55, "x": 56.0}, {"r": 1, "i": 3, "c": "滿球數", "on": "無人", "v": 25, "x": 25.5}, {"r": 1, "i": 3, "c": "滿球數", "on": "有人", "v": 15, "x": 17.1}, {"r": 1, "i": 3, "c": "兩好球或三壞球", "on": "無人", "v": 45, "x": 46.7}, {"r": 1, "i": 3, "c": "兩好球或三壞球", "on": "有人", "v": 30, "x": 30.2}, {"r": 1, "i": 3, "c": "其他球數", "on": "無人", "v": 65, "x": 66.4}, {"r": 1, "i": 3, "c": "其他球數", "on": "有人", "v": 55, "x": 53.4}, {"r": 1, "i": 4, "c": "滿球數", "on": "無人", "v": 25, "x": 23.1}, {"r": 1, "i": 4, "c": "滿球數", "on": "有人", "v": 15, "x": 15.2}, {"r": 1, "i": 4, "c": "兩好球或三壞球", "on": "無人", "v": 45, "x": 43.8}, {"r": 1, "i": 4, "c": "兩好球或三壞球", "on": "有人", "v": 30, "x": 27.7}, {"r": 1, "i": 4, "c": "其他球數", "on": "無人", "v": 65, "x": 63.8}, {"r": 1, "i": 4, "c": "其他球數", "on": "有人", "v": 50, "x": 51.2}, {"r": 1, "i": 5, "c": "滿球數", "on": "無人", "v": 20, "x": 21.3}, {"r": 1, "i": 5, "c": "滿球數", "on": "有人", "v": 15, "x": 14.1}, {"r": 1, "i": 5, "c": "兩好球或三壞球", "on": "無人", "v": 40, "x": 41.6}, {"r": 1, "i": 5, "c": "兩好球或三壞球", "on": "有人", "v": 25, "x": 26.9}, {"r": 1, "i": 5, "c": "其他球數", "on": "無人", "v": 60, "x": 61.9}, {"r": 1, "i": 5, "c": "其他球數", "on": "有人", "v": 50, "x": 48.9}, {"r": 1, "i": 6, "c": "滿球數", "on": "無人", "v": 20, "x": 19.4}, {"r": 1, "i": 6, "c": "滿球數", "on": "有人", "v": 10, "x": 11.1}, {"r": 1, "i": 6, "c": "兩好球或三壞球", "on": "無人", "v": 40, "x": 38.0}, {"r": 1, "i": 6, "c": "兩好球或三壞球", "on": "有人", "v": 25, "x": 22.6}, {"r": 1, "i": 6, "c": "其他球數", "on": "無人", "v": 60, "x": 58.1}, {"r": 1, "i": 6, "c": "其他球數", "on": "有人", "v": 45, "x": 43.6}, {"r": 1, "i": 7, "c": "滿球數", "on": "無人", "v": 15, "x": 15.9}, {"r": 1, "i": 7, "c": "滿球數", "on": "有人", "v": 10, "x": 10.2}, {"r": 1, "i": 7, "c": "兩好球或三壞球", "on": "無人", "v": 35, "x": 33.3}, {"r": 1, "i": 7, "c": "兩好球或三壞球", "on": "有人", "v": 20, "x": 19.9}, {"r": 1, "i": 7, "c": "其他球數", "on": "無人", "v": 55, "x": 53.0}, {"r": 1, "i": 7, "c": "其他球數", "on": "有人", "v": 40, "x": 38.3}, {"r": 1, "i": 8, "c": "滿球數", "on": "無人", "v": 10, "x": 12.1}, {"r": 1, "i": 8, "c": "滿球數", "on": "有人", "v": 8, "x": 8.2}, {"r": 1, "i": 8, "c": "兩好球或三壞球", "on": "無人", "v": 25, "x": 26.1}, {"r": 1, "i": 8, "c": "兩好球或三壞球", "on": "有人", "v": 15, "x": 15.7}, {"r": 1, "i": 8, "c": "其他球數", "on": "無人", "v": 45, "x": 44.4}, {"r": 1, "i": 8, "c": "其他球數", "on": "有人", "v": 30, "x": 32.1}, {"r": 1, "i": 9, "c": "滿球數", "on": "無人", "v": 6, "x": 5.7}, {"r": 1, "i": 9, "c": "滿球數", "on": "有人", "v": 4, "x": 3.8}, {"r": 1, "i": 9, "c": "兩好球或三壞球", "on": "無人", "v": 15, "x": 14.9}, {"r": 1, "i": 9, "c": "兩好球或三壞球", "on": "有人", "v": 8, "x": 8.1}, {"r": 1, "i": 9, "c": "其他球數", "on": "無人", "v": 30, "x": 28.8}, {"r": 1, "i": 9, "c": "其他球數", "on": "有人", "v": 20, "x": 17.8}, {"r": 2, "i": 1, "c": "滿球數", "on": "無人", "v": 15, "x": 15.7}, {"r": 2, "i": 1, "c": "滿球數", "on": "有人", "v": 10, "x": 10.2}, {"r": 2, "i": 1, "c": "兩好球或三壞球", "on": "無人", "v": 30, "x": 31.8}, {"r": 2, "i": 1, "c": "兩好球或三壞球", "on": "有人", "v": 20, "x": 19.2}, {"r": 2, "i": 1, "c": "其他球數", "on": "無人", "v": 50, "x": 51.0}, {"r": 2, "i": 1, "c": "其他球數", "on": "有人", "v": 40, "x": 38.7}, {"r": 2, "i": 2, "c": "滿球數", "on": "無人", "v": 15, "x": 14.7}, {"r": 2, "i": 2, "c": "滿球數", "on": "有人", "v": 9, "x": 9.4}, {"r": 2, "i": 2, "c": "兩好球或三壞球", "on": "無人", "v": 30, "x": 32.3}, {"r": 2, "i": 2, "c": "兩好球或三壞球", "on": "有人", "v": 20, "x": 18.3}, {"r": 2, "i": 2, "c": "其他球數", "on": "無人", "v": 50, "x": 51.7}, {"r": 2, "i": 2, "c": "其他球數", "on": "有人", "v": 35, "x": 37.3}, {"r": 2, "i": 3, "c": "滿球數", "on": "無人", "v": 15, "x": 13.4}, {"r": 2, "i": 3, "c": "滿球數", "on": "有人", "v": 9, "x": 8.6}, {"r": 2, "i": 3, "c": "兩好球或三壞球", "on": "無人", "v": 30, "x": 28.5}, {"r": 2, "i": 3, "c": "兩好球或三壞球", "on": "有人", "v": 15, "x": 16.4}, {"r": 2, "i": 3, "c": "其他球數", "on": "無人", "v": 45, "x": 47.3}, {"r": 2, "i": 3, "c": "其他球數", "on": "有人", "v": 35, "x": 34.2}, {"r": 2, "i": 4, "c": "滿球數", "on": "無人", "v": 10, "x": 11.7}, {"r": 2, "i": 4, "c": "滿球數", "on": "有人", "v": 7, "x": 7.3}, {"r": 2, "i": 4, "c": "兩好球或三壞球", "on": "無人", "v": 25, "x": 25.5}, {"r": 2, "i": 4, "c": "兩好球或三壞球", "on": "有人", "v": 15, "x": 14.4}, {"r": 2, "i": 4, "c": "其他球數", "on": "無人", "v": 45, "x": 43.6}, {"r": 2, "i": 4, "c": "其他球數", "on": "有人", "v": 30, "x": 31.5}, {"r": 2, "i": 5, "c": "滿球數", "on": "無人", "v": 10, "x": 10.2}, {"r": 2, "i": 5, "c": "滿球數", "on": "有人", "v": 6, "x": 6.4}, {"r": 2, "i": 5, "c": "兩好球或三壞球", "on": "無人", "v": 25, "x": 23.0}, {"r": 2, "i": 5, "c": "兩好球或三壞球", "on": "有人", "v": 15, "x": 13.3}, {"r": 2, "i": 5, "c": "其他球數", "on": "無人", "v": 40, "x": 40.5}, {"r": 2, "i": 5, "c": "其他球數", "on": "有人", "v": 30, "x": 28.6}, {"r": 2, "i": 6, "c": "滿球數", "on": "無人", "v": 9, "x": 8.7}, {"r": 2, "i": 6, "c": "滿球數", "on": "有人", "v": 5, "x": 4.7}, {"r": 2, "i": 6, "c": "兩好球或三壞球", "on": "無人", "v": 20, "x": 19.4}, {"r": 2, "i": 6, "c": "兩好球或三壞球", "on": "有人", "v": 10, "x": 10.3}, {"r": 2, "i": 6, "c": "其他球數", "on": "無人", "v": 35, "x": 35.3}, {"r": 2, "i": 6, "c": "其他球數", "on": "有人", "v": 25, "x": 23.3}, {"r": 2, "i": 7, "c": "滿球數", "on": "無人", "v": 6, "x": 6.4}, {"r": 2, "i": 7, "c": "滿球數", "on": "有人", "v": 4, "x": 3.9}, {"r": 2, "i": 7, "c": "兩好球或三壞球", "on": "無人", "v": 15, "x": 15.3}, {"r": 2, "i": 7, "c": "兩好球或三壞球", "on": "有人", "v": 8, "x": 8.2}, {"r": 2, "i": 7, "c": "其他球數", "on": "無人", "v": 30, "x": 28.9}, {"r": 2, "i": 7, "c": "其他球數", "on": "有人", "v": 20, "x": 18.3}, {"r": 2, "i": 8, "c": "滿球數", "on": "無人", "v": 4, "x": 4.1}, {"r": 2, "i": 8, "c": "滿球數", "on": "有人", "v": 3, "x": 2.7}, {"r": 2, "i": 8, "c": "兩好球或三壞球", "on": "無人", "v": 10, "x": 9.9}, {"r": 2, "i": 8, "c": "兩好球或三壞球", "on": "有人", "v": 5, "x": 5.4}, {"r": 2, "i": 8, "c": "其他球數", "on": "無人", "v": 20, "x": 19.9}, {"r": 2, "i": 8, "c": "其他球數", "on": "有人", "v": 15, "x": 12.8}, {"r": 2, "i": 9, "c": "滿球數", "on": "無人", "v": 1, "x": 1.3}, {"r": 2, "i": 9, "c": "滿球數", "on": "有人", "v": 1, "x": 0.9}, {"r": 2, "i": 9, "c": "兩好球或三壞球", "on": "無人", "v": 4, "x": 3.9}, {"r": 2, "i": 9, "c": "兩好球或三壞球", "on": "有人", "v": 2, "x": 2.0}, {"r": 2, "i": 9, "c": "其他球數", "on": "無人", "v": 9, "x": 8.6}, {"r": 2, "i": 9, "c": "其他球數", "on": "有人", "v": 5, "x": 4.8}]</script>
   <!-- 原始資料 JSON 嵌入 -->
   <script type="application/json" id="card-replay">
 {
@@ -1186,61 +1214,25 @@
       frontContainer.appendChild(fTable);
       document.getElementById('front-version-text').textContent = '版本：' + replayData['版本'];
 
-      // 2. 渲染背面：好壞球挑戰 (上下兩區塊，各 3 列 x 9 欄)
-      const absContainer = document.getElementById('abs-blocks-container');
+      // 2. 好壞球 108 格：每種剩餘次數一頁，6 列（球數三類 × 壘上無人／有人）× 9 欄
+      const abs108 = JSON.parse(document.getElementById('card-abs108').textContent);
       const countTypes = ['滿球數', '兩好球或三壞球', '其他球數'];
-
       [2, 1].forEach(r => {
-        const block = document.createElement('div');
-
-        const bHeader = document.createElement('div');
-        bHeader.className = 'abs-block-header';
-        bHeader.textContent = r === 2 ? '還剩 2 次挑戰權' : '只剩 1 次挑戰權';
-        block.appendChild(bHeader);
-
-        const table = document.createElement('table');
-        table.className = 'card-table';
-
-        // 表頭
-        const thead = document.createElement('thead');
-        const hTr = document.createElement('tr');
-        hTr.innerHTML = '<th class="th-row-title" style="width: 25mm;">球數 \ 局數</th>' + 
-          innings.map(inn => `<th>${inn} 局</th>`).join('');
-        thead.appendChild(hTr);
-        table.appendChild(thead);
-
-        // 表身 (3 列)
+        const table = document.createElement('table'); table.className = 'card-table';
+        table.innerHTML = '<thead><tr><th class="th-row-title" style="width: 21mm;">球數</th><th class="th-row-title" style="width: 11mm;">壘上</th>' + innings.map(inn => `<th>${inn} 局</th>`).join('') + '</tr></thead>';
         const tbody = document.createElement('tbody');
-        countTypes.forEach(cnt => {
+        countTypes.forEach(cnt => ['無人', '有人'].forEach((on, k) => {
           const tr = document.createElement('tr');
-          const th = document.createElement('th');
-          th.className = cnt === '兩好球或三壞球' ? 'th-row-header th-long' : 'th-row-header';
-          th.textContent = cnt === '兩好球或三壞球' ? '兩好球或三壞球\n（不含滿球數）' : cnt;   // 11/16 收斂終審：只改顯示的字
-          tr.appendChild(th);
-
+          if (k === 0) { const th = document.createElement('th'); th.rowSpan = 2; th.className = cnt === '兩好球或三壞球' ? 'th-row-header th-long' : 'th-row-header'; th.textContent = cnt === '兩好球或三壞球' ? '兩好球或三壞球\n（不含滿球數）' : cnt; tr.appendChild(th); }
+          const th2 = document.createElement('th'); th2.className = 'th-row-header th-on'; th2.textContent = on; tr.appendChild(th2);
           innings.forEach(inn => {
-            const td = document.createElement('td');
-            const item = absData['門檻卡'].find(x => x['剩餘次數'] === r && x['局'] === inn && x['球數'] === cnt);
-            if (item) {
-              const tier = getTierClass(item['卡片顯示']);
-              td.className = tier;
-              td.innerHTML = `
-                <div class="abs-cell-box">
-                  <div class="abs-val">${item['卡片顯示']}%</div>
-                </div>
-              `;
-            } else {
-              td.textContent = '--';
-            }
-            tr.appendChild(td);
+            const td = document.createElement('td'); const it = abs108.find(x => x.r === r && x.i === inn && x.c === cnt && x.on === on);
+            td.className = getTierClass(it.v); td.innerHTML = `<div class="abs108-box"><div class="abs108-val">${it.v}%</div><div class="abs108-x">${it.x.toFixed(1)}</div></div>`; tr.appendChild(td);
           });
           tbody.appendChild(tr);
-        });
-        table.appendChild(tbody);
-        block.appendChild(table);
-        absContainer.appendChild(block);
+        }));
+        table.appendChild(tbody); document.getElementById('abs' + r + '-container').appendChild(table);
       });
-      document.getElementById('back-version-text').textContent = '版本：' + absData['版本'];
     }
 
     document.addEventListener('DOMContentLoaded', renderCards);
