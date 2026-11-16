@@ -1296,7 +1296,7 @@
     // 門檻計算核心 (遵守僅有的 3 種計算)
     function computeThreshold(v, C) {
       // 1. p* = C / (ΔW + C)
-      const p_star = C / (v + C);
+      const p_star = (v + C) > 0 ? C / (v + C) : 1;   // 判決價值和挑戰權價值都是 0 時不挑（門檻當成 100%）
       const rawPct = p_star * 100.0;
 
       // 3. 顯示用的四捨五入：取整數，最低 1%（11/13 起不再把 10% 以上取到 5 的倍數）
