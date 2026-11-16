@@ -35,7 +35,8 @@ table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
 th,td{border:1px solid var(--line);padding:7px 9px;text-align:center;white-space:nowrap}
 thead th,tbody th{background:var(--soft);font-weight:700}
 caption{caption-side:top;text-align:left;font-weight:700;padding:6px 0}
-.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:14px}
+.two>*,.three>*{min-width:0}
 label{display:block;font-size:14px;color:var(--mute);margin-top:8px}
 select,input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
 .out{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--soft)}
@@ -80,7 +81,7 @@ a{color:var(--brand)}
 <label>挑戰種類<select id="kind"><option value="replay">重播挑戰（壘上判決）</option><option value="abs">好壞球挑戰（試算）</option></select></label>
 <label>局數<select id="inn"></select></label>
 <label>還剩幾次挑戰權<select id="rem"><option value="2">還剩 2 次</option><option value="1">只剩 1 次</option></select></label>
-<label id="cntl" hidden>球數<select id="cnt"><option value="0">滿球數</option><option value="1">兩好球或三壞球</option><option value="2">其他球數</option></select></label>
+<label id="cntl" hidden>球數<select id="cnt"><option value="0">滿球數</option><option value="1">兩好球或三壞球（不含滿球數）</option><option value="2">其他球數</option></select></label>
 <div class="out">卡片上的門檻：<b id="cardout">–</b><div class="note" id="cardsay"></div></div>
 </div>
 <div class="box">
@@ -103,10 +104,10 @@ a{color:var(--brand)}
 <p class="note">依 26,279 個實際壘上判決分格。每格是「格內平均挑戰權價值 ÷（平均判決價值 ＋ 平均挑戰權價值）」取整數，最低 1%。</p>
 <h3>好壞球門檻卡（54 格，試算）</h3>
 <div class="two">
-<div class="scroll"><table><caption>還剩 2 次</caption><table><thead><tr><th>局</th><th>滿球數</th><th>兩好球或三壞球</th><th>其他球數</th></tr></thead><tbody><tr><th>1</th><td>15%</td><td>25%</td><td>45%</td></tr><tr><th>2</th><td>10%</td><td>25%</td><td>45%</td></tr><tr><th>3</th><td>10%</td><td>20%</td><td>40%</td></tr><tr><th>4</th><td>9%</td><td>20%</td><td>40%</td></tr><tr><th>5</th><td>8%</td><td>20%</td><td>35%</td></tr><tr><th>6</th><td>6%</td><td>15%</td><td>30%</td></tr><tr><th>7</th><td>5%</td><td>10%</td><td>25%</td></tr><tr><th>8</th><td>3%</td><td>7%</td><td>15%</td></tr><tr><th>9</th><td>1%</td><td>3%</td><td>6%</td></tr></tbody></table></table></div>
-<div class="scroll"><table><caption>只剩 1 次</caption><table><thead><tr><th>局</th><th>滿球數</th><th>兩好球或三壞球</th><th>其他球數</th></tr></thead><tbody><tr><th>1</th><td>25%</td><td>40%</td><td>65%</td></tr><tr><th>2</th><td>25%</td><td>40%</td><td>65%</td></tr><tr><th>3</th><td>20%</td><td>40%</td><td>60%</td></tr><tr><th>4</th><td>20%</td><td>35%</td><td>60%</td></tr><tr><th>5</th><td>15%</td><td>35%</td><td>55%</td></tr><tr><th>6</th><td>15%</td><td>30%</td><td>50%</td></tr><tr><th>7</th><td>15%</td><td>25%</td><td>45%</td></tr><tr><th>8</th><td>10%</td><td>20%</td><td>40%</td></tr><tr><th>9</th><td>5%</td><td>10%</td><td>25%</td></tr></tbody></table></table></div>
+<div class="scroll"><table><caption>還剩 2 次</caption><table><thead><tr><th>局</th><th>滿球數</th><th>兩好球或三壞球（不含滿球數）</th><th>其他球數</th></tr></thead><tbody><tr><th>1</th><td>15%</td><td>25%</td><td>45%</td></tr><tr><th>2</th><td>10%</td><td>25%</td><td>45%</td></tr><tr><th>3</th><td>10%</td><td>20%</td><td>40%</td></tr><tr><th>4</th><td>9%</td><td>20%</td><td>40%</td></tr><tr><th>5</th><td>8%</td><td>20%</td><td>35%</td></tr><tr><th>6</th><td>6%</td><td>15%</td><td>30%</td></tr><tr><th>7</th><td>5%</td><td>10%</td><td>25%</td></tr><tr><th>8</th><td>3%</td><td>7%</td><td>15%</td></tr><tr><th>9</th><td>1%</td><td>3%</td><td>6%</td></tr></tbody></table></table></div>
+<div class="scroll"><table><caption>只剩 1 次</caption><table><thead><tr><th>局</th><th>滿球數</th><th>兩好球或三壞球（不含滿球數）</th><th>其他球數</th></tr></thead><tbody><tr><th>1</th><td>25%</td><td>40%</td><td>65%</td></tr><tr><th>2</th><td>25%</td><td>40%</td><td>65%</td></tr><tr><th>3</th><td>20%</td><td>40%</td><td>60%</td></tr><tr><th>4</th><td>20%</td><td>35%</td><td>60%</td></tr><tr><th>5</th><td>15%</td><td>35%</td><td>55%</td></tr><tr><th>6</th><td>15%</td><td>30%</td><td>50%</td></tr><tr><th>7</th><td>15%</td><td>25%</td><td>45%</td></tr><tr><th>8</th><td>10%</td><td>20%</td><td>40%</td></tr><tr><th>9</th><td>5%</td><td>10%</td><td>25%</td></tr></tbody></table></table></div>
 </div>
-<p class="note">中職還沒有實施好壞球挑戰。這張卡用 MLB 2026 的逐球資料，套中職的勝率模型試算；中職實施後要用中職資料重做。</p>
+<p class="note">中職一軍的好壞球挑戰細則還沒有公布。這張卡用 MLB 2026 的逐球資料，套中職的勝率模型試算；中職實施後要用中職資料重做。</p>
 </section>
 
 <section>
@@ -131,11 +132,11 @@ a{color:var(--brand)}
 <section>
 <h2>檢驗</h2>
 <ul>
-<li><b>歷年規則變動。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數。</li>
+<li><b>歷年規則變動。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數（勝率表用到部分同期的比賽，所以不是整套模型完全獨立的留出檢驗）。</li>
 <li><b>局數。</b>模型的門檻越後面越低，被挑判決的翻盤率也隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
-<li><b>卡片和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）。</li>
-<li><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比：「把握過半才挑」−0.63 勝，照卡片挑 +0.24 勝（0.21～0.27），照精確門檻挑 +0.53 勝。</li>
-<li><b>和球員實際拿回的價值比</b>（九局內）：卡片的增益比較小，而且隨感知模型而變，每隊一季 0.02～0.15 勝。比較穩的結論是「一律等過半把握最差」；卡片增益的大小還不能確定。</li>
+<li><b>卡片和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）；範圍是兩種把握設定的結果，不是每個局面的保證。</li>
+<li><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比：「把握過半才挑」−0.63 勝，照卡片挑 +0.24 勝（按場重抽的 95% 區間 0.21～0.27，不含模型設定的不確定性），照精確門檻挑 +0.53 勝。在比較的這幾種挑法裡，「把握過半才挑」最差。</li>
+<li><b>和球員實際拿回的價值比</b>（九局內）：卡片的增益比較小。兩套感知模型的點估計是每隊一季 0.15 勝和 0.02 勝，後者的 95% 區間跨過 0，所以卡片增益的大小還不能確定。</li>
 </ul>
 <p class="note">以上是「和資料一致」的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
 <div class="two">

@@ -49,6 +49,7 @@ ul{margin:6px 0 6px 20px;padding:0}
 </style>
 </head>
 <body>
+<div class="noprint" style="background:#12355b;padding:6px 12px;font:14px sans-serif"><a href="../" style="color:#fff;text-decoration:none">← 回首頁</a></div><style>@media print{.noprint{display:none}}</style>
 <div class="wrap">
   <h1>挑戰門檻計算機</h1>
   <p class="sub">這個判決，該不該用掉一次挑戰權？填兩個勝率，馬上知道「把握要超過多少才值得挑」。</p>
@@ -259,6 +260,5 @@ $("cUse").onclick = () => { if (!st.custom) runCustom(); $("csrc").value = "cust
 $("ver").textContent = "資料版本：" + D.版本;
 drawCards(); (function(){ const p = PRE["中職重播"](); $("cLam").value = p.lam.toFixed(3); $("cMu").value = p.mu.toFixed(3); })(); setSeg("rem", 2); st.rem = 1; setSeg("rem", 1); st.half = 1; setSeg("half", 1); update(); runCustom(); $("cMsg").textContent = "已先用中職重播的係數算好；改數字之後按「重算」";
 </script>
-<a href="../" style="position:fixed;left:10px;bottom:10px;z-index:9999;background:#12355b;color:#fff;padding:6px 12px;border-radius:16px;font:14px sans-serif;text-decoration:none;opacity:.9" class="noprint">← 回首頁</a><style>@media print{.noprint{display:none}}</style>
 </body>
 </html>
