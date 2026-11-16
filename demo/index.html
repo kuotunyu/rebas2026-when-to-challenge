@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>該挑就挑｜挑戰決策模型 互動 Demo</title>
+  <!-- 資料檔載入（純前端離線運行） -->
+  <script src="../demo_data/demo_data.js"></script>
+  <script src="../demo_data/sandbox_table.js"></script>
+  <style>
+    :root {
+      --bg-main: #0f172a;
+      --bg-panel: #1e293b;
+      --bg-card: #182234;
+      --border-color: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #38bdf8;
+      --accent-hover: #0284c7;
+      --call-color: #22c55e;
+      --call-bg: rgba(34, 197, 94, 0.15);
+      --nocall-color: #ef4444;
+      --nocall-bg: rgba(239, 68, 68, 0.15);
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      line-height: 1.45;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* 頂部導航列 */
+    header {
+      background-color: var(--bg-panel);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 24px;
+      min-height: 56px;
+      flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.2);
+      color: var(--accent);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      height: 100%;
+      align-items: flex-end;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 18px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .nav-btn:hover {
+      color: var(--text-main);
+    }
+
+    .nav-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* 主內容區 */
+    main {
+      flex: 1;
+      padding: 20px 24px;
+      max-width: 1800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* 分頁一：沙盤佈局 (1920x1080 滿版不捲動) */
+    .sandbox-layout {
+      display: grid;
+      grid-template-columns: 560px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 1200px) {
+      .sandbox-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sandbox-panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .sandbox-output {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* 切換挑戰模式 */
+    .mode-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--bg-main);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 9px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #0f172a;
+    }
+
+    /* 輸入控制群組 */
+    .field-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .field-label span:last-child {
+      color: var(--accent);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-btn {
+      flex: 1;
+      min-width: 36px;
+      padding: 7px 4px;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.12s ease;
+      font-family: inherit;
+    }
+
+    .ctrl-btn:hover {
+      border-color: #64748b;
+      background: #1e293b;
+    }
+
+    .ctrl-btn.active {
+      background: #2563eb;
+      border-color: #3b82f6;
+      color: #ffffff;
+      box-shadow: 0 0 0 1px #3b82f6;
+    }
+
+    .ctrl-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      border-color: #334155;
+    }
+
+    /* 壘包視覺化 */
+    .bases-visual-container {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: #0f172a;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+    }
+
+    .diamond-svg {
+      width: 90px;
+      height: 90px;
+      flex-shrink: 0;
+    }
+
+    .base-polygon {
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .base-polygon:hover {
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+
+    .base-polygon.active {
+      fill: #f59e0b;
+      stroke: #d97706;
+    }
+
+    .bases-shortcuts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .base-preset-btn {
+      padding: 6px 8px;
+      background: #1e293b;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .base-preset-btn.active {
+      border-color: #f59e0b;
+      color: #fef08a;
+      background: rgba(245, 158, 11, 0.15);
+    }
+
+    /* 比分差網格 (17格 -8 到 +8) */
+    .diff-grid {
+      display: grid;
+      grid-template-columns: repeat(17, 1fr);
+      gap: 2px;
+    }
+
+    .diff-btn {
+      padding: 6px 0;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    .diff-btn.active {
+      background: #0284c7;
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .diff-btn:disabled {
+      opacity: 0.25;
+      cursor: not-allowed;
+    }
+
+    /* 輸出主視覺面板 */
+    .decision-display {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .callout-threshold-box {
+      background: #0b1120;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      padding: 24px 28px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.12);
+    }
+
+    .callout-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .huge-number {
+      font-size: 80px;
+      font-weight: 900;
+      line-height: 1;
+      color: #ffffff;
+      letter-spacing: -2px;
+      font-feature-settings: "tnum";
+    }
+
+    .callout-subtitle {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--text-dim);
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    /* 細項數字 */
+    .metrics-subgrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .metric-card {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+    }
+
+    .metric-name {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .metric-val {
+      font-size: 20px;
+      font-weight: 800;
+      font-family: inherit;
+    }
+
+    /* 把握度互動滑桿 */
+    .slider-interactive-card {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .slider-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .slider-range-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    input[type=range] {
+      flex: 1;
+      height: 8px;
+      border-radius: 4px;
+      background: #334155;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+      border: 2px solid #ffffff;
+    }
+
+    .action-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    .action-badge.call {
+      background: var(--call-bg);
+      color: var(--call-color);
+      border: 2px solid var(--call-color);
+    }
+
+    .action-badge.nocall {
+      background: var(--nocall-bg);
+      color: var(--nocall-color);
+      border: 2px solid var(--nocall-color);
+    }
+
+    /* 門檻卡對照盒 */
+    .card-reference-box {
+      background: #0b1120;
+      border: 1px dashed #475569;
+      border-radius: 8px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-ref-title {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .card-ref-badge {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 5px;
+    }
+
+    .card-ref-pct {
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .card-ref-words {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* 分頁二：門檻卡樣式 */
+    .card-preview-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .card-sheet {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      width: 100%;
+      max-width: 960px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-sheet-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--text-main);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .sheet-tables-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .sheet-tables-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .subcard-box {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .subcard-header {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .pocket-grid {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .pocket-grid th, .pocket-grid td {
+      border: 1px solid #334155;
+      padding: 6px 4px;
+    }
+
+    .pocket-grid td.current-cell {
+      outline: 2.5px solid var(--accent);
+      outline-offset: -2px;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+      position: relative;
+    }
+
+    .pocket-grid th {
+      background: #1e293b;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .cell-num {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .cell-word {
+      font-size: 10px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    .tier-low { background: rgba(34, 197, 94, 0.18); color: #4ade80; }
+    .tier-mid { background: rgba(56, 189, 248, 0.18); color: #38bdf8; }
+    .tier-high { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+    .tier-ultra { background: rgba(239, 68, 68, 0.18); color: #f87171; }
+
+    /* 通用資料表格 */
+    .data-table-container {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      margin-top: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    table.styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    table.styled-table th, table.styled-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #334155;
+    }
+
+    table.styled-table th {
+      background: #1e293b;
+      color: var(--text-muted);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    table.styled-table tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* 圖表容器 */
+    .chart-card {
+      min-width: 0;
+      max-width: 100%;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .chart-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chart-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .svg-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* 篩選工具列 */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+
+    .filter-bar select {
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 6px;
+      outline: none;
+      font-family: inherit;
+    }
+
+    /* 文字輔助 */
+    .text-dim { color: var(--text-dim); }
+    .text-muted { color: var(--text-muted); }
+    .text-white { color: #ffffff; }
+    .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
+    .font-bold { font-weight: 700; }
+    /* 11/16：手機寬度（600px 以下）不要橫向溢出 */
+    @media (max-width: 600px) {
+      .card-sheet { padding: 12px; }
+      .sheet-tables-row > * { min-width: 0; }
+      .subcard-box { padding: 8px; overflow-x: auto; }
+      .pocket-grid { font-size: 11px; }
+      .pocket-grid th, .pocket-grid td { padding: 4px 2px; }
+      #replay-cases-container { grid-template-columns: 1fr !important; }
+      .calib-grid { grid-template-columns: 1fr !important; }
+      .svg-container { max-width: 100%; overflow-x: auto; }
+      #abs-count-values-container, #abs-sim-container, #abs-conf-container { overflow-x: auto; }
+      /* 147 號檔：header 不固定高度，讓標題和分頁按鈕換行 */
+      header { padding: 8px 12px; row-gap: 6px; }
+      .nav-tabs { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部導航列 -->
+  <header>
+    <div class="brand">
+      <div class="brand-title">
+        該挑就挑｜挑戰決策模型
+        <span class="brand-badge">LIVE DEMO</span>
+      </div>
+    </div>
+    <nav class="nav-tabs">
+      <button class="nav-btn active" onclick="switchTab('tab-sandbox')">決策沙盤</button>
+      <button class="nav-btn" onclick="switchTab('tab-cards')">實體門檻卡</button>
+      <button class="nav-btn" onclick="switchTab('tab-rules')">規則試算</button>
+      <button class="nav-btn" onclick="switchTab('tab-credibility')">可信度</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 分頁一：決策沙盤 (預設) -->
+    <div id="tab-sandbox" class="tab-content active">
+      <div class="sandbox-layout">
+        <!-- 左側控制面板 -->
+        <div class="sandbox-panel">
+          <div class="mode-selector">
+            <button class="mode-btn active" id="mode-replay-btn" onclick="setMode('replay')">重播挑戰</button>
+            <button class="mode-btn" id="mode-abs-btn" onclick="setMode('abs')">好壞球挑戰（試算）</button>
+          </div>
+
+          <!-- 局數與半局 -->
+          <div class="field-section">
+            <div class="field-label">
+              <span>比賽局數</span>
+              <span id="inning-half-display">1 局 上半</span>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <div class="btn-group" id="inning-btn-group" style="flex: 1;">
+                <!-- 1~9局由 JS 產生 -->
+              </div>
+              <div class="btn-group">
+                <button class="ctrl-btn active" id="half-top-btn" onclick="setHalf(0)">上</button>
+                <button class="ctrl-btn" id="half-bot-btn" onclick="setHalf(1)">下</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 出局數與剩餘挑戰權 -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div class="field-section">
+              <div class="field-label">出局數</div>
+              <div class="btn-group" id="outs-btn-group">
+                <button class="ctrl-btn active" onclick="setOuts(0)">0 出局</button>
+                <button class="ctrl-btn" onclick="setOuts(1)">1 出局</button>
+                <button class="ctrl-btn" onclick="setOuts(2)">2 出局</button>
+              </div>
+            </div>
+            <div class="field-section">
+              <div class="field-label">手上挑戰權</div>
+              <div class="btn-group" id="rem-btn-group">
+                <button class="ctrl-btn active" onclick="setRemaining(2)">剩 2 次</button>
+                <button class="ctrl-btn" onclick="setRemaining(1)">剩 1 次</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 壘包狀態 (SVG 棒球菱形) -->
+          <div class="field-section">
+            <div class="field-label">
+              <span>壘包狀態</span>
+              <span id="bases-name-display">壘上無人</span>
+            </div>
+            <div class="bases-visual-container">
+              <svg class="diamond-svg" viewBox="0 0 100 100">
+                <!-- 壘線 -->
+                <path d="M 50 82 L 82 50 L 50 18 L 18 50 Z" fill="none" stroke="#334155" stroke-width="2.5" />
+                <!-- 本壘 -->
+                <polygon points="50,88 56,82 56,76 44,76 44,82" fill="#64748b" />
+                <!-- 一壘 (bit 1) -->
+                <polygon id="base-1" class="base-polygon" points="82,50 90,42 98,50 90,58" fill="#334155" stroke="#475569" stroke-width="1.5" onclick="toggleBase(1)" />
+                <!-- 二壘 (bit 2) -->
+                <polygon id="base-2" class="base-polygon" points="50,18 58,10 50,2 42,10" fill="#334155" stroke="#475569" stroke-width="1.5" onclick="toggleBase(2)" />
+                <!-- 三壘 (bit 4) -->
+                <polygon id="base-4" class="base-polygon" points="18,50 10,42 2,50 10,58" fill="#334155" stroke="#475569" stroke-width="1.5" onclick="toggleBase(4)" />
+              </svg>
+              <div class="bases-shortcuts">
+                <button class="base-preset-btn active" onclick="setBasesMask(0)">壘上無人</button>
+                <button class="base-preset-btn" onclick="setBasesMask(1)">一壘有人</button>
+                <button class="base-preset-btn" onclick="setBasesMask(3)">一二壘有人</button>
+                <button class="base-preset-btn" onclick="setBasesMask(7)">滿壘</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 比分差 (主隊減客隊) -->
+          <div class="field-section">
+            <div class="field-label">
+              <span>比分差（主隊減客隊）</span>
+              <span id="diff-desc-display">平手</span>
+            </div>
+            <div class="diff-grid" id="diff-btn-group">
+              <!-- -8 到 +8 由 JS 產生 -->
+            </div>
+            <div id="diff-lock-warning" style="display: none; font-size: 11px; color: #f87171; margin-top: 3px;">
+              九局下半主隊領先時比賽已結束，不適用挑戰。
+            </div>
+          </div>
+
+          <!-- ABS 專屬輸入 (球數與分布) -->
+          <div id="abs-controls" style="display: none; flex-direction: column; gap: 10px; border-top: 1px dashed var(--border-color); padding-top: 12px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="field-section">
+                <div class="field-label">壞球數 (Balls)</div>
+                <div class="btn-group" id="balls-btn-group">
+                  <button class="ctrl-btn active" onclick="setBalls(0)">0 壞</button>
+                  <button class="ctrl-btn" onclick="setBalls(1)">1 壞</button>
+                  <button class="ctrl-btn" onclick="setBalls(2)">2 壞</button>
+                  <button class="ctrl-btn" onclick="setBalls(3)">3 壞</button>
+                </div>
+              </div>
+              <div class="field-section">
+                <div class="field-label">好球數 (Strikes)</div>
+                <div class="btn-group" id="strikes-btn-group">
+                  <button class="ctrl-btn active" onclick="setStrikes(0)">0 好</button>
+                  <button class="ctrl-btn" onclick="setStrikes(1)">1 好</button>
+                  <button class="ctrl-btn" onclick="setStrikes(2)">2 好</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="field-section" style="display: flex; align-items: center;">
+              <div style="font-size: 11px; color: #64748b; line-height: 1.4;">
+                試算：合資格的判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和中職勝率模型算；中職一軍 2027 年規則尚未公布。
+              </div>
+            </div>
+          </div>
+
+          <!-- 自訂判決價值 (僅重播模式) -->
+          <div id="custom-v-controls" class="field-section" style="border-top: 1px dashed var(--border-color); padding-top: 12px;">
+            <div class="field-label">
+              <span>判決價值 ΔW：打者上壘 vs 出局之差</span>
+              <span id="custom-v-badge" style="display: none; color: #f59e0b;">(自訂模式)</span>
+            </div>
+            <div style="font-size: 11px; color: #64748b; margin-bottom: 4px;">
+              這是標準情境：打者安全上一壘和出局的差
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <input type="range" id="custom-v-slider" min="0" max="40" step="0.5" value="5.96" oninput="onCustomVSlider(this.value)">
+              <span id="custom-v-val" class="text-white font-mono font-bold" style="min-width: 50px; text-align: right;">--</span>
+              <button class="ctrl-btn" style="flex: 0 0 auto; padding: 4px 8px; font-size: 11px;" onclick="resetCustomV()">恢復查表</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 右側決策輸出 -->
+        <div class="sandbox-output">
+          
+          <!-- 主門檻卡片 -->
+          <div class="decision-display">
+            <div class="callout-threshold-box">
+              <div class="callout-title">現場操作決策門檻</div>
+              <div class="huge-number" id="huge-threshold-val">--%</div>
+              <div class="callout-subtitle" id="huge-threshold-sub">
+                把握超過此門檻即應挑戰
+              </div>
+            </div>
+
+            <!-- 細項數值 -->
+            <div class="metrics-subgrid">
+              <div class="metric-card">
+                <div class="metric-name">判決價值 (ΔW)</div>
+                <div class="metric-val text-white" id="val-v-display">-- 個百分點</div>
+                <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;" id="val-v-src">查表值</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-name">挑戰權價值 (C)</div>
+                <div class="metric-val text-white" id="val-c-display">-- 個百分點</div>
+                <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;" id="val-c-src">動態規劃值</div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-name">未四捨五入門檻 (p*)</div>
+                <div class="metric-val text-white" id="val-raw-threshold">--%</div>
+                <div style="font-size: 11px; color: var(--text-dim); margin-top: 2px;">C / (ΔW + C)</div>
+              </div>
+            </div>
+
+            <!-- 把握度與挑/不挑即時模擬 -->
+            <div class="slider-interactive-card">
+              <div class="slider-header">
+                <div>
+                  <div class="slider-title">教練／休息室「我的把握度」模擬</div>
+                  <div style="font-size: 11px; color: var(--text-dim);">拖曳滑桿設定目前判決的改判把握</div>
+                </div>
+                <div style="display: flex; align-items: baseline; gap: 4px;">
+                  <span style="font-size: 12px; color: var(--text-muted);">設定把握：</span>
+                  <span id="confidence-val" class="text-white font-mono font-bold">50%</span>
+                </div>
+              </div>
+
+              <div class="slider-range-wrap">
+                <input type="range" id="confidence-slider" min="0" max="100" step="1" value="50" oninput="onConfidenceChange(this.value)">
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; background: #0b1120; padding: 12px 18px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <div>
+                  <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">單次挑戰期望淨勝率 (p×v − (1−p)×C)</div>
+                  <div class="metric-val text-white" id="ev-val" style="font-size: 24px;">--</div>
+                </div>
+                <div id="action-badge-container">
+                  <!-- 挑 / 不挑 大徽章 -->
+                  <div class="action-badge call" id="action-badge">
+                    <span>✓</span> 挑
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 實體門檻卡對照列 -->
+          <div class="card-reference-box">
+            <div>
+              <div class="card-ref-title">門檻卡上寫的是</div>
+              <div style="font-size: 11px; color: var(--text-dim);" id="card-cell-coords">-- 局 | 差 -- 分</div>
+            </div>
+            <div class="card-ref-badge" id="card-ref-badge">
+              <span class="card-ref-pct" id="card-ref-pct">--%</span>
+              <span class="card-ref-words" id="card-ref-words">--</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- 分頁二：實體門檻卡 -->
+    <div id="tab-cards" class="tab-content">
+      <div class="card-preview-container">
+        <!-- 正面卡片：重播挑戰 (2 列 x 9 欄) -->
+        <div class="card-sheet">
+          <div class="card-sheet-title">
+            <span>重播挑戰：把握超過這個數字就挑</span>
+            <span style="font-size: 12px; font-weight: 600; color: var(--accent);">實體口袋卡 正面</span>
+          </div>
+          <div id="sheet-front-tables"></div>
+          <div style="font-size: 11px; color: #64748b; text-align: center; margin-top: 12px; line-height: 1.5;">
+            <div>還剩 2 次：有人看到具體跡象就挑（門檻 1–2%）。只剩 1 次：前三局要一成多的把握（13%、13%、11%），之後每局降一點。</div>
+            <div>不用看分差。把握＝你覺得這個判決會改判的機率。延長賽次數重新計算，不適用這張表。</div>
+          </div>
+        </div>
+
+        <!-- 重播挑戰真實案例 -->
+        <div class="card-sheet" style="max-width: 960px;">
+          <div class="card-sheet-title" style="margin-bottom: 12px;">真實比賽對照</div>
+          <div id="replay-cases-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 16px;"></div>
+        </div>
+
+        <!-- 背面卡片：好壞球挑戰 (上下兩區塊，各 3 列 x 9 欄) -->
+        <div class="card-sheet">
+          <div class="card-sheet-title">
+            <span>好壞球挑戰（試算版）：把握超過這個數字就挑</span>
+            <span style="font-size: 12px; font-weight: 600; color: #fbbf24;">實體口袋卡 背面</span>
+          </div>
+          <div id="sheet-back-tables"></div>
+          <div style="font-size: 11px; color: #64748b; text-align: center; margin-top: 12px; line-height: 1.5;">
+            <div>每一局開始前，記住這一局的三個數字。場上不查卡。</div>
+            <div>試算版：合資格的判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和中職勝率模型算；中職一軍 2027 年規則尚未公布。</div>
+          </div>
+        </div>
+
+        <!-- 好壞球卡下方三樣資訊 -->
+        <div class="card-sheet" style="max-width: 960px;">
+          <!-- 1. 各球數判決值 -->
+          <div style="margin-bottom: 24px;">
+            <div class="card-sheet-title" style="margin-bottom: 8px;">一顆球改判值多少（個百分點）</div>
+            <div id="abs-count-values-container"></div>
+          </div>
+
+          <!-- 2. 實測 -->
+          <div style="margin-bottom: 24px;">
+            <div class="card-sheet-title" style="margin-bottom: 8px;" id="abs-sim-title">用歷史資料模擬評估</div>
+            <div id="abs-sim-note" style="font-size: 12px; color: #94a3b8; line-height: 1.5; margin-bottom: 8px;"></div>
+            <div id="abs-sim-container"></div>
+          </div>
+
+          <!-- 3. 把握對照 -->
+          <div>
+            <div class="card-sheet-title" style="margin-bottom: 8px;" id="abs-conf-title">把握對照</div>
+            <div id="abs-conf-container"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 分頁三：規則試算 -->
+    <div id="tab-rules" class="tab-content">
+      <!-- 好壞球規則比較 -->
+      <div class="chart-card">
+        <div class="chart-title">
+          <span>好壞球挑戰規則試算（開賽總價值比較）</span>
+          <span style="font-size: 12px; font-weight: 600; color: var(--accent);">單位：勝率百分點</span>
+        </div>
+        <div class="chart-desc" id="abs-rules-assumption-desc"></div>
+        <div class="svg-container" id="abs-rules-svg-box"></div>
+        <div class="data-table-container" id="abs-rules-table-box"></div>
+      </div>
+
+      <!-- 重播挑戰規則比較 -->
+      <div class="chart-card">
+        <div class="chart-title">
+          <span>重播挑戰規則試算（開賽總價值比較）</span>
+          <span style="font-size: 12px; font-weight: 600; color: var(--accent);">單位：勝率百分點</span>
+        </div>
+        <div class="svg-container" id="replay-rules-svg-box"></div>
+        <div class="data-table-container" id="replay-rules-table-box"></div>
+      </div>
+    </div>
+
+    <!-- 分頁四：可信度 -->
+    <div id="tab-credibility" class="tab-content">
+      <!-- 勝率模型校準圖 -->
+      <div class="chart-card">
+        <div class="chart-title">
+          <span>勝率模型校準</span>
+        </div>
+        <div class="calib-grid" style="display: grid; grid-template-columns: 460px 1fr; gap: 20px; align-items: start;">
+          <div class="svg-container" id="calibration-svg-box"></div>
+          <div class="data-table-container" id="calibration-table-box" style="margin-top: 0;"></div>
+        </div>
+      </div>
+
+      <!-- 信賴區間表 -->
+      <div class="chart-card">
+        <div class="chart-title">重播挑戰信賴區間</div>
+        <div class="data-table-container" id="ci-table-box" style="margin-top: 0;"></div>
+      </div>
+
+      <!-- 爭議倍數表 -->
+      <div class="chart-card" id="dispute-mult-card">
+        <div class="chart-title">沒被挑的爭議變多時，挑戰權價值和門檻怎麼變</div>
+        <div class="data-table-container" id="dispute-mult-table-box" style="margin-top: 0;"></div>
+      </div>
+
+      <!-- 口訣比較表 -->
+      <div class="chart-card">
+        <div class="chart-title">重播挑戰口訣比較</div>
+        <div class="filter-bar" id="rule-thumb-filter-bar">
+          <span>篩選潛在爭議頻率倍數：</span>
+          <select id="filter-dispute-mult" onchange="renderRuleOfThumbTable()">
+            <option value="all">全部</option>
+          </select>
+        </div>
+        <div class="data-table-container" id="rule-thumb-table-box" style="margin-top: 0;"></div>
+      </div>
+
+      <!-- 判決類型表 -->
+      <div class="chart-card">
+        <div class="chart-title">重播挑戰判決類型</div>
+        <div class="data-table-container" id="play-type-table-box" style="margin-top: 0;"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="text-align: center; padding: 24px 0 16px; font-size: 12px; color: #64748b; border-top: 1px solid var(--border-color); margin-top: 40px;" id="footer-version">
+  </footer>
+
+  <script>
+    // 狀態變數
+    let currentMode = 'replay'; // 'replay' | 'abs'
+    let currentInning = 1;      // 1 to 9
+    let currentHalf = 0;        // 0: 上半, 1: 下半
+    let currentOuts = 0;        // 0, 1, 2
+    let currentBases = 0;       // bitmask 0 to 7 (1B=1, 2B=2, 3B=4)
+    let currentDiff = 0;        // -8 to +8 (主隊減客隊)
+    let currentRemaining = 2;   // 1 or 2
+    let currentBalls = 0;       // 0 to 3 (ABS)
+    let currentStrikes = 0;     // 0 to 2 (ABS)
+    // currentAbsDist removed in 初審版 (table unified)
+
+    let customVEnabled = false;
+    let customVValue = 0;
+    let userConfidence = 0.50; // 0.0 to 1.0
+
+    let currentV = 0;
+    let currentC = 0;
+    let currentThreshold = { raw: 0, rawPct: 0, roundedPct: 0 };
+
+    // 分頁切換
+    // 11/16：圖上的數字先四捨五入再顯示（toFixed 會把 1.045 顯示成 1.04）
+    const roundHalfUp = (x, n) => Number(Math.round(Number(x + 'e' + n)) + 'e-' + n).toFixed(n);
+    // 11/16 第四輪：規則圖的資料帶四位小數（例如 1.0446）直接取兩位；來源只有三位而且第三位是 5 的（例如 8 次的 1.065），照原樣印三位，不再取一次整
+    const fmtBar = x => { const r = Math.round(x * 10000); return (r % 10 === 0 && Math.round(r / 10) % 10 === 5) ? x.toFixed(3) : roundHalfUp(x, 2); };
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      const idx = ['tab-sandbox', 'tab-cards', 'tab-rules', 'tab-credibility'].indexOf(tabId);
+      document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+    }
+
+    // 模式切換
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('mode-replay-btn').classList.toggle('active', mode === 'replay');
+      document.getElementById('mode-abs-btn').classList.toggle('active', mode === 'abs');
+
+      document.getElementById('abs-controls').style.display = (mode === 'abs') ? 'flex' : 'none';
+      document.getElementById('custom-v-controls').style.display = (mode === 'replay') ? 'flex' : 'none';
+
+      updateSandbox();
+    }
+
+    // 局數設定 (1-9)
+    function renderInningButtons() {
+      const container = document.getElementById('inning-btn-group');
+      container.innerHTML = '';
+      for (let i = 1; i <= 9; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'ctrl-btn' + (i === currentInning ? ' active' : '');
+        btn.textContent = i + '局';
+        btn.onclick = () => {
+          currentInning = i;
+          renderInningButtons();
+          updateSandbox();
+        };
+        container.appendChild(btn);
+      }
+    }
+
+    // 上下半
+    function setHalf(half) {
+      currentHalf = half;
+      document.getElementById('half-top-btn').classList.toggle('active', half === 0);
+      document.getElementById('half-bot-btn').classList.toggle('active', half === 1);
+      updateSandbox();
+    }
+
+    // 出局數
+    function setOuts(o) {
+      currentOuts = o;
+      const btns = document.querySelectorAll('#outs-btn-group .ctrl-btn');
+      btns.forEach((b, idx) => b.classList.toggle('active', idx === o));
+      updateSandbox();
+    }
+
+    // 剩餘次數
+    function setRemaining(rem) {
+      currentRemaining = rem;
+      const btns = document.querySelectorAll('#rem-btn-group .ctrl-btn');
+      btns[0].classList.toggle('active', rem === 2);
+      btns[1].classList.toggle('active', rem === 1);
+      updateSandbox();
+    }
+
+    // 壘包位元設定
+    function toggleBase(baseBit) {
+      currentBases ^= baseBit;
+      updateBasesUI();
+      updateSandbox();
+    }
+
+    function setBasesMask(mask) {
+      currentBases = mask;
+      updateBasesUI();
+      updateSandbox();
+    }
+
+    function updateBasesUI() {
+      document.getElementById('base-1').classList.toggle('active', (currentBases & 1) !== 0);
+      document.getElementById('base-2').classList.toggle('active', (currentBases & 2) !== 0);
+      document.getElementById('base-4').classList.toggle('active', (currentBases & 4) !== 0);
+
+      const presets = [0, 1, 3, 7];
+      document.querySelectorAll('.base-preset-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', presets[idx] === currentBases);
+      });
+
+      const names = {
+        0: '壘上無人',
+        1: '一壘有人',
+        2: '二壘有人',
+        3: '一二壘有人',
+        4: '三壘有人',
+        5: '一三壘有人',
+        6: '二三壘有人',
+        7: '滿壘'
+      };
+      document.getElementById('bases-name-display').textContent = names[currentBases] || `代碼 ${currentBases}`;
+    }
+
+    // 比分差設定 (-8 到 +8)
+    function renderDiffButtons() {
+      const container = document.getElementById('diff-btn-group');
+      container.innerHTML = '';
+      const is9Bottom = (currentInning === 9 && currentHalf === 1);
+
+      for (let d = -8; d <= 8; d++) {
+        const btn = document.createElement('button');
+        btn.className = 'diff-btn' + (d === currentDiff ? ' active' : '');
+        btn.textContent = (d > 0 ? '+' : '') + d;
+        
+        // 九局下半若主隊領先 (d > 0) 則鎖住該選項
+        if (is9Bottom && d > 0) {
+          btn.disabled = true;
+          if (currentDiff > 0) {
+            currentDiff = 0; // 若原本選中正數則重設為平手
+          }
+        }
+
+        btn.onclick = () => {
+          currentDiff = d;
+          renderDiffButtons();
+          updateSandbox();
+        };
+        container.appendChild(btn);
+      }
+
+      let diffDesc = '平手';
+      if (currentDiff > 0) diffDesc = `主領先 ${currentDiff} 分`;
+      if (currentDiff < 0) diffDesc = `主落後 ${Math.abs(currentDiff)} 分`;
+      document.getElementById('diff-desc-display').textContent = diffDesc;
+      document.getElementById('diff-lock-warning').style.display = is9Bottom ? 'block' : 'none';
+    }
+
+    // ABS 球數設定
+    function setBalls(b) {
+      currentBalls = b;
+      document.querySelectorAll('#balls-btn-group .ctrl-btn').forEach((el, idx) => el.classList.toggle('active', idx === b));
+      updateSandbox();
+    }
+
+    function setStrikes(s) {
+      currentStrikes = s;
+      document.querySelectorAll('#strikes-btn-group .ctrl-btn').forEach((el, idx) => el.classList.toggle('active', idx === s));
+      updateSandbox();
+    }
+
+    // setAbsDist removed in 初審版
+
+    // 自訂判決價值 slider
+    function onCustomVSlider(val) {
+      customVEnabled = true;
+      customVValue = parseFloat(val);
+      document.getElementById('custom-v-badge').style.display = 'inline';
+      document.getElementById('custom-v-val').textContent = customVValue.toFixed(1);
+      document.getElementById('val-v-src').textContent = '自訂數值';
+      updateSandbox();
+    }
+
+    function resetCustomV() {
+      customVEnabled = false;
+      document.getElementById('custom-v-badge').style.display = 'none';
+      document.getElementById('val-v-src').textContent = '查表值';
+      updateSandbox();
+    }
+
+    // 把握度 slider
+    function onConfidenceChange(val) {
+      userConfidence = parseInt(val, 10) / 100.0;
+      document.getElementById('confidence-val').textContent = val + '%';
+      updateDecisionSimulation();
+    }
+
+    // 門檻計算核心 (遵守僅有的 3 種計算)
+    function computeThreshold(v, C) {
+      // 1. p* = C / (ΔW + C)
+      const p_star = C / (v + C);
+      const rawPct = p_star * 100.0;
+
+      // 3. 顯示用的四捨五入：取整數，最低 1%（11/13 起不再把 10% 以上取到 5 的倍數）
+      let roundedPct = 0;
+      if (rawPct >= 10.0) {
+        roundedPct = Math.round(rawPct);
+      } else {
+        roundedPct = Math.max(1, Math.round(rawPct));
+      }
+
+      return { raw: p_star, rawPct: rawPct, roundedPct: roundedPct };
+    }
+
+    // 沙盤主更新函式
+    function updateSandbox() {
+      if (!window.DEMO_DATA || !window.SANDBOX_TABLE) return;
+
+      // 檢查九局下領先不可能情境
+      const is9BottomHomeLead = (currentInning === 9 && currentHalf === 1 && currentDiff > 0);
+
+      document.getElementById('inning-half-display').textContent = `${currentInning} 局 ${currentHalf === 0 ? '上半' : '下半'}`;
+      renderDiffButtons();
+
+      if (is9BottomHomeLead) {
+        document.getElementById('huge-threshold-val').textContent = '--';
+        document.getElementById('huge-threshold-sub').textContent = '九局下半主隊領先時比賽已結束，不適用挑戰。';
+        document.getElementById('val-v-display').textContent = '--';
+        document.getElementById('val-c-display').textContent = '--';
+        document.getElementById('val-raw-threshold').textContent = '--';
+        document.getElementById('ev-val').textContent = '--';
+        document.getElementById('card-ref-pct').textContent = '--';
+        document.getElementById('card-ref-words').textContent = '無對應情境';
+        return;
+      } else {
+        document.getElementById('huge-threshold-sub').textContent = '把握超過此門檻即應挑戰';
+      }
+
+      // 1. 計算時間點 t
+      const t = (currentInning - 1) * 2 + currentHalf;
+
+      // 2. 查 C 表含分差
+      const d = Math.max(-8, Math.min(8, currentDiff));
+      if (currentMode === 'replay') {
+        const cRow = window.DEMO_DATA.重播挑戰.C表含分差.find(r => r.t === t && r.d === d);
+        currentC = cRow ? ((currentRemaining === 1) ? cRow.C1 : cRow.C2) : null;
+      } else {
+        const cRow = window.DEMO_DATA.好壞球挑戰.C表含分差.find(r => r.t === t && r.d === d);
+        currentC = cRow ? ((currentRemaining === 1) ? cRow.C1 : cRow.C2) : null;
+      }
+
+      // 3. 查判決價值 v
+      const diffIdx = currentDiff + 8;
+      let lookupV = 0;
+      if (currentMode === 'replay') {
+        lookupV = window.SANDBOX_TABLE.replay_v[currentInning - 1][currentHalf][currentOuts][currentBases][diffIdx];
+      } else {
+        lookupV = window.SANDBOX_TABLE.abs_v[currentInning - 1][currentHalf][currentOuts][currentBases][diffIdx][currentBalls][currentStrikes];
+      }
+
+      // 查表沒有值（樣本不足或不存在的情境）：不顯示數字
+      const noData = (currentC === null || currentC === undefined || ((lookupV === null || lookupV === undefined) && !(customVEnabled && currentMode === 'replay')));
+      if (noData) {
+        document.getElementById('huge-threshold-val').textContent = '--';
+        document.getElementById('huge-threshold-sub').textContent = '這個情境樣本不足，請看門檻卡對應的那一格。';
+        document.getElementById('val-v-display').textContent = '--';
+        document.getElementById('val-c-display').textContent = '--';
+        document.getElementById('val-raw-threshold').textContent = '--';
+        document.getElementById('ev-val').textContent = '--';
+        updateCardReference();
+        return;
+      }
+
+      if (customVEnabled && currentMode === 'replay') {
+        currentV = customVValue;
+      } else {
+        currentV = lookupV;
+        document.getElementById('custom-v-slider').value = currentV;
+        document.getElementById('custom-v-val').textContent = currentV.toFixed(1);
+      }
+
+      // 4. 計算門檻
+      currentThreshold = computeThreshold(currentV, currentC);
+
+      // 顯示數值
+      document.getElementById('huge-threshold-val').textContent = currentThreshold.roundedPct + '%';
+      document.getElementById('val-v-display').textContent = currentV.toFixed(2) + ' 個百分點';
+      document.getElementById('val-c-display').textContent = currentC.toFixed(4) + ' 個百分點';
+      document.getElementById('val-raw-threshold').textContent = currentThreshold.rawPct.toFixed(1) + '%';
+
+      // 5. 更新決策模擬
+      updateDecisionSimulation();
+
+      // 6. 查對應門檻卡
+      updateCardReference();
+
+      // 7. 同步卡片分頁高亮
+      if (document.getElementById('sheet-front-tables')) {
+        renderCardsTab();
+      }
+    }
+
+    function updateDecisionSimulation() {
+      const pFraction = userConfidence; // p
+      // 2. 期望淨收益 p * v - (1 - p) * C
+      const ev = (pFraction * currentV) - ((1.0 - pFraction) * currentC);
+      // 11/16 統一：把握「超過」門檻才挑；剛好等於門檻是打平，判定算不挑
+      const isTie = Math.abs(pFraction - currentThreshold.raw) < 1e-9;
+      const isCall = !isTie && (pFraction > currentThreshold.raw);
+
+      const evEl = document.getElementById('ev-val');
+      const sign = (ev >= 0) ? '+' : '';
+      evEl.textContent = sign + ev.toFixed(2) + ' 個百分點';
+      evEl.style.color = (ev >= 0) ? 'var(--call-color)' : 'var(--nocall-color)';
+
+      const badge = document.getElementById('action-badge');
+      if (isCall) {
+        badge.className = 'action-badge call';
+        badge.innerHTML = '<span>✓</span> 挑（發起挑戰）';
+      } else {
+        badge.className = 'action-badge nocall';
+        badge.innerHTML = isTie ? '<span>＝</span> 剛好打平，可挑可不挑' : '<span>✗</span> 不挑（保留挑戰權）';
+      }
+    }
+
+    function updateCardReference() {
+      let cardItem = null;
+      if (currentMode === 'replay') {
+        document.getElementById('card-cell-coords').textContent = `對應卡片位置：剩 ${currentRemaining} 次｜第 ${currentInning} 局`;
+        cardItem = window.DEMO_DATA.重播挑戰.門檻卡.find(x => 
+          x.剩餘次數 === currentRemaining && x.局 === currentInning
+        );
+      } else {
+        let countType = '其他球數';
+        if (currentBalls === 3 && currentStrikes === 2) {
+          countType = '滿球數';
+        } else if (currentStrikes === 2 || currentBalls === 3) {
+          countType = '兩好球或三壞球';
+        }
+        document.getElementById('card-cell-coords').textContent = `對應卡片位置：剩 ${currentRemaining} 次｜第 ${currentInning} 局｜${countLabel(countType)}`;
+        cardItem = window.DEMO_DATA.好壞球挑戰.門檻卡.find(x => 
+          x.剩餘次數 === currentRemaining && x.局 === currentInning && x.球數 === countType
+        );
+      }
+
+      if (cardItem) {
+        const tier = getTierClass(cardItem.卡片顯示);
+        const badge = document.getElementById('card-ref-badge');
+        badge.className = `card-ref-badge ${tier}`;
+        document.getElementById('card-ref-pct').textContent = cardItem.卡片顯示 + '%';
+        document.getElementById('card-ref-words').textContent = cardItem.白話 || '';
+      } else {
+        document.getElementById('card-ref-pct').textContent = '--';
+        document.getElementById('card-ref-words').textContent = '無對應情境';
+      }
+    }
+
+    const countLabel = k => k === '兩好球或三壞球' ? '兩好球或三壞球（不含滿球數）' : k;   // 11/16 收斂終審：只改顯示的字
+    function getTierClass(val) {
+      // 分級界線照 W05：10% 以下、10%–30%、35% 以上
+      if (val <= 10) return 'tier-low';
+      if (val <= 30) return 'tier-mid';
+      return 'tier-high';
+    }
+
+    // 分頁二：實體門檻卡渲染 (初審版 新版)
+    function renderCardsTab() {
+      if (!window.DEMO_DATA) return;
+
+      const innings = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      // 1. 正面：重播挑戰 (2 列 x 9 欄)
+      let frontHtml = `<div class="subcard-box">
+        <table class="pocket-grid">
+          <thead>
+            <tr>
+              <th style="width: 14%;">剩餘次數</th>
+              ${innings.map(inn => `<th>${inn} 局</th>`).join('')}
+            </tr>
+          </thead>
+          <tbody>`;
+
+      [2, 1].forEach(rem => {
+        frontHtml += `<tr>
+          <th style="background:#1e293b; font-weight:700;">${rem === 2 ? '還剩 2 次' : '只剩 1 次'}</th>`;
+        innings.forEach(inn => {
+          const item = window.DEMO_DATA.重播挑戰.門檻卡.find(x => x.剩餘次數 === rem && x.局 === inn);
+          if (item) {
+            const tier = getTierClass(item.卡片顯示);
+            const isCurrent = (currentMode === 'replay' && currentRemaining === rem && currentInning === inn);
+            frontHtml += `<td class="${tier}${isCurrent ? ' current-cell' : ''}" style="padding: 10px 4px;">
+              <div class="cell-num" style="font-size: 16px;">${item.卡片顯示}%</div>
+              <div class="cell-word" style="font-size: 10px;">${item.白話}</div>
+            </td>`;
+          } else {
+            frontHtml += `<td>--</td>`;
+          }
+        });
+        frontHtml += `</tr>`;
+      });
+      frontHtml += `</tbody></table></div>`;
+      document.getElementById('sheet-front-tables').innerHTML = frontHtml;
+
+      // 2. 重播挑戰真實案例 (一個案例一張小卡，欄位原樣列出)
+      const cases = window.DEMO_DATA.重播挑戰.真實案例 || [];
+      let casesHtml = '';
+      cases.forEach(c => {
+        casesHtml += `<div class="subcard-box" style="padding: 16px;">
+          <div style="font-weight: 800; font-size: 14px; margin-bottom: 8px; color: var(--accent);">${c.日期}｜${c.對戰}</div>
+          <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 6px;"><strong>局面：</strong>${c.局面}</div>
+          <div style="font-size: 12px; color: #cbd5e1; margin-bottom: 12px; line-height: 1.4;"><strong>經過：</strong>${c.經過}</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px; background: #1e293b; padding: 10px; border-radius: 6px;">
+            <div><span style="color:#94a3b8;">判安全主隊勝率：</span><strong>${(c.判安全主隊勝率 * 100).toFixed(1)}%</strong></div>
+            <div><span style="color:#94a3b8;">判出局主隊勝率：</span><strong>${(c.判出局主隊勝率 * 100).toFixed(1)}%</strong></div>
+            <div><span style="color:#94a3b8;">判決價值：</span><strong>${c.判決價值}</strong> 個勝率百分點</div>
+            <div><span style="color:#94a3b8;">挑戰前剩幾次：</span><strong>${c.挑戰前剩幾次}</strong> 次</div>
+            <div><span style="color:#94a3b8;">精確門檻百分比：</span><strong>${c.精確門檻百分比}%</strong></div>
+            <div><span style="color:#94a3b8;">卡片門檻百分比：</span><strong>${c.卡片門檻百分比}%</strong></div>
+          </div>
+        </div>`;
+      });
+      document.getElementById('replay-cases-container').innerHTML = casesHtml;
+
+      // 3. 背面：好壞球挑戰 (上下兩區塊，各 3 列 x 9 欄，白話不用印)
+      const countTypes = ['滿球數', '兩好球或三壞球', '其他球數'];
+      const currentCountType = (currentBalls === 3 && currentStrikes === 2) ? '滿球數' : ((currentStrikes === 2 || currentBalls === 3) ? '兩好球或三壞球' : '其他球數');
+      let backHtml = '';
+      [2, 1].forEach(rem => {
+        backHtml += `<div class="subcard-box" style="margin-bottom: 12px;">
+          <div class="subcard-header">${rem === 2 ? '還剩 2 次挑戰權' : '只剩 1 次挑戰權'}</div>
+          <table class="pocket-grid">
+            <thead>
+              <tr>
+                <th style="width: 18%;">球數 \ 局數</th>
+                ${innings.map(inn => `<th>${inn} 局</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>`;
+        countTypes.forEach(cnt => {
+          backHtml += `<tr>
+            <th style="background:#1e293b; font-weight:700;">${countLabel(cnt)}</th>`;
+          innings.forEach(inn => {
+            const item = window.DEMO_DATA.好壞球挑戰.門檻卡.find(x => x.剩餘次數 === rem && x.局 === inn && x.球數 === cnt);
+            if (item) {
+              const tier = getTierClass(item.卡片顯示);
+              const isCurrent = (currentMode === 'abs' && currentRemaining === rem && currentInning === inn && cnt === currentCountType);
+              backHtml += `<td class="${tier}${isCurrent ? ' current-cell' : ''}" style="padding: 10px 4px;">
+                <div class="cell-num" style="font-size: 15px;">${item.卡片顯示}%</div>
+              </td>`;
+            } else {
+              backHtml += `<td>--</td>`;
+            }
+          });
+          backHtml += `</tr>`;
+        });
+        backHtml += `</tbody></table></div>`;
+      });
+      document.getElementById('sheet-back-tables').innerHTML = backHtml;
+
+      // 4. 好壞球卡下方三樣資訊：
+      // (1) 各球數判決值 (4x3 表，格子裡印 中位)
+      const countVals = window.DEMO_DATA.好壞球挑戰.各球數判決值 || [];
+      let cvHtml = `<table class="styled-table" style="max-width: 600px;">
+        <thead>
+          <tr>
+            <th style="width: 25%;">壞球 \ 好球</th>
+            <th>0 好</th>
+            <th>1 好</th>
+            <th>2 好</th>
+          </tr>
+        </thead>
+        <tbody>`;
+      [0, 1, 2, 3].forEach(b => {
+        cvHtml += `<tr><th style="background:#1e293b; font-weight:700;">${b} 壞</th>`;
+        [0, 1, 2].forEach(s => {
+          const item = countVals.find(x => x.balls === b && x.strikes === s);
+          cvHtml += `<td><strong>${item ? item.中位 : '--'}</strong></td>`;
+        });
+        cvHtml += `</tr>`;
+      });
+      cvHtml += `</tbody></table>`;
+      document.getElementById('abs-count-values-container').innerHTML = cvHtml;
+
+      // (2) 實測
+      const simData = window.DEMO_DATA.好壞球挑戰.實測 || [];
+      if (window.DEMO_DATA.好壞球挑戰.說明 && window.DEMO_DATA.好壞球挑戰.說明.實測) {
+        document.getElementById('abs-sim-note').textContent = window.DEMO_DATA.好壞球挑戰.說明.實測;
+      }
+      if (simData.length > 0) {
+        const simKeys = Object.keys(simData[0]);
+        let simHtml = `<table class="styled-table"><thead><tr>` + simKeys.map(k => `<th>${k}</th>`).join('') + `</tr></thead><tbody>`;
+        simData.forEach(row => {
+          simHtml += `<tr>` + simKeys.map(k => `<td>${row[k] !== undefined && row[k] !== null ? row[k] : '--'}</td>`).join('') + `</tr>`;
+        });
+        simHtml += `</tbody></table>`;
+        document.getElementById('abs-sim-container').innerHTML = simHtml;
+      }
+
+      // (3) 把握對照
+      const confData = window.DEMO_DATA.好壞球挑戰.把握對照 || [];
+      if (window.DEMO_DATA.好壞球挑戰.說明 && window.DEMO_DATA.好壞球挑戰.說明.把握對照) {
+        document.getElementById('abs-conf-title').textContent = window.DEMO_DATA.好壞球挑戰.說明.把握對照;
+      }
+      if (confData.length > 0) {
+        const confKeys = Object.keys(confData[0]);
+        let confHtml = `<table class="styled-table" style="max-width: 600px;"><thead><tr>` + confKeys.map(k => `<th>${k}</th>`).join('') + `</tr></thead><tbody>`;
+        confData.forEach(row => {
+          confHtml += `<tr>` + confKeys.map(k => `<td>${row[k] !== undefined && row[k] !== null ? row[k] : '--'}</td>`).join('') + `</tr>`;
+        });
+        confHtml += `</tbody></table>`;
+        document.getElementById('abs-conf-container').innerHTML = confHtml;
+      }
+    }
+
+    // 分頁三：規則試算渲染 (純 SVG 橫條圖與表格)
+    function renderRulesTab() {
+      if (!window.DEMO_DATA) return;
+
+      // 1. 好壞球規則比較
+      const absRulesData = window.DEMO_DATA.好壞球挑戰.規則比較;
+      const ruleNames = [...new Set(absRulesData.map(r => r.規則))];
+      const absRulesSummary = ruleNames.map(rule => {
+        const rows = absRulesData.filter(r => r.規則 === rule);
+        const centerRow = rows.find(r => (r.判決價值分布 === '基準' || r.判決價值分布 === 'MLB 實際被挑戰的球')) || rows[0];
+        const lowRow = rows.find(r => (r.判決價值分布 === '下界' || r.判決價值分布 === '全部沒揮棒的球')) || centerRow;
+        const highRow = rows.find(r => (r.判決價值分布 === '上界' || r.判決價值分布 === '只取兩好球或三壞球')) || centerRow;
+        return {
+          rule: rule,
+          center: centerRow.開賽總價值,
+          low: lowRow.開賽總價值,
+          high: highRow.開賽總價值,
+          c1: centerRow.開賽最後一次C,
+          c2: centerRow.開賽第二次C
+        };
+      });
+
+      // 繪製好壞球 SVG 橫條圖
+      const svgW = 860;
+      const barH = 26;
+      const gap = 16;
+      const svgH = absRulesSummary.length * (barH + gap) + 40;
+      const maxVal = Math.max(...absRulesSummary.map(d => d.high)) * 1.15;
+      const leftPad = 260;
+      const plotW = svgW - leftPad - 50;
+
+      let absSvg = `<svg viewBox="0 0 ${svgW} ${svgH}" style="width: 100%; max-width: ${svgW}px; height: auto;">`;
+      absRulesSummary.forEach((d, i) => {
+        const y = 20 + i * (barH + gap);
+        const centerW = (d.center / maxVal) * plotW;
+        const lowX = leftPad + (d.low / maxVal) * plotW;
+        const highX = leftPad + (d.high / maxVal) * plotW;
+
+        // 標籤
+        absSvg += `<text x="${leftPad - 12}" y="${y + barH / 2 + 5}" fill="#cbd5e1" font-size="12" font-weight="600" text-anchor="end">${d.rule}</text>`;
+        
+        // 中心條
+        absSvg += `<rect x="${leftPad}" y="${y}" width="${centerW}" height="${barH}" fill="#0284c7" rx="4"/>`;
+
+        // 敏感度細線與端點
+        absSvg += `<line x1="${lowX}" y1="${y + barH / 2}" x2="${highX}" y2="${y + barH / 2}" stroke="#f59e0b" stroke-width="2.5"/>`;
+        absSvg += `<line x1="${lowX}" y1="${y + 4}" x2="${lowX}" y2="${y + barH - 4}" stroke="#f59e0b" stroke-width="2.5"/>`;
+        absSvg += `<line x1="${highX}" y1="${y + 4}" x2="${highX}" y2="${y + barH - 4}" stroke="#f59e0b" stroke-width="2.5"/>`;
+
+        // 數值標註
+        absSvg += `<text x="${Math.max(centerW + leftPad, highX) + 10}" y="${y + barH / 2 + 4}" fill="#ffffff" font-size="12" font-weight="700">${fmtBar(d.center)}</text>`;   // 11/16：數字放在橘色範圍線右邊，不壓線
+      });
+      absSvg += '</svg>';
+      document.getElementById('abs-rules-svg-box').innerHTML = absSvg;
+      document.getElementById('abs-rules-assumption-desc').textContent = window.DEMO_DATA.好壞球挑戰.假設;
+
+      // 好壞球完整數據表
+      let absTbl = '<table class="styled-table"><thead><tr><th>規則制度</th><th>判決價值分布</th><th>開賽總價值</th><th>開賽第 1 次 C</th><th>開賽第 2 次 C</th><th>四上 C1</th><th>七上 C1</th><th>九上 C1</th></tr></thead><tbody>';
+      absRulesData.forEach(r => {
+        absTbl += `<tr>
+          <td><strong>${r.規則}</strong></td>
+          <td>${r.判決價值分布 === '上界' ? '感知假設的範圍：總價值最高的情境' : r.判決價值分布 === '下界' ? '感知假設的範圍：總價值最低的情境' : r.判決價值分布}</td>
+          <td><strong>${r.開賽總價值.toFixed(3)}</strong></td>
+          <td>${r.開賽最後一次C.toFixed(4)}</td>
+          <td>${r.開賽第二次C ? r.開賽第二次C.toFixed(4) : '--'}</td>
+          <td>${r.四上C1 ? r.四上C1.toFixed(4) : '--'}</td>
+          <td>${r.七上C1 ? r.七上C1.toFixed(4) : '--'}</td>
+          <td>${r.九上C1 ? r.九上C1.toFixed(4) : '--'}</td>
+        </tr>`;
+      });
+      absTbl += '</tbody></table><div style="color:#94a3b8;font-size:12px;padding:8px 12px;">上界、下界是感知假設的範圍（雜訊 0.75–1.25 倍、全神貫注），不是信賴區間；整列取自總價值最高（最低）的那個情境，所以同一列的其他欄不一定是各欄的最大（最小）值。</div>';
+      document.getElementById('abs-rules-table-box').innerHTML = absTbl;
+
+      // 2. 重播挑戰規則比較
+      const repRulesData = window.DEMO_DATA.重播挑戰.規則比較;
+      const repMaxVal = Math.max(...repRulesData.map(d => d.開賽總價值)) * 1.15;
+      const repSvgH = repRulesData.length * (barH + gap) + 40;
+
+      let repSvg = `<svg viewBox="0 0 ${svgW} ${repSvgH}" style="width: 100%; max-width: ${svgW}px; height: auto;">`;
+      repRulesData.forEach((d, i) => {
+        const y = 20 + i * (barH + gap);
+        const w = (d.開賽總價值 / repMaxVal) * plotW;
+        repSvg += `<text x="${leftPad - 12}" y="${y + barH / 2 + 5}" fill="#cbd5e1" font-size="12" font-weight="600" text-anchor="end">${d.規則}</text>`;
+        repSvg += `<rect x="${leftPad}" y="${y}" width="${w}" height="${barH}" fill="#2563eb" rx="4"/>`;
+        repSvg += `<text x="${w + leftPad + 10}" y="${y + barH / 2 + 4}" fill="#ffffff" font-size="12" font-weight="700">${fmtBar(d.開賽總價值)}</text>`;
+      });
+      repSvg += '</svg>';
+      document.getElementById('replay-rules-svg-box').innerHTML = repSvg;
+
+      let repTbl = '<table class="styled-table"><thead><tr><th>規則制度</th><th>開賽挑戰權總勝率價值</th><th>開賽最後一次 C</th><th>七局上最後一次 C</th></tr></thead><tbody>';
+      repRulesData.forEach(r => {
+        repTbl += `<tr>
+          <td><strong>${r.規則}</strong></td>
+          <td><strong>${r.開賽總價值.toFixed(3)}</strong></td>
+          <td>${r.開賽最後一次C.toFixed(4)}</td>
+          <td>${r.七上最後一次C.toFixed(4)}</td>
+        </tr>`;
+      });
+      repTbl += '</tbody></table>';
+      document.getElementById('replay-rules-table-box').innerHTML = repTbl;
+    }
+
+    // 分頁四：模型可信度
+    function renderCredibilityTab() {
+      if (!window.DEMO_DATA) return;
+
+      // 1. 勝率模型校準散佈圖
+      const calibList = window.DEMO_DATA.勝率模型校準;
+      const size = 420;
+      const pad = 45;
+      const plotW = size - pad * 2;
+      const plotH = size - pad * 2;
+
+      let cSvg = `<svg viewBox="0 0 ${size} ${size}" style="width: 100%; max-width: 420px; height: auto;">`;
+      
+      // 外框與格線
+      cSvg += `<rect x="${pad}" y="${pad}" width="${plotW}" height="${plotH}" fill="#0f172a" stroke="#334155" stroke-width="1"/>`;
+      for (let p = 0; p <= 1.0; p += 0.2) {
+        const pos = pad + p * plotW;
+        // 垂直線
+        cSvg += `<line x1="${pos}" y1="${pad}" x2="${pos}" y2="${size - pad}" stroke="#1e293b" stroke-dasharray="2,2"/>`;
+        cSvg += `<text x="${pos}" y="${size - pad + 15}" fill="#64748b" font-size="10" text-anchor="middle">${(p * 100).toFixed(0)}%</text>`;
+        // 水平線
+        const posY = size - pad - p * plotH;
+        cSvg += `<line x1="${pad}" y1="${posY}" x2="${size - pad}" y2="${posY}" stroke="#1e293b" stroke-dasharray="2,2"/>`;
+        cSvg += `<text x="${pad - 6}" y="${posY + 4}" fill="#64748b" font-size="10" text-anchor="end">${(p * 100).toFixed(0)}%</text>`;
+      }
+
+      // 45 度理想對角線
+      cSvg += `<line x1="${pad}" y1="${size - pad}" x2="${size - pad}" y2="${pad}" stroke="#64748b" stroke-width="1.5" stroke-dasharray="4,4"/>`;
+
+      // 軸標題
+      cSvg += `<text x="${size / 2}" y="${size - 8}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle">模型估計勝率</text>`;
+      cSvg += `<text x="14" y="${size / 2}" fill="#94a3b8" font-size="11" font-weight="600" text-anchor="middle" transform="rotate(-90 14 ${size/2})">實際勝率</text>`;
+
+      // 繪製 10 個點與誤差棒
+      calibList.forEach(pt => {
+        const x = pad + pt.預測 * plotW;
+        const y = size - pad - pt.實際 * plotH;
+        const yLow = size - pad - pt.實際下限 * plotH;
+        const yHigh = size - pad - pt.實際上限 * plotH;
+
+        // 垂直誤差線
+        cSvg += `<line x1="${x}" y1="${yLow}" x2="${x}" y2="${yHigh}" stroke="#38bdf8" stroke-width="1.5"/>`;
+        cSvg += `<line x1="${x - 3}" y1="${yLow}" x2="${x + 3}" y2="${yLow}" stroke="#38bdf8" stroke-width="1.5"/>`;
+        cSvg += `<line x1="${x - 3}" y1="${yHigh}" x2="${x + 3}" y2="${yHigh}" stroke="#38bdf8" stroke-width="1.5"/>`;
+
+        // 資料點圓圈
+        cSvg += `<circle cx="${x}" cy="${y}" r="4" fill="#38bdf8" stroke="#ffffff" stroke-width="1"/>`;
+      });
+
+      cSvg += '</svg>';
+      document.getElementById('calibration-svg-box').innerHTML = cSvg;
+
+      // 校準數據表
+      let cTbl = '<table class="styled-table"><thead><tr><th>分組</th><th>打席數</th><th>平均估計勝率</th><th>實際勝率</th><th>95% 信賴區間</th></tr></thead><tbody>';
+      calibList.forEach(pt => {
+        cTbl += `<tr>
+          <td>第 ${pt.bin + 1} 組</td>
+          <td>${pt.打席.toLocaleString()}</td>
+          <td>${(pt.預測 * 100).toFixed(1)}%</td>
+          <td><strong>${(pt.實際 * 100).toFixed(1)}%</strong></td>
+          <td>${(pt.實際下限 * 100).toFixed(1)}% – ${(pt.實際上限 * 100).toFixed(1)}%</td>
+        </tr>`;
+      });
+      cTbl += '</tbody></table>';
+      document.getElementById('calibration-table-box').innerHTML = cTbl;
+
+      // 2. 信賴區間表 (原樣列出，以資料第一列的鍵動態產生表頭)
+      const ciList = window.DEMO_DATA.重播挑戰.信賴區間 || [];
+      if (ciList.length > 0) {
+        const ciKeys = Object.keys(ciList[0]);
+        let ciTbl = '<table class="styled-table"><thead><tr>' + ciKeys.map(k => `<th>${k}</th>`).join('') + '</tr></thead><tbody>';
+        ciList.forEach(row => {
+          ciTbl += '<tr>' + ciKeys.map(k => `<td>${row[k] !== undefined && row[k] !== null ? (k === '項目' ? plainName(row[k]) : row[k]) : '--'}</td>`).join('') + '</tr>';
+        });
+        ciTbl += '</tbody></table>';
+        document.getElementById('ci-table-box').innerHTML = ciTbl;
+      }
+
+      // 3. 爭議倍數表 (新增，陣列有資料才顯示)
+      const dmList = window.DEMO_DATA.重播挑戰.爭議倍數 || [];
+      const dmCard = document.getElementById('dispute-mult-card');
+      if (dmList.length > 0) {
+        dmCard.style.display = 'block';
+        const dmKeys = Object.keys(dmList[0]);
+        const dmLabel = { '爭議倍數': '潛在爭議頻率是實際挑戰到達率的幾倍', '平均把握': '潛在爭議的平均把握', '開賽總價值': '開賽 2 次合計', 'C2_開賽平手': '開賽平手，還剩 2 次時用掉一次的代價', 'C1_開賽平手': '開賽平手，最後一次的價值', '門檻_v5_剩2次': '判決價值 5 個百分點時的開賽門檻（還剩 2 次，%）', '門檻_v5_剩1次': '判決價值 5 個百分點時的開賽門檻（只剩 1 次，%）', '集中度': '把握分布', '潛在每隊每場爭議': '潛在爭議（每隊每場）' };
+        let dmTbl = '<table class="styled-table"><thead><tr>' + dmKeys.map(k => `<th>${dmLabel[k] || k}</th>`).join('') + '</tr></thead><tbody>';
+        dmList.forEach(row => {
+          dmTbl += '<tr>' + dmKeys.map(k => `<td>${row[k] !== undefined && row[k] !== null ? row[k] : '--'}</td>`).join('') + '</tr>';
+        });
+        dmTbl += '</tbody></table>';
+        document.getElementById('dispute-mult-table-box').innerHTML = dmTbl;
+      } else if (dmCard) {
+        dmCard.style.display = 'none';
+      }
+
+      // 4. 口訣比較表篩選器初始化
+      const rotList = window.DEMO_DATA.重播挑戰.口訣比較 || [];
+      const filterBar = document.getElementById('rule-thumb-filter-bar');
+      if (rotList.length > 0 && '爭議倍數' in rotList[0]) {
+        filterBar.innerHTML = `<span>篩選潛在爭議頻率倍數：</span>
+          <select id="filter-dispute-mult" onchange="renderRuleOfThumbTable()">
+            <option value="all">全部</option>
+          </select>`;
+        const dmSelect = document.getElementById('filter-dispute-mult');
+        const dms = [...new Set(rotList.map(r => r.爭議倍數))].sort((a,b)=>a-b);
+        dmSelect.innerHTML = '<option value="all">全部</option>' + dms.map(d => `<option value="${d}">潛在爭議頻率倍數 = ${d}</option>`).join('');
+      } else if (rotList.length > 0 && 'κ' in rotList[0]) {
+        filterBar.innerHTML = `<span>篩選 κ：</span>
+          <select id="filter-dispute-mult" onchange="renderRuleOfThumbTable()">
+            <option value="all">全部</option>
+          </select>`;
+        const dmSelect = document.getElementById('filter-dispute-mult');
+        const ks = [...new Set(rotList.map(r => r.κ))].sort((a,b)=>a-b);
+        dmSelect.innerHTML = '<option value="all">全部</option>' + ks.map(k => `<option value="${k}">κ = ${k}</option>`).join('');
+      }
+
+      renderRuleOfThumbTable();
+
+      // 5. 判決類型表 (原樣列出，以資料第一列的鍵動態產生表頭)
+      const ptList = window.DEMO_DATA.重播挑戰.判決類型 || [];
+      if (ptList.length > 0) {
+        const ptKeys = Object.keys(ptList[0]);
+        let ptTbl = '<table class="styled-table"><thead><tr>' + ptKeys.map(k => `<th>${k}</th>`).join('') + '</tr></thead><tbody>';
+        ptList.forEach(row => {
+          ptTbl += '<tr>' + ptKeys.map((k, i) => `<td${i === 0 ? ' style="white-space:nowrap;text-align:left"' : ''}>${row[k] !== undefined && row[k] !== null ? row[k] : '--'}</td>`).join('') + '</tr>';
+        });
+        ptTbl += '</tbody></table>';
+        document.getElementById('play-type-table-box').innerHTML = ptTbl;
+      }
+    }
+
+    // 147 號檔：信賴區間表的項目名稱換成白話（資料裡是程式變數名）
+    function plainName(n) {
+      const pos = { '開賽': '開賽', '四上': '四局上', '七上': '七局上', '九上': '九局上' };
+      let m = /^V2_開賽平手$/.exec(n); if (m) return '開賽 2 次合計（平手）';
+      m = /^C([12])_(開賽|四上|七上|九上)平手$/.exec(n); if (m) return pos[m[2]] + '平手，' + (m[1] === '1' ? '最後一次的價值' : '還剩 2 次時用掉一次的代價');
+      m = /^卡片門檻_剩([12])次_第(\d)局$/.exec(n); if (m) return (m[1] === '2' ? '還剩 2 次' : '只剩 1 次') + '第 ' + m[2] + ' 局的門檻（%）';
+      return n;
+    }
+
+    function renderRuleOfThumbTable() {
+      const list = window.DEMO_DATA.重播挑戰.口訣比較 || [];
+      if (list.length === 0) {
+        document.getElementById('rule-thumb-table-box').innerHTML = '<div style="color:#64748b;">無資料</div>';
+        return;
+      }
+
+      const selectElem = document.getElementById('filter-dispute-mult');
+      const filterVal = (selectElem && selectElem.value) ? selectElem.value : 'all';
+
+      let filtered = list;
+      if (filterVal !== 'all') {
+        if ('爭議倍數' in list[0]) {
+          filtered = list.filter(r => String(r.爭議倍數) === filterVal);
+        } else if ('κ' in list[0]) {
+          filtered = list.filter(r => String(r.κ) === filterVal);
+        }
+      }
+
+      if (filtered.length === 0) {
+        document.getElementById('rule-thumb-table-box').innerHTML = '<div style="color:#64748b; padding: 12px;">無符合資料</div>';
+        return;
+      }
+
+      const keys = Object.keys(filtered[0]);
+      let html = '<table class="styled-table"><thead><tr>' + keys.map(k => `<th>${k}</th>`).join('') + '</tr></thead><tbody>';
+      filtered.forEach(row => {
+        const isOptimal = (row.口訣 && String(row.口訣).indexOf('最適') !== -1);
+        html += `<tr style="${isOptimal ? 'background: rgba(56, 189, 248, 0.08); font-weight: 700;' : ''}">`;
+        keys.forEach(k => {
+          const val = row[k];
+          html += `<td>${val !== undefined && val !== null ? val : '--'}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += '</tbody></table>';
+      document.getElementById('rule-thumb-table-box').innerHTML = html;
+    }
+
+    // 初始化載入
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.DEMO_DATA || !window.SANDBOX_TABLE) {
+        console.error('資料檔未能載入，請確認 demo_data.js 與 sandbox_table.js 路徑。');
+        return;
+      }
+
+      // 初始化頁尾版本
+      document.getElementById('footer-version').textContent = window.DEMO_DATA.版本;
+
+      // ABS 判決價值分布選單已於 初審版 移除
+
+      // 初始化局數與按鈕
+      renderInningButtons();
+      renderDiffButtons();
+      updateBasesUI();
+
+      // 渲染沙盤首頁
+      updateSandbox();
+
+      // 渲染其餘分頁
+      renderCardsTab();
+      renderRulesTab();
+      renderCredibilityTab();
+    });
+  </script>
+<a href="../" style="position:fixed;left:10px;bottom:10px;z-index:9999;background:#12355b;color:#fff;padding:6px 12px;border-radius:16px;font:14px sans-serif;text-decoration:none;opacity:.9" class="noprint">← 回首頁</a><style>@media print{.noprint{display:none}}</style>
+</body>
+</html>

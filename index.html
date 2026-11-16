@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>該挑就挑｜中職挑戰決策門檻卡</title>
+<meta name="description" content="這一次值不值得挑戰？用一條公式和兩張門檻卡回答中職的重播挑戰與好壞球挑戰決策。2026 野革盃台灣棒球數據黑客松初審提案的互動附件：門檻卡、計算機、規則試算沙盤。">
+<meta property="og:title" content="該挑就挑｜中職挑戰決策門檻卡">
+<meta property="og:description" content="改判的把握超過門檻就挑。門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）。">
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#16202c;--mute:#5b6878;--line:#dfe4ea;--brand:#12355b;--accent:#c8501e;--soft:#eaf0f7;--good:#1c7a4a}
+@media (prefers-color-scheme:dark){:root{--bg:#0f151c;--card:#18212b;--ink:#e8edf3;--mute:#9aa8b8;--line:#2b3846;--brand:#8fbbe8;--accent:#f08a5d;--soft:#1f2c3a;--good:#6fd39b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.75 "Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+main{max-width:920px;margin:0 auto;padding:0 16px 64px}
+header{background:var(--brand);color:#fff;padding:44px 16px 36px}
+@media (prefers-color-scheme:dark){header{background:#12355b}}
+header div{max-width:920px;margin:0 auto}
+header p.k{margin:0 0 6px;font-size:14px;letter-spacing:.08em;opacity:.85}
+h1{margin:0 0 10px;font-size:clamp(28px,5.2vw,44px);line-height:1.25}
+header p.s{margin:0 0 20px;font-size:18px;opacity:.95;max-width:40em}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btns a{background:#fff;color:#12355b;text-decoration:none;font-weight:700;padding:9px 16px;border-radius:8px}
+.btns a.o{background:transparent;color:#fff;border:1.5px solid #ffffffaa}
+h2{font-size:24px;margin:44px 0 12px;padding-top:8px;border-top:3px solid var(--brand);display:inline-block}
+h3{font-size:18px;margin:22px 0 6px}
+section>p,li{max-width:44em}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0}
+.formula{font-size:clamp(19px,3.6vw,26px);font-weight:700;text-align:center;padding:10px 0;color:var(--brand)}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.three .box{margin:0}
+.big{font-size:30px;font-weight:800;color:var(--accent);line-height:1.2}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--line);padding:7px 9px;text-align:center;white-space:nowrap}
+thead th,tbody th{background:var(--soft);font-weight:700}
+caption{caption-side:top;text-align:left;font-weight:700;padding:6px 0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+label{display:block;font-size:14px;color:var(--mute);margin-top:8px}
+select,input{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);width:100%}
+.out{margin-top:14px;padding:12px 14px;border-radius:10px;background:var(--soft)}
+.out b{font-size:30px;color:var(--accent)}
+.note{color:var(--mute);font-size:15px}
+img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:10px;background:#fff}
+footer{border-top:1px solid var(--line);margin-top:48px;padding-top:16px;color:var(--mute);font-size:15px}
+a{color:var(--brand)}
+</style>
+</head>
+<body>
+<header><div>
+<p class="k">2026 野革盃 台灣棒球數據黑客松｜初審提案互動附件｜隊伍：該挑就挑</p>
+<h1>這一次，值不值得挑戰？</h1>
+<p class="s">把中職的重播挑戰和好壞球挑戰，變成教練場上查得到、球員賽前可以準備的門檻卡。</p>
+<div class="btns">
+<a href="#try">直接查門檻</a>
+<a href="demo/">互動 Demo（沙盤）</a>
+<a class="o" href="calculator/">門檻計算機</a>
+<a class="o" href="card/">門檻卡 A6 列印版</a>
+</div>
+</div></header>
+<main>
+
+<section>
+<h2>一句話</h2>
+<p>改判的把握超過門檻，就挑。門檻只由兩個數決定：這個判決改過來值多少（判決價值），和這次挑輸了會損失多少（挑戰權價值）。</p>
+<div class="box"><div class="formula">門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）</div>
+<p class="note" style="text-align:center;margin:0">適用「成功保留、失敗扣一次」的規則；兩個價值的單位都是勝率百分點。</p></div>
+<div class="three">
+<div class="box"><h3>判決價值 ΔW</h3>改判後的勝率減原判的勝率。從中職 2023–2026 例行賽 1,362 場、390,489 顆投球建的勝率表查出來。</div>
+<div class="box"><h3>挑戰權價值 C</h3>少一次挑戰權，後面會損失多少勝率。從九局下往回一個半局一個半局推出來（動態規劃）。</div>
+<div class="box"><h3>把握 p</h3>現場的人對「會改判」的判斷。模型不替人判斷，只回答要多少把握才夠。</div>
+</div>
+</section>
+
+<section id="try">
+<h2>直接查門檻</h2>
+<div class="two">
+<div class="box">
+<h3>查門檻卡</h3>
+<label>挑戰種類<select id="kind"><option value="replay">重播挑戰（壘上判決）</option><option value="abs">好壞球挑戰（試算）</option></select></label>
+<label>局數<select id="inn"></select></label>
+<label>還剩幾次挑戰權<select id="rem"><option value="2">還剩 2 次</option><option value="1">只剩 1 次</option></select></label>
+<label id="cntl" hidden>球數<select id="cnt"><option value="0">滿球數</option><option value="1">兩好球或三壞球</option><option value="2">其他球數</option></select></label>
+<div class="out">卡片上的門檻：<b id="cardout">–</b><div class="note" id="cardsay"></div></div>
+</div>
+<div class="box">
+<h3>自己代數字</h3>
+<label>判決價值 ΔW（勝率百分點）<input id="dw" type="number" step="0.01" min="0" value="17.19"></label>
+<label>挑戰權價值 C（勝率百分點）<input id="c" type="number" step="0.001" min="0" value="0.630"></label>
+<div class="out">門檻：<b id="fout">–</b><div class="note">預設值是提案裡的例 1：這個判決值 17.19 個百分點；只剩 1 次時 C ＝ 0.630，門檻 3.5%；還剩 2 次時 C ＝ 0.045，門檻 0.3%。</div></div>
+</div>
+</div>
+<p class="note">想看任何局面（局數、分差、壘包、出局、球數）的勝率、判決價值和精確門檻，請開 <a href="demo/">互動 Demo</a> 或 <a href="calculator/">門檻計算機</a>。</p>
+</section>
+
+<section>
+<h2>兩張門檻卡</h2>
+<h3>重播門檻卡（18 格）</h3>
+<div class="scroll"><table>
+<thead><tr><th>局</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th></tr></thead>
+<tbody><tr><th>還剩 2 次</th><td>2%</td><td>2%</td><td>1%</td><td>1%</td><td>1%</td><td>1%</td><td>1%</td><td>1%</td><td>1%</td></tr><tr><th>只剩 1 次</th><td>13%</td><td>13%</td><td>11%</td><td>10%</td><td>9%</td><td>7%</td><td>6%</td><td>4%</td><td>2%</td></tr></tbody>
+</table></div>
+<p class="note">依 26,279 個實際壘上判決分格。每格是「格內平均挑戰權價值 ÷（平均判決價值 ＋ 平均挑戰權價值）」取整數，最低 1%。</p>
+<h3>好壞球門檻卡（54 格，試算）</h3>
+<div class="two">
+<div class="scroll"><table><caption>還剩 2 次</caption><table><thead><tr><th>局</th><th>滿球數</th><th>兩好球或三壞球</th><th>其他球數</th></tr></thead><tbody><tr><th>1</th><td>15%</td><td>25%</td><td>45%</td></tr><tr><th>2</th><td>10%</td><td>25%</td><td>45%</td></tr><tr><th>3</th><td>10%</td><td>20%</td><td>40%</td></tr><tr><th>4</th><td>9%</td><td>20%</td><td>40%</td></tr><tr><th>5</th><td>8%</td><td>20%</td><td>35%</td></tr><tr><th>6</th><td>6%</td><td>15%</td><td>30%</td></tr><tr><th>7</th><td>5%</td><td>10%</td><td>25%</td></tr><tr><th>8</th><td>3%</td><td>7%</td><td>15%</td></tr><tr><th>9</th><td>1%</td><td>3%</td><td>6%</td></tr></tbody></table></table></div>
+<div class="scroll"><table><caption>只剩 1 次</caption><table><thead><tr><th>局</th><th>滿球數</th><th>兩好球或三壞球</th><th>其他球數</th></tr></thead><tbody><tr><th>1</th><td>25%</td><td>40%</td><td>65%</td></tr><tr><th>2</th><td>25%</td><td>40%</td><td>65%</td></tr><tr><th>3</th><td>20%</td><td>40%</td><td>60%</td></tr><tr><th>4</th><td>20%</td><td>35%</td><td>60%</td></tr><tr><th>5</th><td>15%</td><td>35%</td><td>55%</td></tr><tr><th>6</th><td>15%</td><td>30%</td><td>50%</td></tr><tr><th>7</th><td>15%</td><td>25%</td><td>45%</td></tr><tr><th>8</th><td>10%</td><td>20%</td><td>40%</td></tr><tr><th>9</th><td>5%</td><td>10%</td><td>25%</td></tr></tbody></table></table></div>
+</div>
+<p class="note">中職還沒有實施好壞球挑戰。這張卡用 MLB 2026 的逐球資料，套中職的勝率模型試算；中職實施後要用中職資料重做。</p>
+</section>
+
+<section>
+<h2>三個發現</h2>
+<div class="three">
+<div class="box"><div class="big">1–2%</div><h3>重播挑戰權很便宜</h3>開賽還剩 2 次時，失去一次只值 0.11 個勝率百分點，卡片門檻只有 1–2%。只剩 1 次時，門檻從一局的 13% 降到九局的 2%。</div>
+<div class="box"><div class="big">5.3%</div><h3>球隊常常沒用完</h3>2024-05-28 改制後例行賽 968 場，九局內球隊挑戰 1,097 次，翻盤率 30.3%；兩次都用完的隊伍場次只有 5.3%。</div>
+<div class="box"><div class="big">不能套用</div><h3>好壞球是另一回事</h3>好壞球挑戰權貴得多（開賽只剩 1 次時值 1.77 個百分點，重播是 0.93），門檻高很多，而且要看球數：2 好 3 壞的球改判價值中位數 4.76 個百分點，0 好 0 壞只有 0.62。</div>
+</div>
+</section>
+
+<section>
+<h2>方法</h2>
+<ol>
+<li><b>勝率表（兩段拆解）。</b>局面切細後有 46,656 格，33% 沒有資料，直接計次連方向都可能相反。改成先算「這個半局得幾分」，再算「半局結束後的比分會不會贏」。留一年交叉驗證，預測分 10 組，和實際勝率最大差 1.5 個百分點；Brier 分數 0.157。</li>
+<li><b>挑戰權價值（從九局下往回推）。</b>手上 r 次的價值 ＝ 這個半局用掉的預期收益 ＋ 留到下個半局的價值；C ＝ 有 r 次的價值 − 有 r−1 次的價值。</li>
+<li><b>重播的潛在爭議校準。</b>沒被挑的判決對不對沒有人知道，所以假設一群潛在爭議，讓模型的挑戰次數和翻盤率對上實際資料。這組參數定不出唯一的值，是已知限制。</li>
+<li><b>卡片。</b>現場不可能算公式，所以按局數（好壞球再加球數）分格，每格印一個數字。</li>
+</ol>
+</section>
+
+<section>
+<h2>檢驗</h2>
+<ul>
+<li><b>歷年規則變動。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數。</li>
+<li><b>局數。</b>模型的門檻越後面越低，被挑判決的翻盤率也隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
+<li><b>卡片和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）。</li>
+<li><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比：「把握過半才挑」−0.63 勝，照卡片挑 +0.24 勝（0.21～0.27），照精確門檻挑 +0.53 勝。</li>
+<li><b>和球員實際拿回的價值比</b>（九局內）：卡片 +0.15 勝（0.06～0.23）；換另一種感知模型是 +0.02 勝（−0.07～0.10）。卡片的增益對模型設定很敏感。</li>
+</ul>
+<p class="note">以上是「和資料一致」的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
+<div class="two">
+<figure style="margin:0"><img src="figs/fig1_we_calibration.png" alt="勝率模型的預測勝率和實際勝率對照圖" loading="lazy"><figcaption class="note">勝率模型：預測和實際</figcaption></figure>
+<figure style="margin:0"><img src="figs/fig2_overturn_by_inning.png" alt="各局數的挑戰翻盤率" loading="lazy"><figcaption class="note">翻盤率隨局數的變化</figcaption></figure>
+</div>
+</section>
+
+<section>
+<h2>還沒做到的</h2>
+<ul>
+<li>門檻卡沒有在現場試用過。查不查得到、記不記得住、限時內用不用得對，都還沒測。</li>
+<li>把握要靠人判斷。把握不準時卡片會失效（試算：過度自信 −0.14 勝、偏保守 −0.33 勝），所以規劃搭配賽後對答案的回饋訓練；訓練有沒有用還沒有測過。</li>
+<li>重播的潛在爭議參數定不出唯一的值；「只剩 1 次」那一列比「還剩 2 次」更受它影響。</li>
+<li>好壞球是 MLB 資料套中職勝率模型的試算。</li>
+<li>卡片上的數字每個球季要用新資料重跑；公式和方法不變。</li>
+</ul>
+</section>
+
+<section>
+<h2>這個網站有什麼</h2>
+<ul>
+<li><a href="demo/">互動 Demo</a>：規則試算沙盤、門檻卡、可信度檢驗。</li>
+<li><a href="calculator/">挑戰門檻計算機</a>：輸入局面，查勝率、判決價值和門檻；手機可用。</li>
+<li><a href="card/">門檻卡 A6 列印版</a>：重播 18 格、好壞球 54 格，可以直接列印。</li>
+</ul>
+<p class="note">本站只含統計量和模型輸出表，不含任何逐球原始資料。</p>
+</section>
+
+<footer>
+<p>資料來源：野球革命 rebas.tw Open Data（ODC-By 授權）、中職官網文字轉播的統計、MLB StatsAPI、WhartonSABI 開源資料。</p>
+<p>隊伍「該挑就挑」｜2026 野革盃 台灣棒球數據黑客松 初審提案附件｜數字版本 2026-11-16。本站是參賽作品，不是主辦單位或中華職棒的官方產品。</p>
+</footer>
+</main>
+<script>
+const CARD={"replay": {"1": [13, 13, 11, 10, 9, 7, 6, 4, 2], "2": [2, 2, 1, 1, 1, 1, 1, 1, 1]}, "abs": {"1": [[25, 40, 65], [25, 40, 65], [20, 40, 60], [20, 35, 60], [15, 35, 55], [15, 30, 50], [15, 25, 45], [10, 20, 40], [5, 10, 25]], "2": [[15, 25, 45], [10, 25, 45], [10, 20, 40], [9, 20, 40], [8, 20, 35], [6, 15, 30], [5, 10, 25], [3, 7, 15], [1, 3, 6]]}};
+const $=id=>document.getElementById(id);
+for(let i=1;i<=9;i++)$("inn").add(new Option("第 "+i+" 局",i));
+function card(){
+  const k=$("kind").value,i=+$("inn").value-1,r=$("rem").value;
+  $("cntl").hidden=k!=="abs";
+  const v=k==="abs"?CARD.abs[r][i][+$("cnt").value]:CARD.replay[r][i];
+  $("cardout").textContent=v+"%";
+  $("cardsay").textContent="改判的把握超過 "+v+"% 就挑"+(k==="abs"?"（好壞球為試算）。":"。");
+}
+function calc(){
+  const dw=parseFloat($("dw").value),c=parseFloat($("c").value);
+  $("fout").textContent=(dw>=0&&c>=0&&dw+c>0)?(100*c/(dw+c)).toFixed(1)+"%":"–";
+}
+["kind","inn","rem","cnt"].forEach(x=>$(x).addEventListener("change",card));
+["dw","c"].forEach(x=>$(x).addEventListener("input",calc));
+card();calc();
+</script>
+</body>
+</html>

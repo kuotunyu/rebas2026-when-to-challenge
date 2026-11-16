@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>該挑就挑｜門檻卡（A6 列印版）</title>
+  <style>
+    @page {
+      size: 148mm 105mm;   /* A6 橫式。Chrome／Edge 不認得 "A6" 這個名稱，寫成 A6 會整條被忽略、印成 Letter */
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: #e2e8f0;
+      color: #0f172a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      gap: 20px;
+      -webkit-font-smoothing: antialiased;
+    }
+    @media screen {
+      .screen-toolbar {
+        width: 148mm;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #0f172a;
+        color: #f8fafc;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 12px;
+      }
+      .print-btn {
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-left: 10px;
+        background: #0284c7;
+        color: white;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .print-btn:hover {
+        background: #0369a1;
+      }
+      .card-page {
+        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+        border: 1px solid #cbd5e1;
+      }
+    }
+    /* 147 號檔：窄螢幕時卡片靠左、可以橫向捲動（只影響螢幕，列印版面不變） */
+    @media screen and (max-width: 600px) {
+      body {
+        align-items: flex-start;
+        padding: 12px 8px;
+      }
+      .screen-toolbar, .card-page {
+        flex-shrink: 0;
+      }
+    }
+    @media print {
+      body {
+        background: none;
+        padding: 0;
+        gap: 0;
+      }
+      .screen-toolbar {
+        display: none !important;
+      }
+      .card-page {
+        box-shadow: none !important;
+        border: none !important;
+        page-break-after: always;
+        break-after: page;
+      }
+      .card-page:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+    }
+
+    .card-page {
+      width: 148mm;
+      height: 105mm;
+      background: #ffffff;
+      padding: 5mm 6mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1.5mm;
+      border-bottom: 1.5px solid #0f172a;
+    }
+    .card-title {
+      font-size: 13.5pt;
+      font-weight: 900;
+      letter-spacing: -0.2px;
+      color: #0f172a;
+    }
+    .card-side-tag {
+      font-size: 8pt;
+      font-weight: 700;
+      padding: 1.5px 6px;
+      border-radius: 3px;
+      background: #0f172a;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    /* 表格樣式 */
+    .card-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      text-align: center;
+    }
+    .card-table th, .card-table td {
+      border: 1px solid #0f172a;
+      padding: 0;
+      vertical-align: middle;
+    }
+    .card-table thead th {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 8pt;
+      font-weight: 700;
+      padding: 2px 0;
+    }
+    .card-table thead th.th-row-title {
+      background: #1e293b;
+      color: #f8fafc;
+    }
+    .card-table tbody th.th-row-header {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-size: 8.5pt;
+      font-weight: 700;
+      padding: 2px 3px;
+      text-align: center;
+      line-height: 1.15;
+    }
+    .card-table tbody th.th-row-header.th-long {   /* 「（不含滿球數）」那一列：字小一點，兩行也不撐高 */
+      font-size: 7pt;
+      line-height: 1.05;
+      white-space: pre-line;
+      padding: 1px 2px;
+    }
+
+    /* 分級色彩樣式：數字越小（越該挑）底色越深 */
+    /* 界線：10% 以下 (tier-1)、超過 10% 到 30% (tier-2)、超過 30% (tier-3)；和 getTierClass 一致 */
+    .tier-1 {
+      background: #0f172a !important;
+      color: #ffffff !important;
+    }
+    .tier-1 .cell-desc {
+      color: #94a3b8 !important;
+    }
+    .tier-2 {
+      background: #cbd5e1 !important;
+      color: #0f172a !important;
+    }
+    .tier-2 .cell-desc {
+      color: #334155 !important;
+    }
+    .tier-3 {
+      background: #ffffff !important;
+      color: #0f172a !important;
+    }
+    .tier-3 .cell-desc {
+      color: #64748b !important;
+    }
+
+    /* 正面儲存格 */
+    .front-cell-box {
+      height: 25mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1mm 0.5mm;
+      line-height: 1.15;
+    }
+    .front-val {
+      font-size: 17pt;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .front-desc {
+      font-size: 7.5pt;
+      font-weight: 600;
+      margin-top: 1.5mm;
+    }
+
+    /* 背面雙區塊 */
+    .abs-blocks-container {
+      display: flex;
+      flex-direction: column;
+      gap: 2mm;
+      margin: 1.5mm 0;
+    }
+    .abs-block-header {
+      font-size: 8.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.8mm;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .abs-block-header::before {
+      content: "";
+      display: inline-block;
+      width: 3.5mm;
+      height: 3.5mm;
+      background: #0f172a;
+      border-radius: 1px;
+    }
+    .abs-cell-box {
+      height: 6.8mm;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .abs-val {
+      font-size: 11.5pt;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    /* 說明與頁尾 */
+    .card-notes {
+      font-size: 7.5pt;
+      color: #1e293b;
+      line-height: 1.35;
+      padding-top: 1.5mm;
+      border-top: 1px dashed #94a3b8;
+    }
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 6.5pt;
+      color: #64748b;
+      padding-top: 1mm;
+    }
+    .tier-legend {
+      display: flex;
+      gap: 3mm;
+      align-items: center;
+      font-size: 7pt;
+      font-weight: 600;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 1.5mm;
+    }
+    .legend-box {
+      width: 3.5mm;
+      height: 3mm;
+      border: 1px solid #0f172a;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="screen-toolbar">
+    <div><strong>決賽門檻口袋卡（A6 雙面，初審版 版）</strong>｜列印或存成 PDF：紙張 A6 橫式（148 × 105 mm）、邊界選「無」、不要頁首頁尾</div>
+    <button class="print-btn" onclick="window.print()">列印此卡</button>
+  </div>
+
+  <!-- 正面：重播挑戰 -->
+  <div class="card-page" id="page-front">
+    <div class="card-header">
+      <div class="card-title">重播挑戰：把握超過這個數字就挑</div>
+      <div class="card-side-tag">正面（重播）</div>
+    </div>
+
+    <div id="front-table-container"></div>
+
+    <div class="card-notes">
+      <div>還剩 2 次：有人看到具體跡象就挑（門檻 1–2%）。只剩 1 次：前三局要一成多的把握（13%、13%、11%），之後每局降一點。</div>
+      <div>不用看分差。把握＝你覺得這個判決會改判的機率。延長賽次數重新計算，不適用這張表。</div>
+    </div>
+
+    <div class="card-footer">
+      <div class="tier-legend">
+        <span style="color:#0f172a;">色階標準：</span>
+        <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
+        <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
+        <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div>
+      </div>
+      <div id="front-version-text"></div>
+    </div>
+  </div>
+
+  <!-- 背面：好壞球挑戰 -->
+  <div class="card-page" id="page-back">
+    <div class="card-header">
+      <div class="card-title">好壞球挑戰（試算版）：把握超過這個數字就挑</div>
+      <div class="card-side-tag">背面（好壞球）</div>
+    </div>
+
+    <div class="abs-blocks-container" id="abs-blocks-container"></div>
+
+    <div class="card-notes">
+      <div>每一局開始前，記住這一局的三個數字。場上不查卡。</div>
+      <div>試算版：合資格的判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和中職勝率模型算；中職一軍 2027 年規則尚未公布。</div>
+    </div>
+
+    <div class="card-footer">
+      <div class="tier-legend">
+        <span style="color:#0f172a;">色階標準：</span>
+        <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
+        <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
+        <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div>
+      </div>
+      <div id="back-version-text"></div>
+    </div>
+  </div>
+
+  <!-- 原始資料 JSON 嵌入 -->
+  <script type="application/json" id="card-replay">
+{
+ "版本": "2026-11-16（重播、好壞球第三版修正後）",
+ "門檻卡": [
+  {
+   "剩餘次數": 2,
+   "局": 1,
+   "事件": 3055,
+   "判決價值平均": 5.978,
+   "挑戰權價值平均": 0.106,
+   "未取整門檻": 1.735,
+   "卡片顯示": 2,
+   "白話": "50 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 2,
+   "事件": 2990,
+   "判決價值平均": 5.532,
+   "挑戰權價值平均": 0.09,
+   "未取整門檻": 1.609,
+   "卡片顯示": 2,
+   "白話": "50 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 3,
+   "事件": 3176,
+   "判決價值平均": 5.946,
+   "挑戰權價值平均": 0.075,
+   "未取整門檻": 1.253,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 4,
+   "事件": 3073,
+   "判決價值平均": 5.771,
+   "挑戰權價值平均": 0.06,
+   "未取整門檻": 1.021,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 5,
+   "事件": 3149,
+   "判決價值平均": 5.714,
+   "挑戰權價值平均": 0.044,
+   "未取整門檻": 0.771,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 6,
+   "事件": 3078,
+   "判決價值平均": 5.662,
+   "挑戰權價值平均": 0.03,
+   "未取整門檻": 0.531,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 7,
+   "事件": 2968,
+   "判決價值平均": 5.532,
+   "挑戰權價值平均": 0.018,
+   "未取整門檻": 0.326,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 8,
+   "事件": 2767,
+   "判決價值平均": 5.34,
+   "挑戰權價值平均": 0.008,
+   "未取整門檻": 0.159,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 9,
+   "事件": 2023,
+   "判決價值平均": 6.754,
+   "挑戰權價值平均": 0.003,
+   "未取整門檻": 0.044,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 1,
+   "事件": 3055,
+   "判決價值平均": 5.978,
+   "挑戰權價值平均": 0.898,
+   "未取整門檻": 13.061,
+   "卡片顯示": 13,
+   "白話": "8 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 2,
+   "事件": 2990,
+   "判決價值平均": 5.532,
+   "挑戰權價值平均": 0.823,
+   "未取整門檻": 12.953,
+   "卡片顯示": 13,
+   "白話": "8 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 3,
+   "事件": 3176,
+   "判決價值平均": 5.946,
+   "挑戰權價值平均": 0.742,
+   "未取整門檻": 11.1,
+   "卡片顯示": 11,
+   "白話": "9 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 4,
+   "事件": 3073,
+   "判決價值平均": 5.771,
+   "挑戰權價值平均": 0.644,
+   "未取整門檻": 10.043,
+   "卡片顯示": 10,
+   "白話": "10 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 5,
+   "事件": 3149,
+   "判決價值平均": 5.714,
+   "挑戰權價值平均": 0.545,
+   "未取整門檻": 8.711,
+   "卡片顯示": 9,
+   "白話": "11 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 6,
+   "事件": 3078,
+   "判決價值平均": 5.662,
+   "挑戰權價值平均": 0.438,
+   "未取整門檻": 7.173,
+   "卡片顯示": 7,
+   "白話": "14 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 7,
+   "事件": 2968,
+   "判決價值平均": 5.532,
+   "挑戰權價值平均": 0.326,
+   "未取整門檻": 5.558,
+   "卡片顯示": 6,
+   "白話": "17 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 8,
+   "事件": 2767,
+   "判決價值平均": 5.34,
+   "挑戰權價值平均": 0.21,
+   "未取整門檻": 3.786,
+   "卡片顯示": 4,
+   "白話": "25 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 9,
+   "事件": 2023,
+   "判決價值平均": 6.754,
+   "挑戰權價值平均": 0.123,
+   "未取整門檻": 1.783,
+   "卡片顯示": 2,
+   "白話": "50 次裡有 1 次"
+  }
+ ]
+}
+</script>
+
+  <script type="application/json" id="card-abs">
+{
+ "版本": "2026-11-16（重播、好壞球第三版修正後）",
+ "門檻卡": [
+  {
+   "剩餘次數": 1,
+   "局": 1,
+   "球數": "滿球數",
+   "球": 558,
+   "判決價值平均": 5.546,
+   "挑戰權價值平均": 1.711,
+   "未取整門檻": 23.58,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 1,
+   "球數": "兩好球或三壞球",
+   "球": 5205,
+   "判決價值平均": 2.431,
+   "挑戰權價值平均": 1.705,
+   "未取整門檻": 41.22,
+   "卡片顯示": 40,
+   "白話": "5 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 1,
+   "球數": "其他球數",
+   "球": 18442,
+   "判決價值平均": 0.991,
+   "挑戰權價值平均": 1.703,
+   "未取整門檻": 63.217,
+   "卡片顯示": 65,
+   "白話": "3 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 2,
+   "球數": "滿球數",
+   "球": 468,
+   "判決價值平均": 5.248,
+   "挑戰權價值平均": 1.571,
+   "未取整門檻": 23.033,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 2,
+   "球數": "兩好球或三壞球",
+   "球": 4993,
+   "判決價值平均": 2.243,
+   "挑戰權價值平均": 1.569,
+   "未取整門檻": 41.158,
+   "卡片顯示": 40,
+   "白話": "5 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 2,
+   "球數": "其他球數",
+   "球": 17955,
+   "判決價值平均": 0.909,
+   "挑戰權價值平均": 1.563,
+   "未取整門檻": 63.223,
+   "卡片顯示": 65,
+   "白話": "3 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 3,
+   "球數": "滿球數",
+   "球": 459,
+   "判決價值平均": 5.467,
+   "挑戰權價值平均": 1.44,
+   "未取整門檻": 20.844,
+   "卡片顯示": 20,
+   "白話": "5 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 3,
+   "球數": "兩好球或三壞球",
+   "球": 4845,
+   "判決價值平均": 2.343,
+   "挑戰權價值平均": 1.441,
+   "未取整門檻": 38.078,
+   "卡片顯示": 40,
+   "白話": "5 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 3,
+   "球數": "其他球數",
+   "球": 17924,
+   "判決價值平均": 0.949,
+   "挑戰權價值平均": 1.442,
+   "未取整門檻": 60.311,
+   "卡片顯示": 60,
+   "白話": "5 次裡有 3 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 4,
+   "球數": "滿球數",
+   "球": 478,
+   "判決價值平均": 5.615,
+   "挑戰權價值平均": 1.289,
+   "未取整門檻": 18.676,
+   "卡片顯示": 20,
+   "白話": "5 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 4,
+   "球數": "兩好球或三壞球",
+   "球": 4847,
+   "判決價值平均": 2.388,
+   "挑戰權價值平均": 1.296,
+   "未取整門檻": 35.184,
+   "卡片顯示": 35,
+   "白話": "3 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 4,
+   "球數": "其他球數",
+   "球": 17823,
+   "判決價值平均": 0.948,
+   "挑戰權價值平均": 1.299,
+   "未取整門檻": 57.802,
+   "卡片顯示": 60,
+   "白話": "5 次裡有 3 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 5,
+   "球數": "滿球數",
+   "球": 423,
+   "判決價值平均": 5.4,
+   "挑戰權價值平均": 1.124,
+   "未取整門檻": 17.231,
+   "卡片顯示": 15,
+   "白話": "7 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 5,
+   "球數": "兩好球或三壞球",
+   "球": 4680,
+   "判決價值平均": 2.247,
+   "挑戰權價值平均": 1.149,
+   "未取整門檻": 33.824,
+   "卡片顯示": 35,
+   "白話": "3 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 5,
+   "球數": "其他球數",
+   "球": 17512,
+   "判決價值平均": 0.91,
+   "挑戰權價值平均": 1.14,
+   "未取整門檻": 55.621,
+   "卡片顯示": 55,
+   "白話": "一半多一點"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 6,
+   "球數": "滿球數",
+   "球": 550,
+   "判決價值平均": 5.866,
+   "挑戰權價值平均": 1.0,
+   "未取整門檻": 14.564,
+   "卡片顯示": 15,
+   "白話": "7 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 6,
+   "球數": "兩好球或三壞球",
+   "球": 4980,
+   "判決價值平均": 2.352,
+   "挑戰權價值平均": 0.979,
+   "未取整門檻": 29.388,
+   "卡片顯示": 30,
+   "白話": "10 次裡有 3 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 6,
+   "球數": "其他球數",
+   "球": 18287,
+   "判決價值平均": 0.942,
+   "挑戰權價值平均": 0.969,
+   "未取整門檻": 50.701,
+   "卡片顯示": 50,
+   "白話": "2 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 7,
+   "球數": "滿球數",
+   "球": 573,
+   "判決價值平均": 5.289,
+   "挑戰權價值平均": 0.775,
+   "未取整門檻": 12.781,
+   "卡片顯示": 15,
+   "白話": "7 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 7,
+   "球數": "兩好球或三壞球",
+   "球": 5133,
+   "判決價值平均": 2.231,
+   "挑戰權價值平均": 0.768,
+   "未取整門檻": 25.619,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 7,
+   "球數": "其他球數",
+   "球": 18602,
+   "判決價值平均": 0.92,
+   "挑戰權價值平均": 0.767,
+   "未取整門檻": 45.466,
+   "卡片顯示": 45,
+   "白話": "將近一半"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 8,
+   "球數": "滿球數",
+   "球": 552,
+   "判決價值平均": 4.727,
+   "挑戰權價值平均": 0.524,
+   "未取整門檻": 9.979,
+   "卡片顯示": 10,
+   "白話": "10 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 8,
+   "球數": "兩好球或三壞球",
+   "球": 4916,
+   "判決價值平均": 2.06,
+   "挑戰權價值平均": 0.534,
+   "未取整門檻": 20.59,
+   "卡片顯示": 20,
+   "白話": "5 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 8,
+   "球數": "其他球數",
+   "球": 17851,
+   "判決價值平均": 0.858,
+   "挑戰權價值平均": 0.529,
+   "未取整門檻": 38.166,
+   "卡片顯示": 40,
+   "白話": "5 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 9,
+   "球數": "滿球數",
+   "球": 430,
+   "判決價值平均": 6.526,
+   "挑戰權價值平均": 0.32,
+   "未取整門檻": 4.68,
+   "卡片顯示": 5,
+   "白話": "20 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 9,
+   "球數": "兩好球或三壞球",
+   "球": 3773,
+   "判決價值平均": 2.793,
+   "挑戰權價值平均": 0.343,
+   "未取整門檻": 10.941,
+   "卡片顯示": 10,
+   "白話": "10 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 1,
+   "局": 9,
+   "球數": "其他球數",
+   "球": 13659,
+   "判決價值平均": 1.145,
+   "挑戰權價值平均": 0.338,
+   "未取整門檻": 22.783,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 1,
+   "球數": "滿球數",
+   "球": 558,
+   "判決價值平均": 5.546,
+   "挑戰權價值平均": 0.814,
+   "未取整門檻": 12.792,
+   "卡片顯示": 15,
+   "白話": "7 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 1,
+   "球數": "兩好球或三壞球",
+   "球": 5205,
+   "判決價值平均": 2.431,
+   "挑戰權價值平均": 0.81,
+   "未取整門檻": 25.0,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 1,
+   "球數": "其他球數",
+   "球": 18442,
+   "判決價值平均": 0.991,
+   "挑戰權價值平均": 0.809,
+   "未取整門檻": 44.959,
+   "卡片顯示": 45,
+   "白話": "將近一半"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 2,
+   "球數": "滿球數",
+   "球": 468,
+   "判決價值平均": 5.248,
+   "挑戰權價值平均": 0.732,
+   "未取整門檻": 12.238,
+   "卡片顯示": 10,
+   "白話": "10 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 2,
+   "球數": "兩好球或三壞球",
+   "球": 4993,
+   "判決價值平均": 2.243,
+   "挑戰權價值平均": 0.731,
+   "未取整門檻": 24.582,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 2,
+   "球數": "其他球數",
+   "球": 17955,
+   "判決價值平均": 0.909,
+   "挑戰權價值平均": 0.728,
+   "未取整門檻": 44.472,
+   "卡片顯示": 45,
+   "白話": "將近一半"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 3,
+   "球數": "滿球數",
+   "球": 459,
+   "判決價值平均": 5.467,
+   "挑戰權價值平均": 0.653,
+   "未取整門檻": 10.671,
+   "卡片顯示": 10,
+   "白話": "10 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 3,
+   "球數": "兩好球或三壞球",
+   "球": 4845,
+   "判決價值平均": 2.343,
+   "挑戰權價值平均": 0.654,
+   "未取整門檻": 21.814,
+   "卡片顯示": 20,
+   "白話": "5 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 3,
+   "球數": "其他球數",
+   "球": 17924,
+   "判決價值平均": 0.949,
+   "挑戰權價值平均": 0.654,
+   "未取整門檻": 40.805,
+   "卡片顯示": 40,
+   "白話": "5 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 4,
+   "球數": "滿球數",
+   "球": 478,
+   "判決價值平均": 5.615,
+   "挑戰權價值平均": 0.565,
+   "未取整門檻": 9.146,
+   "卡片顯示": 9,
+   "白話": "11 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 4,
+   "球數": "兩好球或三壞球",
+   "球": 4847,
+   "判決價值平均": 2.388,
+   "挑戰權價值平均": 0.568,
+   "未取整門檻": 19.226,
+   "卡片顯示": 20,
+   "白話": "5 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 4,
+   "球數": "其他球數",
+   "球": 17823,
+   "判決價值平均": 0.948,
+   "挑戰權價值平均": 0.569,
+   "未取整門檻": 37.52,
+   "卡片顯示": 40,
+   "白話": "5 次裡有 2 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 5,
+   "球數": "滿球數",
+   "球": 423,
+   "判決價值平均": 5.4,
+   "挑戰權價值平均": 0.471,
+   "未取整門檻": 8.017,
+   "卡片顯示": 8,
+   "白話": "12 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 5,
+   "球數": "兩好球或三壞球",
+   "球": 4680,
+   "判決價值平均": 2.247,
+   "挑戰權價值平均": 0.481,
+   "未取整門檻": 17.627,
+   "卡片顯示": 20,
+   "白話": "5 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 5,
+   "球數": "其他球數",
+   "球": 17512,
+   "判決價值平均": 0.91,
+   "挑戰權價值平均": 0.477,
+   "未取整門檻": 34.412,
+   "卡片顯示": 35,
+   "白話": "3 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 6,
+   "球數": "滿球數",
+   "球": 550,
+   "判決價值平均": 5.866,
+   "挑戰權價值平均": 0.394,
+   "未取整門檻": 6.297,
+   "卡片顯示": 6,
+   "白話": "17 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 6,
+   "球數": "兩好球或三壞球",
+   "球": 4980,
+   "判決價值平均": 2.352,
+   "挑戰權價值平均": 0.385,
+   "未取整門檻": 14.069,
+   "卡片顯示": 15,
+   "白話": "7 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 6,
+   "球數": "其他球數",
+   "球": 18287,
+   "判決價值平均": 0.942,
+   "挑戰權價值平均": 0.381,
+   "未取整門檻": 28.809,
+   "卡片顯示": 30,
+   "白話": "10 次裡有 3 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 7,
+   "球數": "滿球數",
+   "球": 573,
+   "判決價值平均": 5.289,
+   "挑戰權價值平均": 0.28,
+   "未取整門檻": 5.027,
+   "卡片顯示": 5,
+   "白話": "20 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 7,
+   "球數": "兩好球或三壞球",
+   "球": 5133,
+   "判決價值平均": 2.231,
+   "挑戰權價值平均": 0.277,
+   "未取整門檻": 11.043,
+   "卡片顯示": 10,
+   "白話": "10 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 7,
+   "球數": "其他球數",
+   "球": 18602,
+   "判決價值平均": 0.92,
+   "挑戰權價值平均": 0.276,
+   "未取整門檻": 23.098,
+   "卡片顯示": 25,
+   "白話": "4 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 8,
+   "球數": "滿球數",
+   "球": 552,
+   "判決價值平均": 4.727,
+   "挑戰權價值平均": 0.161,
+   "未取整門檻": 3.301,
+   "卡片顯示": 3,
+   "白話": "30 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 8,
+   "球數": "兩好球或三壞球",
+   "球": 4916,
+   "判決價值平均": 2.06,
+   "挑戰權價值平均": 0.166,
+   "未取整門檻": 7.449,
+   "卡片顯示": 7,
+   "白話": "14 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 8,
+   "球數": "其他球數",
+   "球": 17851,
+   "判決價值平均": 0.858,
+   "挑戰權價值平均": 0.164,
+   "未取整門檻": 16.072,
+   "卡片顯示": 15,
+   "白話": "7 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 9,
+   "球數": "滿球數",
+   "球": 430,
+   "判決價值平均": 6.526,
+   "挑戰權價值平均": 0.073,
+   "未取整門檻": 1.104,
+   "卡片顯示": 1,
+   "白話": "100 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 9,
+   "球數": "兩好球或三壞球",
+   "球": 3773,
+   "判決價值平均": 2.793,
+   "挑戰權價值平均": 0.08,
+   "未取整門檻": 2.787,
+   "卡片顯示": 3,
+   "白話": "30 次裡有 1 次"
+  },
+  {
+   "剩餘次數": 2,
+   "局": 9,
+   "球數": "其他球數",
+   "球": 13659,
+   "判決價值平均": 1.145,
+   "挑戰權價值平均": 0.079,
+   "未取整門檻": 6.449,
+   "卡片顯示": 6,
+   "白話": "17 次裡有 1 次"
+  }
+ ]
+}
+</script>
+
+  <script>
+    function getTierClass(val) {
+      if (val <= 10) return 'tier-1';
+      if (val <= 30) return 'tier-2';
+      return 'tier-3';
+    }
+
+    function renderCards() {
+      const replayData = JSON.parse(document.getElementById('card-replay').textContent);
+      const absData = JSON.parse(document.getElementById('card-abs').textContent);
+
+      const innings = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+      // 1. 渲染正面：重播挑戰 (2 列 x 9 欄)
+      const frontContainer = document.getElementById('front-table-container');
+      const fTable = document.createElement('table');
+      fTable.className = 'card-table';
+
+      // 表頭
+      const fThead = document.createElement('thead');
+      const fHeadTr = document.createElement('tr');
+      fHeadTr.innerHTML = '<th class="th-row-title" style="width: 22mm;">剩餘次數</th>' + 
+        innings.map(inn => `<th>${inn} 局</th>`).join('');
+      fThead.appendChild(fHeadTr);
+      fTable.appendChild(fThead);
+
+      // 表身 (2 列: 還剩 2 次, 只剩 1 次)
+      const fTbody = document.createElement('tbody');
+      [2, 1].forEach(r => {
+        const tr = document.createElement('tr');
+        const th = document.createElement('th');
+        th.className = 'th-row-header';
+        th.textContent = r === 2 ? '還剩 2 次' : '只剩 1 次';
+        tr.appendChild(th);
+
+        innings.forEach(inn => {
+          const td = document.createElement('td');
+          const item = replayData['門檻卡'].find(x => x['剩餘次數'] === r && x['局'] === inn);
+          if (item) {
+            const tier = getTierClass(item['卡片顯示']);
+            td.className = tier;
+            td.innerHTML = `
+              <div class="front-cell-box">
+                <div class="front-val">${item['卡片顯示']}%</div>
+                <div class="front-desc">${item['白話']}</div>
+              </div>
+            `;
+          } else {
+            td.textContent = '--';
+          }
+          tr.appendChild(td);
+        });
+        fTbody.appendChild(tr);
+      });
+      fTable.appendChild(fTbody);
+      frontContainer.appendChild(fTable);
+      document.getElementById('front-version-text').textContent = '版本：' + replayData['版本'];
+
+      // 2. 渲染背面：好壞球挑戰 (上下兩區塊，各 3 列 x 9 欄)
+      const absContainer = document.getElementById('abs-blocks-container');
+      const countTypes = ['滿球數', '兩好球或三壞球', '其他球數'];
+
+      [2, 1].forEach(r => {
+        const block = document.createElement('div');
+
+        const bHeader = document.createElement('div');
+        bHeader.className = 'abs-block-header';
+        bHeader.textContent = r === 2 ? '還剩 2 次挑戰權' : '只剩 1 次挑戰權';
+        block.appendChild(bHeader);
+
+        const table = document.createElement('table');
+        table.className = 'card-table';
+
+        // 表頭
+        const thead = document.createElement('thead');
+        const hTr = document.createElement('tr');
+        hTr.innerHTML = '<th class="th-row-title" style="width: 25mm;">球數 \ 局數</th>' + 
+          innings.map(inn => `<th>${inn} 局</th>`).join('');
+        thead.appendChild(hTr);
+        table.appendChild(thead);
+
+        // 表身 (3 列)
+        const tbody = document.createElement('tbody');
+        countTypes.forEach(cnt => {
+          const tr = document.createElement('tr');
+          const th = document.createElement('th');
+          th.className = cnt === '兩好球或三壞球' ? 'th-row-header th-long' : 'th-row-header';
+          th.textContent = cnt === '兩好球或三壞球' ? '兩好球或三壞球\n（不含滿球數）' : cnt;   // 11/16 收斂終審：只改顯示的字
+          tr.appendChild(th);
+
+          innings.forEach(inn => {
+            const td = document.createElement('td');
+            const item = absData['門檻卡'].find(x => x['剩餘次數'] === r && x['局'] === inn && x['球數'] === cnt);
+            if (item) {
+              const tier = getTierClass(item['卡片顯示']);
+              td.className = tier;
+              td.innerHTML = `
+                <div class="abs-cell-box">
+                  <div class="abs-val">${item['卡片顯示']}%</div>
+                </div>
+              `;
+            } else {
+              td.textContent = '--';
+            }
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        block.appendChild(table);
+        absContainer.appendChild(block);
+      });
+      document.getElementById('back-version-text').textContent = '版本：' + absData['版本'];
+    }
+
+    document.addEventListener('DOMContentLoaded', renderCards);
+  </script>
+<a href="../" style="position:fixed;left:10px;bottom:10px;z-index:9999;background:#12355b;color:#fff;padding:6px 12px;border-radius:16px;font:14px sans-serif;text-decoration:none;opacity:.9" class="noprint">← 回首頁</a><style>@media print{.noprint{display:none}}</style>
+</body>
+</html>
