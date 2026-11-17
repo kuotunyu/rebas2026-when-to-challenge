@@ -52,7 +52,7 @@ ul{margin:6px 0 6px 20px;padding:0}
 <div class="noprint sitenav"><a class="sn-brand" href="../">挑戰研究員</a><span class="sn-links"><a href="../">首頁</a><a href="../demo/">互動 Demo</a><a href="../calculator/" class="on">計算機</a><a href="../card/">門檻卡列印版</a></span></div><style>.sitenav{background:#0f3b45;display:flex;align-items:center;gap:14px;padding:0 16px;height:46px;font:15px/1.2 system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #ffffff22}.sitenav a{color:#efe9dc;text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.86}.sitenav a:hover,.sitenav a.on{background:#ffffff22;opacity:1}.sitenav .sn-brand{font-weight:800;letter-spacing:.04em;opacity:1;padding-left:0}.sitenav .sn-links{display:flex;gap:2px;margin-left:auto}@media print{.noprint{display:none}}@media(max-width:560px){.sitenav{padding:0 6px;gap:2px}.sitenav .sn-brand{display:none}.sitenav .sn-links{margin-left:0}.sitenav a{padding:6px 8px}}@media(max-width:350px){.sitenav{font-size:13.5px}.sitenav a{padding:6px 5px}}</style>
 <div class="wrap">
   <h1>挑戰門檻計算機</h1>
-  <p class="sub">這個判決，該不該用掉一次挑戰權？填兩個勝率，馬上知道「把握要超過多少才值得挑」。</p>
+  <p class="sub">這個判決，該不該用掉一次挑戰權？填兩個勝率，馬上知道「把握要超過多少才值得挑戰」。</p>
   <div class="tabs" id="tabs">
     <button data-t="calc" class="on">快速計算</button><button data-t="cards">門檻卡</button><button data-t="custom">自訂係數</button><button data-t="about">公式與說明</button>
   </div>
@@ -86,7 +86,7 @@ ul{margin:6px 0 6px 20px;padding:0}
     <div class="card">
       <h2>結果</h2>
       <div class="grid">
-        <div><div class="note" id="pLabel">把握超過這個數字就挑</div><div class="big" id="pstar">–</div><div class="note" id="pstarWords"></div></div>
+        <div><div class="note" id="pLabel">把握超過這個數字就挑戰</div><div class="big" id="pstar">–</div><div class="note" id="pstarWords"></div></div>
         <div><div class="note">判決價值 ΔW</div><div style="font-size:26px;font-weight:800" id="vOut">–</div><div class="note">挑戰權價值 C</div><div style="font-size:26px;font-weight:800" id="cOut">–</div></div>
         <div><div class="note">門檻卡上這一格寫的是</div><div style="font-size:26px;font-weight:800" id="cardOut">–</div><div class="note" id="cardWhere"></div></div>
       </div>
@@ -103,7 +103,7 @@ ul{margin:6px 0 6px 20px;padding:0}
 
   <!-- 門檻卡 -->
   <section id="cards" class="hide">
-    <div class="card"><h2>重播挑戰門檻卡</h2><p class="note">把握超過這個數字就挑。不用看分差。延長賽次數重新計算，不適用。</p><div class="scroll" id="cardReplay"></div>
+    <div class="card"><h2>重播挑戰門檻卡</h2><p class="note">把握超過這個數字就挑戰。不用看分差。延長賽次數重新計算，不適用。</p><div class="scroll" id="cardReplay"></div>
       <p><b>兩句話：</b>還剩 2 次，門檻 1–2%，失去一次的代價很小。只剩 1 次，前三局要一成多的把握（13%、13%、11%），之後每局降一點。</p></div>
     <div class="card"><h2>好壞球挑戰門檻卡（試算版）</h2><p class="note">每一局開始前，記住這一局的六個數字（三種球數 × 壘上有沒有人）。門檻四捨五入到整數。中職一軍 2027 年規則尚未公布。</p><div class="scroll" id="cardAbs"></div></div>
   </section>
@@ -120,7 +120,7 @@ ul{margin:6px 0 6px 20px;padding:0}
         <div><label>判決價值的分布（平均，個百分點）</label><select id="cShape"><option value="重播">壘上判決型（約 5.8）</option><option value="好壞球">好壞球型（約 2.0）</option></select></div>
         <div><label>判決價值倍率（1＝內建）</label><input type="number" id="cScale" min="0.1" step="0.1" value="1"></div>
         <div><label>每場幾次挑戰權</label><div class="seg" id="cR"><button data-v="1">1 次</button><button data-v="2" class="on">2 次</button><button data-v="3">3 次</button></div></div>
-        <div><label>挑成功要不要扣次數</label><div class="seg" id="cRet"><button data-v="1" class="on">成功不扣</button><button data-v="0">成功也扣</button></div></div>
+        <div><label>挑戰成功要不要扣次數</label><div class="seg" id="cRet"><button data-v="1" class="on">成功不扣</button><button data-v="0">成功也扣</button></div></div>
       </div>
       <div class="row" style="margin-top:12px"><button class="btn" id="cRun">重算</button><button class="btn ghost" id="cUse">把結果用在「快速計算」</button><span class="note" id="cMsg"></span></div>
     </div>
@@ -133,14 +133,14 @@ ul{margin:6px 0 6px 20px;padding:0}
       <h2>公式</h2>
       <div class="formula">挑戰的期望淨收益   G = p × ΔW − (1 − p) × C
 門檻              p* = C ÷ (ΔW + C)
-把握 p 超過 p* 就該挑</div>
+把握 p 超過 p* 就該挑戰</div>
       <ul>
         <li><b>p</b>：把握。你覺得這次會改判的機率。</li>
         <li><b>ΔW</b>：判決價值。兩種判決下勝率差多少（個百分點＝勝率的差 × 100）。</li>
         <li><b>C</b>：挑戰權價值。少一次挑戰權，到九局結束勝率的期望損失。用動態規劃從九局結束往回推。</li>
       </ul>
-      <p>前提是「挑成功不扣次數」：成功拿回 ΔW，失敗損失 C。判決越值錢、挑戰權越便宜，門檻就越低。所以不該等到「過半把握」才挑。</p>
-      <p>如果規則是「挑成功也扣次數」（中職 2019～2024-05-27 的規則）：不管成不成功都少一次，期望淨收益是 G = p × ΔW − C，門檻是 p* = C ÷ ΔW。在「自訂係數」選「成功也扣」再帶回快速計算時，網頁會自動改用這一條。</p>
+      <p>前提是「挑戰成功不扣次數」：成功拿回 ΔW，失敗損失 C。判決越值錢、挑戰權越便宜，門檻就越低。所以不該等到「過半把握」才挑戰。</p>
+      <p>如果規則是「挑戰成功也扣次數」（中職 2019～2024-05-27 的規則）：不管成不成功都少一次，期望淨收益是 G = p × ΔW − C，門檻是 p* = C ÷ ΔW。在「自訂係數」選「成功也扣」再帶回快速計算時，網頁會自動改用這一條。</p>
       <h3>這個網頁能做和不能做的</h3>
       <ul>
         <li>它告訴你門檻，不告訴你把握。把握要靠人看。</li>
@@ -163,7 +163,7 @@ const D = window.CALC_DATA, $ = id => document.getElementById(id);
 const st = {kind:"重播", rem:2, half:0, custom:null};
 const fmtPct = x => x < 0.095 ? x.toFixed(2) + "%" : x < 9.95 ? x.toFixed(1) + "%" : x.toFixed(0) + "%";
 const ONE = p => Math.abs(p - 100) < 1e-9;   // 剛好 100%
-const words = (p, v) => v <= 0 ? "判決沒有價值，怎樣都不值得挑" : p <= 0 ? "" : p > 100 && !ONE(p) ? "就算確定會改判也不值得挑" : ONE(p) ? "確定會改判也只是打平" : p >= 50 ? "把握要超過約 " + fmtPct(p) : "大約 " + Math.max(2, Math.round(100 / p)) + " 次裡有 1 次會改判，就值得挑";
+const words = (p, v) => v <= 0 ? "判決沒有價值，怎樣都不值得挑戰" : p <= 0 ? "" : p > 100 && !ONE(p) ? "就算確定會改判也不值得挑戰" : ONE(p) ? "確定會改判也只是打平" : p >= 50 ? "把握要超過約 " + fmtPct(p) : "大約 " + Math.max(2, Math.round(100 / p)) + " 次裡有 1 次會改判，就值得挑戰";
 function seg(id, key, cb){ $(id).querySelectorAll("button").forEach(b => b.onclick = () => { $(id).querySelectorAll("button").forEach(x => x.classList.remove("on")); b.classList.add("on"); if (key) st[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; (cb || update)(); }); }
 function setSeg(id, v){ $(id).querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.v == v)); }
 // 分頁
@@ -189,17 +189,17 @@ function update(){
   $("cardOut").textContent = card ? card.卡片顯示 + "%" : "–"; $("cardWhere").textContent = card ? "剩 " + st.rem + " 次｜第 " + inn + " 局" + (st.kind === "好壞球" ? "｜" + $("count").selectedOptions[0].text + "｜壘上" + $("onb").value : "") + "（" + card.白話 + "）" : "";
   $("vOut").textContent = v.toFixed(1) + " 個百分點";
   const abs = st.kind === "好壞球", tag = abs ? "（試算）" : "";
-  $("pLabel").textContent = abs ? "把握超過這個數字就挑（好壞球是試算）" : "把握超過這個數字就挑";
+  $("pLabel").textContent = abs ? "把握超過這個數字就挑戰（好壞球是試算）" : "把握超過這個數字就挑戰";
   if (inn === 9 && st.half === 1 && +$("diff").value > 0){ $("cOut").textContent = "–"; $("pstar").textContent = "–"; $("pstarWords").textContent = "比賽已結束，不適用挑戰（九局下半主隊領先）"; $("formula").textContent = ""; $("verdict").textContent = "–"; $("verdict").className = "verdict"; $("say").textContent = "九局下半主隊領先時比賽已結束，不適用挑戰。"; $("gain").textContent = ""; $("cardOut").textContent = "–"; $("cardWhere").textContent = ""; return; }
   if (c.C === null || !(v + c.C > 0)){ $("cOut").textContent = "–"; $("pstar").textContent = "–"; $("pstarWords").textContent = c.from; $("formula").textContent = ""; $("verdict").textContent = "–"; $("verdict").className = "verdict"; $("say").textContent = ""; $("gain").textContent = ""; return; }
   const C = c.C, ded = !!c.ded, ps = v > 0 ? (ded ? C / v * 100 : C / (v + C) * 100) : Infinity, over = v > 0 && ps > 100 && !ONE(ps), p = +$("conf").value / 100, G = ded ? p * v - C : p * v - (1 - p) * C;
-  $("cOut").textContent = C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點"; $("pstar").textContent = v <= 0 ? "–" : over ? "就算確定會改判也不值得挑" : fmtPct(ps); $("pstar").style.fontSize = over ? "22px" : ""; $("pstarWords").textContent = words(ps, v) + (abs && words(ps, v) ? "（試算）" : "");
+  $("cOut").textContent = C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點"; $("pstar").textContent = v <= 0 ? "–" : over ? "就算確定會改判也不值得挑戰" : fmtPct(ps); $("pstar").style.fontSize = over ? "22px" : ""; $("pstarWords").textContent = words(ps, v) + (abs && words(ps, v) ? "（試算）" : "");
   const vsrc = vd !== "" ? "ΔW = " + v.toFixed(1) : "ΔW = | " + wa + " − " + wb + " | = " + v.toFixed(1);
-  $("formula").textContent = vsrc + " 個百分點\nC = " + C.toFixed(C < 0.1 ? 4 : 3) + " 個百分點（" + c.from + "）" + (ded ? "\n成功也扣次數：p* = C ÷ ΔW = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ " + v.toFixed(1) + " = " + (v > 0 ? fmtPct(ps) + (over ? "（超過 100%：就算確定會改判也不值得挑）" : "") : "沒有門檻（判決沒有價值）") : "\np* = C ÷ (ΔW + C) = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ (" + v.toFixed(1) + " + " + C.toFixed(C < 0.1 ? 4 : 3) + ") = " + fmtPct(ps)) +
+  $("formula").textContent = vsrc + " 個百分點\nC = " + C.toFixed(C < 0.1 ? 4 : 3) + " 個百分點（" + c.from + "）" + (ded ? "\n成功也扣次數：p* = C ÷ ΔW = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ " + v.toFixed(1) + " = " + (v > 0 ? fmtPct(ps) + (over ? "（超過 100%：就算確定會改判也不值得挑戰）" : "") : "沒有門檻（判決沒有價值）") : "\np* = C ÷ (ΔW + C) = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ (" + v.toFixed(1) + " + " + C.toFixed(C < 0.1 ? 4 : 3) + ") = " + fmtPct(ps)) +
     "\n把握 " + (p * 100).toFixed(0) + "% 時：G = " + p.toFixed(2) + " × " + v.toFixed(1) + " − " + (ded ? "" : (1 - p).toFixed(2) + " × ") + C.toFixed(3) + " = " + (G >= 0 ? "+" : "") + G.toFixed(2) + " 個百分點";
-  $("confOut").textContent = (p * 100).toFixed(0) + "%"; const tie = Math.abs(p * 100 - ps) < 1e-9, go = !tie && p * 100 > ps;   // 11/16 統一：超過門檻才挑，剛好等於是打平、判定算不挑
-  $("verdict").textContent = (tie ? "剛好打平，可挑可不挑" : go ? "挑" : "不挑") + tag; $("verdict").className = "verdict " + (go ? "go" : "no"); $("gain").textContent = "期望淨收益 " + (G >= 0 ? "+" : "") + G.toFixed(2) + " 個百分點";
-  $("say").textContent = "第 " + inn + " 局" + (st.half ? "下" : "上") + "、" + $("diff").selectedOptions[0].text + "，" + (st.rem === 2 ? "還剩 2 次" : "只剩 1 次") + st.kind + "挑戰" + (abs ? "（試算，中職一軍 2027 年規則尚未公布）" : "") + "。這個判決值 " + v.toFixed(1) + " 個勝率百分點，" + (ded ? "用掉一次的代價是 " : "失敗一次的代價是 ") + C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點，" + (v <= 0 ? "判決沒有價值，怎樣都不值得挑。" : over ? "就算確定會改判也不值得挑。" : ONE(ps) ? "確定會改判也只是打平。" : "所以只要有超過 " + fmtPct(ps) + " 的把握就值得挑。");
+  $("confOut").textContent = (p * 100).toFixed(0) + "%"; const tie = Math.abs(p * 100 - ps) < 1e-9, go = !tie && p * 100 > ps;   // 11/16 統一：超過門檻才挑戰，剛好等於是打平、判定算不挑戰
+  $("verdict").textContent = (tie ? "剛好打平，可挑戰可不挑戰" : go ? "挑戰" : "不挑戰") + tag; $("verdict").className = "verdict " + (go ? "go" : "no"); $("gain").textContent = "期望淨收益 " + (G >= 0 ? "+" : "") + G.toFixed(2) + " 個百分點";
+  $("say").textContent = "第 " + inn + " 局" + (st.half ? "下" : "上") + "、" + $("diff").selectedOptions[0].text + "，" + (st.rem === 2 ? "還剩 2 次" : "只剩 1 次") + st.kind + "挑戰" + (abs ? "（試算，中職一軍 2027 年規則尚未公布）" : "") + "。這個判決值 " + v.toFixed(1) + " 個勝率百分點，" + (ded ? "用掉一次的代價是 " : "失敗一次的代價是 ") + C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點，" + (v <= 0 ? "判決沒有價值，怎樣都不值得挑戰。" : over ? "就算確定會改判也不值得挑戰。" : ONE(ps) ? "確定會改判也只是打平。" : "所以只要有超過 " + fmtPct(ps) + " 的把握就值得挑戰。");
 }
 $("copy").onclick = () => { navigator.clipboard && navigator.clipboard.writeText($("say").textContent).then(() => { $("copied").textContent = "已複製"; setTimeout(() => $("copied").textContent = "", 1500); }); };
 // 例子
@@ -237,7 +237,7 @@ function solve(lam, mu, vq, R, retain){
 const PRE = {
   "中職重播": () => ({lam: D.重播.到達率.reduce((a,b)=>a+b,0), mu: D.重播.平均把握, shape:"重播", scale:1, R:2, ret:1}),
   "MLB 教練挑戰": () => ({lam: D.MLB教練挑戰.每隊每場, mu: D.MLB教練挑戰.平均把握, shape:"重播", scale:1, R:1, ret:1}),
-  "好壞球（簡化模型：MLB 2026 實際被挑的頻率）": () => ({lam: D.好壞球.到達率.reduce((a,b)=>a+b,0), mu: D.好壞球.平均把握, shape:"好壞球", scale:1, R:2, ret:1}),
+  "好壞球（簡化模型：MLB 2026 實際被挑戰的頻率）": () => ({lam: D.好壞球.到達率.reduce((a,b)=>a+b,0), mu: D.好壞球.平均把握, shape:"好壞球", scale:1, R:2, ret:1}),
   "中職舊制（成功也扣）": () => ({lam: D.重播.到達率.reduce((a,b)=>a+b,0), mu: D.重播.平均把握, shape:"重播", scale:1, R:2, ret:0})};
 let cst = {R:2, ret:1, label:"中職重播"};
 Object.keys(PRE).forEach(n => { const b = document.createElement("button"); b.className = "btn ghost"; b.textContent = n; b.onclick = () => { const p = PRE[n](); $("cLam").value = p.lam.toFixed(3); $("cMu").value = p.mu.toFixed(3); $("cShape").value = p.shape; $("cScale").value = p.scale; cst.R = p.R; cst.ret = p.ret; cst.label = n; setSeg("cR", p.R); setSeg("cRet", p.ret); runCustom(); }; $("presets").appendChild(b); });

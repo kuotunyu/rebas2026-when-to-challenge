@@ -7,7 +7,7 @@
 <title>挑戰研究員｜中職挑戰決策門檻卡</title>
 <meta name="description" content="這一次值不值得挑戰？用一條公式和兩張門檻卡回答中職的重播挑戰與好壞球挑戰決策。2026 野革盃台灣棒球數據黑客松初審提案的互動附件：門檻卡、計算機、規則試算沙盤。">
 <meta property="og:title" content="挑戰研究員｜中職挑戰決策門檻卡">
-<meta property="og:description" content="改判的把握超過門檻就挑。門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）。">
+<meta property="og:description" content="改判的把握超過門檻就挑戰。門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）。">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://kuotunyu.github.io/rebas2026-when-to-challenge/og-card.png">
 <meta name="theme-color" content="#0f3b45">
@@ -139,7 +139,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <p class="lead">把中職的重播挑戰和好壞球挑戰，變成教練場上查得到、球員賽前可以準備的門檻卡。</p>
 <div class="cta"><a href="#try">直接查門檻</a><a href="demo/">互動 Demo（沙盤）</a><a class="o" href="calculator/">門檻計算機</a><a class="o" href="card/">門檻卡 A6 列印版</a></div>
 <div class="keys">
-<div class="key"><b>一條公式</b><strong>把握超過門檻就挑</strong>門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）</div>
+<div class="key"><b>一條公式</b><strong>把握超過門檻就挑戰</strong>門檻 ＝ 挑戰權價值 ÷（判決價值 ＋ 挑戰權價值）</div>
 <div class="key"><b>重播挑戰</b><strong>還剩 2 次：1–2%</strong>只剩 1 次時，從一局的 13% 降到九局的 2%</div>
 <div class="key"><b>好壞球挑戰（試算）</b><strong>108 格，不能套重播</strong>依局數、球數、壘上有沒有人分格</div>
 <div class="key"><b>成品</b><strong>兩張卡、沙盤、計算機</strong>全部可以在這個網站直接操作</div>
@@ -171,19 +171,19 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 </section>
 
 <section id="formula">
-<h2>公式：把握超過門檻就挑</h2>
-<p class="prose">挑成功，拿回判決價值 ΔW；挑失敗，損失一次挑戰權的價值 C。把握是 p 時，預期賺到 p × ΔW，預期賠掉（1 − p）× C。兩邊相等時的 p 就是門檻。</p>
+<h2>公式：把握超過門檻就挑戰</h2>
+<p class="prose">挑戰成功，拿回判決價值 ΔW；挑戰失敗，損失一次挑戰權的價值 C。把握是 p 時，預期賺到 p × ΔW，預期賠掉（1 − p）× C。兩邊相等時的 p 就是門檻。</p>
 <div class="panel"><div class="formula">門檻 ＝ C ÷（ΔW ＋ C）</div>
 <p class="note" style="text-align:center;margin:0">適用「成功保留、失敗扣一次」的規則；ΔW 和 C 的單位都是勝率百分點。</p></div>
 <div class="grid2">
 <div class="panel" style="margin:0">
 <h3 style="margin-top:0">拖動把握，看天平往哪邊倒</h3>
-<svg viewBox="0 0 400 190" role="img" aria-label="天平：左邊是挑成功的預期收益，右邊是挑失敗的預期損失" style="width:100%;height:auto">
+<svg viewBox="0 0 400 190" role="img" aria-label="天平：左邊是挑戰成功的預期收益，右邊是挑戰失敗的預期損失" style="width:100%;height:auto">
 <polygon points="200,70 186,170 214,170" fill="currentColor" opacity=".25"/><rect x="150" y="168" width="100" height="8" rx="3" fill="currentColor" opacity=".35"/>
 <g id="beam"><rect x="50" y="66" width="300" height="8" rx="4" fill="#a8842c"/>
 <g class="pan" id="panL"><line x1="70" y1="72" x2="70" y2="104" stroke="currentColor" opacity=".5"/><rect x="26" y="104" width="88" height="34" rx="8" fill="#1d7a80"/><text x="70" y="126" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" id="tL">賺</text></g>
 <g class="pan" id="panR"><line x1="330" y1="72" x2="330" y2="104" stroke="currentColor" opacity=".5"/><rect x="286" y="104" width="88" height="34" rx="8" fill="#b3541e"/><text x="330" y="126" font-size="14" font-weight="700" fill="#fff" text-anchor="middle" id="tR">賠</text></g></g>
-<text x="70" y="24" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">挑成功：p × ΔW</text><text x="330" y="24" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">挑失敗：(1−p) × C</text>
+<text x="70" y="24" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">挑戰成功：p × ΔW</text><text x="330" y="24" font-size="13" fill="currentColor" text-anchor="middle" opacity=".75">挑戰失敗：(1−p) × C</text>
 </svg>
 <div class="lab">改判的把握 p：<b id="pv">10</b>%</div>
 <input type="range" id="p" min="0" max="100" step="0.5" value="10" aria-label="改判的把握">
@@ -262,7 +262,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <ol class="cards2">
 <li><b>勝率表（兩段拆解）。</b>局面切細後有 46,656 格，33% 沒有資料，直接計次連方向都可能相反。改成先算「這個半局得幾分」，再算「半局結束後的比分會不會贏」。留一年交叉驗證，預測分 10 組，和實際勝率最大差 1.5 個百分點；Brier 分數 0.157。</li>
 <li><b>挑戰權價值（從九局下往回推）。</b>手上 r 次的價值 ＝ 這個半局用掉的預期收益 ＋ 留到下個半局的價值；C ＝ 有 r 次的價值 − 有 r−1 次的價值。</li>
-<li><b>重播的潛在爭議校準。</b>現有資料無法完整標記沒被挑的判決對不對，所以假設一群潛在爭議，讓模型的挑戰次數和翻盤率對上實際資料。這組參數無法由目前的觀察定出唯一的值，是已知限制。</li>
+<li><b>重播的潛在爭議校準。</b>現有資料無法完整標記沒被挑戰的判決對不對，所以假設一群潛在爭議，讓模型的挑戰次數和翻盤率對上實際資料。這組參數無法由目前的觀察定出唯一的值，是已知限制。</li>
 <li><b>卡片。</b>現場不可能算公式，所以按局數（好壞球再加球數、壘上有沒有人）分格，每格印一個數字。</li>
 </ol>
 </section>
@@ -270,12 +270,12 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <section id="check">
 <h2>檢驗</h2>
 <ul class="cards2">
-<li><b>跨規則比較。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數（勝率表用到部分同期的比賽，所以不是整套模型完全獨立的留出檢驗）。這支持模型和跨期的整體行為相容，還不能確認每個局面的門檻都準確。</li>
-<li><b>局數。</b>被挑判決的翻盤率隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
-<li class="wide"><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比（24 組亂數；括號是按場重抽的 95% 區間，不含模型設定的不確定性）：「把握過半才挑」−0.65 勝（−0.69～−0.60），照 108 格卡挑 +0.29 勝（0.26～0.31），照精確門檻挑 +0.51 勝（0.47～0.54）。上一版不分壘上有沒有人的 54 格卡是 +0.22 勝（0.20～0.25）；108 格卡比它多 0.06 勝（0.05～0.08）。在比較的這幾種挑法裡，「把握過半才挑」最差。</li>
-<li><b>重播卡和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）；範圍是兩種把握設定的結果，不是每個局面的保證。</li>
+<li><b>跨規則比較。</b>跨期整體看，規則越寬，球隊挑戰得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數（勝率表用到部分同期的比賽，所以不是整套模型完全獨立的留出檢驗）。這支持模型和跨期的整體行為相容，還不能確認每個局面的門檻都準確。</li>
+<li><b>局數。</b>被挑戰判決的翻盤率隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
+<li class="wide"><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑戰方式比（24 組亂數；括號是按場重抽的 95% 區間，不含模型設定的不確定性）：「把握過半才挑戰」−0.65 勝（−0.69～−0.60），照 108 格卡挑戰 +0.29 勝（0.26～0.31），照精確門檻挑戰 +0.51 勝（0.47～0.54）。上一版不分壘上有沒有人的 54 格卡是 +0.22 勝（0.20～0.25）；108 格卡比它多 0.06 勝（0.05～0.08）。在比較的這幾種挑戰方式裡，「把握過半才挑戰」最差。</li>
+<li><b>重播卡和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑戰拿到照精確門檻挑戰的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）；範圍是兩種把握設定的結果，不是每個局面的保證。</li>
 <li><b>部分分場留出。</b>比賽依編號分成 1,212 場和 1,213 場，只用第一組訂挑戰權價值和卡片，在第二組評分：108 格卡 +0.27 勝（0.23～0.31）。感知、行為基準和中職的勝率模型兩組共用，所以不是整套模型的樣本外檢驗。</li>
-<li class="wide"><b>和球員實際拿回的價值比</b>（九局內）：主要設定下 108 格卡 +0.21 勝（0.13～0.29）。換成另外兩套感知模型，是 0.05 勝（−0.03～0.14）和 0.07 勝（−0.02～0.15），區間都跨過 0；感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑會低於球員實際拿回的價值。所以相對球員實際的增益，大小和是不是正的，都看感知和把握的設定。</li>
+<li class="wide"><b>和球員實際拿回的價值比</b>（九局內）：主要設定下 108 格卡 +0.21 勝（0.13～0.29）。換成另外兩套感知模型，是 0.05 勝（−0.03～0.14）和 0.07 勝（−0.02～0.15），區間都跨過 0；感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑戰會低於球員實際拿回的價值。所以相對球員實際的增益，大小和是不是正的，都看感知和把握的設定。</li>
 </ul>
 <p class="note">以上是模型內的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
 <div class="grid2">
@@ -289,7 +289,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <ul class="cards2">
 <li><b>限時操作和把握的校準還沒有驗證。</b>重播要測查卡和回報，好壞球要測記憶和剩餘次數的切換；這些流程都還沒有做現場測試。決賽前安排試用，記錄反應時間、查錯格、用錯組和決策差異。</li>
 <li><b>把握要靠人判斷。</b>把握偏高或偏低時，卡片的效果會變差，所以規劃搭配賽後對答案的回饋訓練；訓練的設計和效果測試列入決賽前的開發時程。</li>
-<li><b>重播：</b>現有資料無法完整標記沒被挑的判決對不對，所以不用挑戰次數評斷教練的決策；潛在爭議的參數無法定出唯一的值，每個球季要用新資料更新校準。</li>
+<li><b>重播：</b>現有資料無法完整標記沒被挑戰的判決對不對，所以不用挑戰次數評斷教練的決策；潛在爭議的參數無法定出唯一的值，每個球季要用新資料更新校準。</li>
 <li><b>好壞球：</b>目前評估的是跨聯盟、固定歷史投球順序下的模型價值。感知設定來自 MLB，不是中職球員的實測。</li>
 <li class="wide note1"><b>卡片上的數字每個球季要用新資料重跑；</b>公式和方法不變。</li>
 </ul>
@@ -335,7 +335,7 @@ function card(){
   const v=k==="abs"?CARD.abs[r][i][+gCnt()][+gOn()]:CARD.replay[r][i];
   const x=k==="abs"?CARD.absx[r][i][+gCnt()][+gOn()]:CARD.replayx[r][i];
   $("cardout").textContent=v+"%";
-  $("cardsay").textContent="未取整的值是 "+x+"%。改判的把握超過門檻就挑"+(k==="abs"?"（好壞球為試算）。":"。");
+  $("cardsay").textContent="未取整的值是 "+x+"%。改判的把握超過門檻就挑戰"+(k==="abs"?"（好壞球為試算）。":"。");
 }
 /* 手機：這一局的卡 */
 const mInn=seg("m-inn",mcard),mRem=seg("m-rem",mcard);
@@ -361,7 +361,7 @@ function calc(){
   $("beam").style.transform="rotate("+ang.toFixed(2)+"deg)";$("panL").style.transform="rotate("+(-ang).toFixed(2)+"deg)";$("panR").style.transform="rotate("+(-ang).toFixed(2)+"deg)";
   $("panL").style.transformOrigin="70px 72px";$("panR").style.transformOrigin="330px 72px";
   $("tL").textContent="賺 "+gain.toFixed(2);$("tR").textContent="賠 "+loss.toFixed(2);
-  $("verdict").innerHTML=Math.abs(p-th)<1e-9?"剛好打平：把握等於門檻 "+(100*th).toFixed(1)+"%。":(p>th?"<b>值得挑。</b>把握 "+(100*p).toFixed(1)+"% 高於門檻 "+(100*th).toFixed(1)+"%，預期多 "+net.toFixed(2)+" 個百分點。":"<b>不值得挑。</b>把握 "+(100*p).toFixed(1)+"% 低於門檻 "+(100*th).toFixed(1)+"%，預期少 "+(-net).toFixed(2)+" 個百分點。");
+  $("verdict").innerHTML=Math.abs(p-th)<1e-9?"剛好打平：把握等於門檻 "+(100*th).toFixed(1)+"%。":(p>th?"<b>值得挑戰。</b>把握 "+(100*p).toFixed(1)+"% 高於門檻 "+(100*th).toFixed(1)+"%，預期多 "+net.toFixed(2)+" 個百分點。":"<b>不值得挑戰。</b>把握 "+(100*p).toFixed(1)+"% 低於門檻 "+(100*th).toFixed(1)+"%，預期少 "+(-net).toFixed(2)+" 個百分點。");
 }
 ["dw","c","p"].forEach(x=>$(x).addEventListener("input",calc));
 document.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>{$("c").value=b.dataset.c;[...b.parentNode.children].forEach(x=>x.classList.toggle("on",x===b));calc()}));
