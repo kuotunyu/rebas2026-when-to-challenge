@@ -1011,7 +1011,8 @@ const op=(e,v)=>e.setAttribute("opacity",v);
   document.querySelectorAll(".stage>svg").forEach(v=>{   /* 動畫圖解：在控制列加一個放大鈕，放大的是目前這一格畫面 */
     const b=document.createElement("button");b.type="button";b.className="btn g";b.textContent="放大";b.setAttribute("aria-label","放大這張圖（目前的畫面）");b.addEventListener("click",()=>show(v));
     let ctl=v.closest(".stage").nextElementSibling;while(ctl&&!ctl.classList.contains("an-ctl"))ctl=ctl.nextElementSibling;   /* 同一塊裡可能有兩張圖，各找自己後面的控制列 */
-    if(ctl)ctl.appendChild(b);else{b.className="dgzb";b.textContent="放大這張圖";v.closest(".stage").insertAdjacentElement("afterend",b)}});
+    const re=v.id==="fld"&&$("stre");   /* 球場圖在兩欄版面裡：放大鈕不能當成舞台的下一個元素（會佔掉右欄），放到「重來」旁邊 */
+    if(ctl)ctl.appendChild(b);else if(re){b.textContent="放大球場圖";re.insertAdjacentElement("afterend",b);re.insertAdjacentText("afterend"," ")}else{b.className="dgzb";b.textContent="放大這張圖";v.closest(".stage").insertAdjacentElement("afterend",b)}});
   document.querySelectorAll("section svg:not([id])").forEach(v=>{   /* 其他靜態的小圖 */
     if(v.closest("figure.dg,.stage"))return;const b=document.createElement("button");b.type="button";b.className="dgzb";b.textContent="放大這張圖";b.addEventListener("click",()=>show(v));v.insertAdjacentElement("afterend",b)});
   document.querySelectorAll("figure.dg").forEach(f=>{
