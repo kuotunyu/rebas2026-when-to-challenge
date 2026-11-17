@@ -32,7 +32,7 @@ a{color:var(--teal)}
 .hero{background:var(--hero);color:var(--hero-ink);padding:44px 0 34px}
 .kicker{font-size:14px;letter-spacing:.14em;color:#d9b96a;margin:0 0 8px}
 h1{font-size:clamp(30px,5.4vw,50px);line-height:1.22;margin:0 0 12px;font-weight:800}
-.lead{font-size:clamp(18px,2.2vw,22px);margin:0 0 22px;max-width:36em;opacity:.95}
+.lead{font-size:clamp(18px,2.2vw,22px);margin:0 0 22px;max-width:46em;opacity:.95;text-wrap:balance}
 .cta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:26px}
 .cta a{background:#f1e7c9;color:#12303a;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:10px}
 .cta a.o{background:transparent;color:var(--hero-ink);border:1.5px solid #ffffff77}
@@ -51,7 +51,7 @@ p{margin:0 0 12px}
 .cards2{list-style:none;padding:0;margin:0 0 12px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .cards2>li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:17.5px;line-height:1.7;min-width:0}
 .cards2>li>b:first-child{display:block;color:var(--brand);font-size:18.5px;margin-bottom:2px}
-.cards2>li.wide{grid-column:1/-1}
+.cards2>li.wide{grid-column:1/-1}.cards2>li.note1>b:first-child{display:inline}
 .try{display:grid;grid-template-columns:1.5fr 1fr;gap:22px;align-items:center}
 .try .out{margin:0;text-align:center;padding:22px 16px}
 .note{color:var(--mute);font-size:16px;line-height:1.7}
@@ -69,7 +69,7 @@ th,td{border:1px solid var(--line);padding:7px 8px;text-align:center;white-space
 thead th,tbody th{background:var(--soft);font-weight:700;color:var(--brand)}
 td small{display:block;font-size:12px;color:var(--mute);font-weight:400;line-height:1.2}
 td.t1{background:var(--t1);color:var(--t1ink)}td.t2{background:var(--t2);color:var(--t2ink)}td.t3{background:var(--t3);color:var(--t3ink)}
-td.t1 small,td.t2 small,td.t3 small{color:inherit;opacity:.72}
+td.t1 small,td.t2 small,td.t3 small{color:inherit;opacity:.92}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:15px;color:var(--mute);margin:8px 0 0}
 .legend i{display:inline-block;width:16px;height:14px;border:1px solid var(--line);vertical-align:-2px;margin-right:5px}
 /* 選擇按鈕 */
@@ -80,6 +80,7 @@ td.t1 small,td.t2 small,td.t3 small{color:inherit;opacity:.72}
 .lab{font-size:14px;letter-spacing:.06em;color:var(--mute);font-weight:600}
 .out{margin-top:6px;padding:14px 16px;border-radius:12px;background:var(--soft)}
 .out .v{font-size:46px;font-weight:800;color:var(--accent);line-height:1.1}
+.out .lab,.out .note,.six .n small{color:var(--ink);opacity:.82}.six .n small{font-size:13px}
 input[type=number]{font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink);width:100%;min-height:44px}
 input[type=range]{width:100%;accent-color:var(--accent);height:34px}
 .btn{font:inherit;font-size:17px;padding:8px 16px;border-radius:10px;border:1.5px solid var(--brand);background:var(--brand);color:var(--brand-ink);cursor:pointer;font-weight:700;min-height:44px}
@@ -157,7 +158,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <rect x="8" y="70" height="30" rx="5" class="bar" id="b1" width="0" fill="#1d7a80"/><text x="16" y="91" font-size="16" font-weight="700" fill="#fff" class="fade" id="t1" opacity="0">62.1%</text>
 <text x="8" y="132" font-size="15" fill="currentColor">改判出局（半局結束）</text>
 <rect x="8" y="140" height="30" rx="5" class="bar" id="b2" width="0" fill="#b3541e"/><text x="58" y="161" font-size="16" font-weight="700" fill="currentColor" class="fade" id="t2" opacity="0">12.7%</text>
-<g class="fade" id="g3" opacity="0"><line x1="58.8" y1="182" x2="256.4" y2="182" stroke="#a8842c" stroke-width="3"/><line x1="58.8" y1="176" x2="58.8" y2="188" stroke="#a8842c" stroke-width="3"/><line x1="256.4" y1="176" x2="256.4" y2="188" stroke="#a8842c" stroke-width="3"/><text x="157" y="204" font-size="15" font-weight="700" fill="#a8842c" text-anchor="middle">判決價值 49.4 個百分點</text></g>
+<g class="fade" id="g3" opacity="0"><line x1="58.8" y1="182" x2="256.4" y2="182" stroke="#a8842c" stroke-width="3"/><line x1="58.8" y1="176" x2="58.8" y2="188" stroke="#a8842c" stroke-width="3"/><line x1="256.4" y1="176" x2="256.4" y2="188" stroke="#a8842c" stroke-width="3"/><text x="157" y="205" font-size="16" font-weight="700" fill="currentColor" text-anchor="middle">判決價值 49.4 個百分點</text></g>
 <g class="fade" id="g4" opacity="0"><rect x="8" y="218" width="3" height="20" fill="currentColor"/><text x="18" y="233" font-size="15" fill="currentColor">挑戰失敗的代價：0.02 個百分點（還剩 2 次）</text></g>
 </svg>
 <div>
@@ -271,15 +272,15 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <ul class="cards2">
 <li><b>跨規則比較。</b>跨期整體看，規則越寬，球隊挑得越多、翻盤率越低，和模型方向一致（不是每一期都如此）。中間三期共 1,492 場的挑戰結果沒有用來選參數（勝率表用到部分同期的比賽，所以不是整套模型完全獨立的留出檢驗）。這支持模型和跨期的整體行為相容，還不能確認每個局面的門檻都準確。</li>
 <li><b>局數。</b>被挑判決的翻盤率隨局數下降（1–3 局、4–6 局、7–8 局、9 局）：中職改制後 34.3% → 30.4% → 26.8% → 26.1%；MLB 教練挑戰 71.3% → 61.2% → 44.4% → 32.6%。</li>
+<li class="wide"><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比（24 組亂數；括號是按場重抽的 95% 區間，不含模型設定的不確定性）：「把握過半才挑」−0.65 勝（−0.69～−0.60），照 108 格卡挑 +0.29 勝（0.26～0.31），照精確門檻挑 +0.51 勝（0.47～0.54）。上一版不分壘上有沒有人的 54 格卡是 +0.22 勝（0.20～0.25）；108 格卡比它多 0.06 勝（0.05～0.08）。在比較的這幾種挑法裡，「把握過半才挑」最差。</li>
 <li><b>重播卡和精確門檻比。</b>對 26,279 個實際壘上判決，照卡片挑拿到照精確門檻挑的 98.8%–100.0%（還剩 2 次）和 91.4%–98.7%（只剩 1 次）；範圍是兩種把握設定的結果，不是每個局面的保證。</li>
-<li><b>好壞球卡的模擬。</b>固定 MLB 2026 的投球順序，球員只看得到帶雜訊的位置。換算每隊一季 120 場、含延長賽、和模擬的球員挑法比（24 組亂數；括號是按場重抽的 95% 區間，不含模型設定的不確定性）：「把握過半才挑」−0.65 勝（−0.69～−0.60），照 108 格卡挑 +0.29 勝（0.26～0.31），照精確門檻挑 +0.51 勝（0.47～0.54）。上一版不分壘上有沒有人的 54 格卡是 +0.22 勝（0.20～0.25）；108 格卡比它多 0.06 勝（0.05～0.08）。在比較的這幾種挑法裡，「把握過半才挑」最差。</li>
 <li><b>部分分場留出。</b>比賽依編號分成 1,212 場和 1,213 場，只用第一組訂挑戰權價值和卡片，在第二組評分：108 格卡 +0.27 勝（0.23～0.31）。感知、行為基準和中職的勝率模型兩組共用，所以不是整套模型的樣本外檢驗。</li>
-<li><b>和球員實際拿回的價值比</b>（九局內）：主要設定下 108 格卡 +0.21 勝（0.13～0.29）。換成另外兩套感知模型，是 0.05 勝（−0.03～0.14）和 0.07 勝（−0.02～0.15），區間都跨過 0；感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑會低於球員實際拿回的價值。所以相對球員實際的增益，大小和是不是正的，都看感知和把握的設定。</li>
+<li class="wide"><b>和球員實際拿回的價值比</b>（九局內）：主要設定下 108 格卡 +0.21 勝（0.13～0.29）。換成另外兩套感知模型，是 0.05 勝（−0.03～0.14）和 0.07 勝（−0.02～0.15），區間都跨過 0；感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑會低於球員實際拿回的價值。所以相對球員實際的增益，大小和是不是正的，都看感知和把握的設定。</li>
 </ul>
 <p class="note">以上是模型內的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
 <div class="grid2">
-<figure style="margin:0"><img src="figs/fig1_we_calibration.png" alt="勝率模型的預測勝率和實際勝率對照圖" loading="lazy"><figcaption class="note">勝率模型：預測和實際</figcaption></figure>
-<figure style="margin:0"><img src="figs/fig2_overturn_by_inning.png" alt="各局數的挑戰翻盤率" loading="lazy"><figcaption class="note">翻盤率隨局數的變化</figcaption></figure>
+<figure style="margin:0"><a href="figs/fig1_we_calibration.png" target="_blank" rel="noopener"><img src="figs/fig1_we_calibration.png" alt="勝率模型的預測勝率和實際勝率對照圖" loading="lazy"></a><figcaption class="note">勝率模型：預測和實際（點圖看大圖）</figcaption></figure>
+<figure style="margin:0"><a href="figs/fig2_overturn_by_inning.png" target="_blank" rel="noopener"><img src="figs/fig2_overturn_by_inning.png" alt="各局數的挑戰翻盤率" loading="lazy"></a><figcaption class="note">翻盤率隨局數的變化（點圖看大圖）</figcaption></figure>
 </div>
 </section>
 
@@ -290,7 +291,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <li><b>把握要靠人判斷。</b>把握偏高或偏低時，卡片的效果會變差，所以規劃搭配賽後對答案的回饋訓練；訓練的設計和效果測試列入決賽前的開發時程。</li>
 <li><b>重播：</b>現有資料無法完整標記沒被挑的判決對不對，所以不用挑戰次數評斷教練的決策；潛在爭議的參數無法定出唯一的值，每個球季要用新資料更新校準。</li>
 <li><b>好壞球：</b>目前評估的是跨聯盟、固定歷史投球順序下的模型價值。感知設定來自 MLB，不是中職球員的實測。</li>
-<li class="wide"><b>卡片上的數字每個球季要用新資料重跑；</b>公式和方法不變。</li>
+<li class="wide note1"><b>卡片上的數字每個球季要用新資料重跑；</b>公式和方法不變。</li>
 </ul>
 </section>
 

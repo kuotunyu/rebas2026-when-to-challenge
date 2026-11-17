@@ -49,7 +49,7 @@ ul{margin:6px 0 6px 20px;padding:0}
 </style>
 </head>
 <body>
-<div class="noprint sitenav"><a class="sn-brand" href="../">挑戰研究員</a><span class="sn-links"><a href="../">首頁</a><a href="../demo/">互動 Demo</a><a href="../calculator/" class="on">計算機</a><a href="../card/">門檻卡列印版</a></span></div><style>.sitenav{background:#0f3b45;display:flex;align-items:center;gap:14px;padding:0 16px;height:46px;font:15px/1.2 system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #ffffff22}.sitenav a{color:#efe9dc;text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.86}.sitenav a:hover,.sitenav a.on{background:#ffffff22;opacity:1}.sitenav .sn-brand{font-weight:800;letter-spacing:.04em;opacity:1;padding-left:0}.sitenav .sn-links{display:flex;gap:2px;margin-left:auto}@media print{.noprint{display:none}}@media(max-width:560px){.sitenav{padding:0 6px;gap:2px}.sitenav .sn-brand{display:none}.sitenav .sn-links{margin-left:0}.sitenav a{padding:6px 8px}}</style>
+<div class="noprint sitenav"><a class="sn-brand" href="../">挑戰研究員</a><span class="sn-links"><a href="../">首頁</a><a href="../demo/">互動 Demo</a><a href="../calculator/" class="on">計算機</a><a href="../card/">門檻卡列印版</a></span></div><style>.sitenav{background:#0f3b45;display:flex;align-items:center;gap:14px;padding:0 16px;height:46px;font:15px/1.2 system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #ffffff22}.sitenav a{color:#efe9dc;text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.86}.sitenav a:hover,.sitenav a.on{background:#ffffff22;opacity:1}.sitenav .sn-brand{font-weight:800;letter-spacing:.04em;opacity:1;padding-left:0}.sitenav .sn-links{display:flex;gap:2px;margin-left:auto}@media print{.noprint{display:none}}@media(max-width:560px){.sitenav{padding:0 6px;gap:2px}.sitenav .sn-brand{display:none}.sitenav .sn-links{margin-left:0}.sitenav a{padding:6px 8px}}@media(max-width:350px){.sitenav{font-size:13.5px}.sitenav a{padding:6px 5px}}</style>
 <div class="wrap">
   <h1>挑戰門檻計算機</h1>
   <p class="sub">這個判決，該不該用掉一次挑戰權？填兩個勝率，馬上知道「把握要超過多少才值得挑」。</p>
@@ -147,7 +147,7 @@ ul{margin:6px 0 6px 20px;padding:0}
         <li>卡片每一格是那一格的平均；精確計算用的是你選的局面，兩者不一定相同。</li>
         <li>只算九局內、還有挑戰權時；延長賽和挑戰權已經用完的情況不適用。九局下半主隊領先時比賽已經結束，不會算。</li>
         <li>內建的重播係數來自中職 2024-05-28 改制後到 2026 球季結束的例行賽（968 場，9 局內）。</li>
-        <li>內建的好壞球係數是試算（第三版）：每顆原判對球隊不利的判決球都算一次機會（MLB 2026 例行賽，每隊每場約 72 顆合資格的判決球，照打滿九局算是約 74 顆），球員的把握是「看到帶雜訊的偏離之後，這球的原判和量測不符的機率」，判決價值用中職的勝率模型。中職一軍 2027 年的規則尚未公布。</li><li>「自訂係數」用的是簡化模型：爭議出現的頻率直接用實際挑戰的頻率、把握是集中在平均附近的 Beta 分布、不分分差。內建的重播表和好壞球表都不是用這個簡化模型算的（重播表把輸入校準到模型的預測等於實際的挑戰次數和翻盤率；好壞球表用全部判決球當機會），所以自訂出來的數字會和內建表不同，只能用來看「規則或頻率改變時，價值往哪個方向動」。</li>
+        <li>內建的好壞球係數是試算：每顆原判對球隊不利的判決球都算一次機會（MLB 2026 例行賽，每隊每場約 72 顆合資格的判決球，照打滿九局算是約 74 顆），球員的把握是「看到帶雜訊的偏離之後，這球的原判和量測不符的機率」，判決價值用中職的勝率模型。中職一軍 2027 年的規則尚未公布。</li><li>「自訂係數」用的是簡化模型：爭議出現的頻率直接用實際挑戰的頻率、把握是集中在平均附近的 Beta 分布、不分分差。內建的重播表和好壞球表都不是用這個簡化模型算的（重播表把輸入校準到模型的預測等於實際的挑戰次數和翻盤率；好壞球表用全部判決球當機會），所以自訂出來的數字會和內建表不同，只能用來看「規則或頻率改變時，價值往哪個方向動」。</li>
       </ul>
       <h3>資料來源</h3>
       <p>野球革命 rebas.tw Open Data（ODC-By 授權）、中職官網文字轉播統計、MLB StatsAPI、WhartonSABI 開源資料。本頁只含統計量與模型表，不含逐場原始資料。</p>
