@@ -16,8 +16,8 @@
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      background: #e2e8f0;
-      color: #0f172a;
+      background: #ebe7dd;
+      color: #0d172a;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -31,8 +31,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #0f172a;
-        color: #f8fafc;
+        background: #0d172a;
+        color: #fbfaf7;
         padding: 8px 16px;
         border-radius: 6px;
         font-size: 12px;
@@ -41,7 +41,7 @@
         white-space: nowrap;
         flex-shrink: 0;
         margin-left: 10px;
-        background: #0284c7;
+        background: #4b7ebf;
         color: white;
         border: none;
         padding: 6px 14px;
@@ -50,11 +50,11 @@
         cursor: pointer;
       }
       .print-btn:hover {
-        background: #0369a1;
+        background: #3164a3;
       }
       .card-page {
         box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
-        border: 1px solid #cbd5e1;
+        border: 1px solid #a9cbee;
       }
     }
     /* 147 號檔：窄螢幕時卡片靠左、可以橫向捲動（只影響螢幕，列印版面不變） */
@@ -105,20 +105,20 @@
       justify-content: space-between;
       align-items: center;
       padding-bottom: 1.5mm;
-      border-bottom: 1.5px solid #0f172a;
+      border-bottom: 1.5px solid #0d172a;
     }
     .card-title {
       font-size: 13.5pt;
       font-weight: 900;
       letter-spacing: -0.2px;
-      color: #0f172a;
+      color: #0d172a;
     }
     .card-side-tag {
       font-size: 8pt;
       font-weight: 700;
       padding: 1.5px 6px;
       border-radius: 3px;
-      background: #0f172a;
+      background: #0d172a;
       color: #ffffff;
       letter-spacing: 0.5px;
     }
@@ -131,24 +131,24 @@
       text-align: center;
     }
     .card-table th, .card-table td {
-      border: 1px solid #0f172a;
+      border: 1px solid #0d172a;
       padding: 0;
       vertical-align: middle;
     }
     .card-table thead th {
-      background: #0f172a;
+      background: #0d172a;
       color: #ffffff;
       font-size: 8pt;
       font-weight: 700;
       padding: 2px 0;
     }
     .card-table thead th.th-row-title {
-      background: #1e293b;
-      color: #f8fafc;
+      background: #1f293b;
+      color: #fbfaf7;
     }
     .card-table tbody th.th-row-header {
-      background: #f1f5f9;
-      color: #0f172a;
+      background: #f7f4ef;
+      color: #0d172a;
       font-size: 8.5pt;
       font-weight: 700;
       padding: 2px 3px;
@@ -165,25 +165,25 @@
     /* 分級色彩樣式：數字越小（越該挑戰）底色越深 */
     /* 界線：10% 以下 (tier-1)、超過 10% 到 30% (tier-2)、超過 30% (tier-3)；和 getTierClass 一致 */
     .tier-1 {
-      background: #0f172a !important;
+      background: #0d172a !important;
       color: #ffffff !important;
     }
     .tier-1 .cell-desc {
-      color: #94a3b8 !important;
+      color: #96a2b8 !important;
     }
     .tier-2 {
-      background: #cbd5e1 !important;
-      color: #0f172a !important;
+      background: #a9cbee !important;
+      color: #0d172a !important;
     }
     .tier-2 .cell-desc {
-      color: #334155 !important;
+      color: #354055 !important;
     }
     .tier-3 {
       background: #ffffff !important;
-      color: #0f172a !important;
+      color: #0d172a !important;
     }
     .tier-3 .cell-desc {
-      color: #64748b !important;
+      color: #66738b !important;
     }
 
     /* 正面儲存格 */
@@ -217,7 +217,7 @@
     .abs-block-header {
       font-size: 8.5pt;
       font-weight: 800;
-      color: #0f172a;
+      color: #0d172a;
       margin-bottom: 0.8mm;
       display: flex;
       align-items: center;
@@ -228,7 +228,7 @@
       display: inline-block;
       width: 3.5mm;
       height: 3.5mm;
-      background: #0f172a;
+      background: #0d172a;
       border-radius: 1px;
     }
     .abs-cell-box {
@@ -246,17 +246,17 @@
     /* 說明與頁尾 */
     .card-notes {
       font-size: 7.5pt;
-      color: #1e293b;
+      color: #1f293b;
       line-height: 1.35;
       padding-top: 1.5mm;
-      border-top: 1px dashed #94a3b8;
+      border-top: 1px dashed #96a2b8;
     }
     .card-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 6.5pt;
-      color: #64748b;
+      color: #66738b;
       padding-top: 1mm;
     }
     .tier-legend {
@@ -274,18 +274,18 @@
     .legend-box {
       width: 3.5mm;
       height: 3mm;
-      border: 1px solid #0f172a;
+      border: 1px solid #0d172a;
       display: inline-block;
     }
     .abs108-box { height: 8.6mm; display: flex; flex-direction: column; justify-content: center; align-items: center; line-height: 1.05; }
     .abs108-val { font-size: 12.5pt; font-weight: 800; letter-spacing: -0.3px; }
     .abs108-x { font-size: 6pt; font-weight: 600; opacity: .75; }
     .th-on { font-size: 8pt; }
-    .howto { font-size: 8.6pt; line-height: 1.5; color: #0f172a; display: flex; flex-direction: column; gap: 1.6mm; margin: 2mm 0; flex: 1; }
+    .howto { font-size: 8.6pt; line-height: 1.5; color: #0d172a; display: flex; flex-direction: column; gap: 1.6mm; margin: 2mm 0; flex: 1; }
   </style>
 <style>@media screen and (max-width:700px){.card-page,.screen-toolbar{zoom:var(--z,1)} body{align-items:flex-start;padding:8px}}@media print{.card-page{zoom:1}}</style><script>(function(){var w=Math.min(screen.width||9999,window.innerWidth||9999);if(w<700)document.documentElement.style.setProperty("--z",Math.max(0.3,(w-16)/562).toFixed(3))})();</script></head>
 <body>
-<div class="noprint sitenav"><a class="sn-brand" href="../">挑戰研究員</a><span class="sn-links"><a href="../">首頁</a><a href="../demo/">互動 Demo</a><a href="../calculator/">計算機</a><a href="../card/" class="on">門檻卡列印版</a></span></div><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f3b45'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='700' text-anchor='middle' fill='%23f7f3ea' font-family='sans-serif'%3Ep*%3C/text%3E%3C/svg%3E"><style>.sitenav{background:#0f3b45;display:flex;align-items:center;gap:14px;padding:0 16px;height:46px;font:15px/1.2 system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #ffffff22}.sitenav a{color:#efe9dc;text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.86}.sitenav a:hover,.sitenav a.on{background:#ffffff22;opacity:1}.sitenav .sn-brand{font-weight:800;letter-spacing:.04em;opacity:1;padding-left:0}.sitenav .sn-links{display:flex;gap:2px;margin-left:auto}@media print{.noprint{display:none}}@media(max-width:560px){.sitenav{padding:0 6px;gap:2px}.sitenav .sn-brand{display:none}.sitenav .sn-links{margin-left:0}.sitenav a{padding:6px 8px}}@media(max-width:350px){.sitenav{font-size:13.5px}.sitenav a{padding:6px 5px}}</style>
+<div class="noprint sitenav"><a class="sn-brand" href="../">挑戰研究員</a><span class="sn-links"><a href="../">首頁</a><a href="../demo/">互動 Demo</a><a href="../calculator/">計算機</a><a href="../card/" class="on">門檻卡列印版</a></span></div><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23203458'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='700' text-anchor='middle' fill='%23f7f3ea' font-family='sans-serif'%3Ep*%3C/text%3E%3C/svg%3E"><style>.sitenav{background:#203458;display:flex;align-items:center;gap:14px;padding:0 16px;height:52px;font:17px/1.2 system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #ffffff22}.sitenav a{color:#efe9db;text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.86}.sitenav a:hover,.sitenav a.on{background:#ffffff22;opacity:1}.sitenav .sn-brand{font-weight:800;letter-spacing:.04em;opacity:1;padding-left:0}.sitenav .sn-links{display:flex;gap:2px;margin-left:auto}@media print{.noprint{display:none}}@media(max-width:560px){.sitenav{padding:0 6px;gap:2px;font-size:15px;height:46px}.sitenav .sn-brand{display:none}.sitenav .sn-links{margin-left:0}.sitenav a{padding:6px 8px}}@media(max-width:350px){.sitenav{font-size:13.5px}.sitenav a{padding:6px 5px}}</style>
 
   <div class="screen-toolbar">
     <div><strong>門檻口袋卡（A6 橫式，兩張雙面共 4 頁）</strong>｜列印或存成 PDF：紙張 A6 橫式（148 × 105 mm）、邊界選「無」、不要頁首頁尾</div>
@@ -308,7 +308,7 @@
 
     <div class="card-footer">
       <div class="tier-legend">
-        <span style="color:#0f172a;">色階標準：</span>
+        <span style="color:#0d172a;">色階標準：</span>
         <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
         <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
         <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div>
@@ -329,7 +329,7 @@
       <div><b>好壞球卡</b>（第 2 張）：還剩 2 次看正面，只剩 1 次看背面；再依球數類別和壘上有沒有人找格子。每局開始前先記住該局的六個數字，場上不查卡。</div>
       <div><b>球數類別</b>：滿球數（3 壞 2 好）；兩好球或三壞球（不含滿球數）；其他球數。</div>
       <div><b>單一局面的精確門檻</b>：用計算機查 kuotunyu.github.io/rebas2026-when-to-challenge/calculator/</div>
-      <div><b>限制</b>：好壞球是試算；卡片假設把握大致準確；延長賽不適用；尚未現場試用。</div>
+      <div><b>限制</b>：好壞球是試算；卡片假設把握大致準確；延長賽不適用；尚未現場測試。</div>
     </div>
     <div class="card-footer"><div>挑戰研究員｜2026 野革盃</div><div>版本：2026-11-17</div></div>
   </div>
@@ -343,7 +343,7 @@
       <div>把握超過格子裡的數字才挑戰。大字是四捨五入到整數的門檻，小字是未取整的值（%）。挑戰失敗一次後，翻到背面「只剩 1 次」。</div>
       <div>試算：判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和勝率模型；中職一軍細則尚未公布。108 格：局 × 球數三類 × 壘上有沒有人。</div>
     </div>
-    <div class="card-footer"><div class="tier-legend"><span style="color:#0f172a;">色階標準：</span>
+    <div class="card-footer"><div class="tier-legend"><span style="color:#0d172a;">色階標準：</span>
         <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
         <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
         <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div></div><div>版本：2026-11-17（108 格）</div></div>
@@ -358,7 +358,7 @@
       <div>把握超過格子裡的數字才挑戰。大字是四捨五入到整數的門檻，小字是未取整的值（%）。這是最後一次挑戰權。</div>
       <div>試算：判決球和感知假設取自 MLB 2026，判決價值用中職的投球資料和勝率模型；中職一軍細則尚未公布。108 格：局 × 球數三類 × 壘上有沒有人。</div>
     </div>
-    <div class="card-footer"><div class="tier-legend"><span style="color:#0f172a;">色階標準：</span>
+    <div class="card-footer"><div class="tier-legend"><span style="color:#0d172a;">色階標準：</span>
         <div class="legend-item"><span class="legend-box tier-1"></span> 10% 以下</div>
         <div class="legend-item"><span class="legend-box tier-2"></span> 超過 10%，到 30%</div>
         <div class="legend-item"><span class="legend-box tier-3"></span> 超過 30%</div></div><div>版本：2026-11-17（108 格）</div></div>
