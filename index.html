@@ -167,6 +167,21 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <h2>一個判決，兩條路</h2>
 <p class="prose">2026-06-07，客隊味全龍、主隊台鋼雄鷹。8 局下，味全 1：0 領先，兩出局、一二壘有人。台鋼打者王柏融擊出右外野安打，二壘跑者繞過三壘衝本壘，右外野手回傳本壘、捕手觸殺，原判安全，台鋼追平。防守的味全總教練有 30 秒決定要不要挑戰。</p>
 <div class="panel"><div class="story">
+<div class="stage"><svg id="fld" viewBox="0 0 420 236" role="img" aria-label="球場示意圖：二壘跑者繞過三壘衝本壘，右外野手回傳本壘，原判安全，挑戰後改判出局">
+<path d="M210 215L40 45Q210 -30 380 45Z" fill="#7fd0c8" opacity=".1"/>
+<path d="M210 215L40 45M210 215L380 45" stroke="currentColor" opacity=".35" fill="none"/>
+<path d="M210 215L290 135L210 55L130 135Z" fill="none" stroke="currentColor" opacity=".55"/>
+<path d="M290 128l7 7l-7 7l-7-7zM210 48l7 7l-7 7l-7-7zM130 128l7 7l-7 7l-7-7zM203 211h14v5l-7 6l-7-6z" fill="#efe9dc"/>
+<text x="12" y="20" font-size="13" fill="currentColor" opacity=".85">8 局下・兩出局・一二壘有人</text>
+<text id="fScore" x="12" y="41" font-size="14" font-weight="700" fill="#e0c070"></text>
+<circle cx="322" cy="64" r="6" fill="currentColor" opacity=".45"/><text x="322" y="50" font-size="12" text-anchor="middle" fill="currentColor" opacity=".8">右外野手</text>
+<g id="fOth" class="fade"><circle cx="290" cy="135" r="8" fill="#7fd0c8"/><circle cx="196" cy="222" r="8" fill="#7fd0c8"/><text x="183" y="227" font-size="12" text-anchor="end" fill="currentColor">打者王柏融</text></g>
+<text id="fLab" class="fade" x="226" y="50" font-size="12" fill="currentColor">二壘跑者</text>
+<g id="fRun"><circle r="9" fill="#7fd0c8" stroke="#fff" stroke-width="2"/></g>
+<circle id="fBall" r="4.5" fill="#fff" opacity="0"/>
+<text id="fCall" class="fade" x="230" y="222" font-size="16" font-weight="800" opacity="0"></text>
+</svg></div>
+<div>
 <svg viewBox="0 0 420 250" role="img" aria-label="判安全時台鋼勝率 62.1%，判出局時 12.7%，相差 49.4 個百分點">
 <text x="8" y="22" font-size="13" fill="currentColor" opacity=".8">台鋼雄鷹（主隊）的勝率</text>
 <text x="8" y="62" font-size="15" fill="currentColor">維持安全（追平）</text>
@@ -176,7 +191,6 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <g class="fade" id="g3" opacity="0"><line x1="58.8" y1="182" x2="256.4" y2="182" stroke="#a8842c" stroke-width="3"/><line x1="58.8" y1="176" x2="58.8" y2="188" stroke="#a8842c" stroke-width="3"/><line x1="256.4" y1="176" x2="256.4" y2="188" stroke="#a8842c" stroke-width="3"/><text x="157" y="205" font-size="16" font-weight="700" fill="currentColor" text-anchor="middle">判決價值 49.4 個百分點</text></g>
 <g class="fade" id="g4" opacity="0"><rect x="8" y="218" width="3" height="20" fill="currentColor"/><text x="18" y="233" font-size="15" fill="currentColor">挑戰失敗的代價：0.02 個百分點（還剩 2 次）</text></g>
 </svg>
-<div>
 <div class="steps" id="stdots"><i></i><i></i><i></i><i></i></div>
 <p class="cap" id="stcap"></p>
 <button class="btn" id="stnext" type="button">下一步</button> <button class="btn g" id="stre" type="button">重來</button>
@@ -310,6 +324,13 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <li><b>重播的潛在爭議校準。</b>沒被挑戰的重播判決，對不對不知道，所以假設一群潛在爭議，讓模型的挑戰次數和翻盤率對上實際資料。這組參數無法由目前的觀察定出唯一的值，是已知限制。</li>
 <li><b>卡片。</b>現場不可能算公式，所以按局數（好壞球再加球數、壘上有沒有人）分格，每格印一個數字。</li>
 </ol>
+<div class="panel">
+<h3 style="margin-top:0">動畫：兩段拆解法怎麼算勝率</h3>
+<div class="stage"><svg id="an5svg" role="img" aria-label="同一個局面用直接計次和兩段拆解法算主隊勝率的對照動畫"></svg></div>
+<p class="an-cap" id="an5cap"></p>
+<div class="an-ctl"><button class="btn" id="an5play" type="button">播放</button><button class="btn g" id="an5end" type="button">直接看結果</button></div>
+<p class="note" style="margin:12px 0 0">勝率都是主隊勝率。得分的機率和贏球機率是從中職 2023–2026 的勝率模型讀出來的，四捨五入到整數；「得 3 分以上」那一列的贏球機率是其中各種比分的加權平均。</p>
+</div>
 </section>
 
 <section id="check">
@@ -322,6 +343,13 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <li><b>部分分場留出。</b>比賽依編號分成 1,212 場和 1,213 場，只用第一組訂挑戰權價值和卡片，在第二組評分：108 格卡 +0.27 勝（0.23～0.31）。感知、行為基準和中職的勝率模型兩組共用，所以不是整套模型的樣本外檢驗。</li>
 <li class="wide"><b>和球員實際拿回的價值比</b>（九局內）：主要設定下 108 格卡 +0.21 勝（0.13～0.29）。換成另外兩套感知模型，是 0.05 勝（−0.03～0.14）和 0.07 勝（−0.02～0.15），區間都跨過 0；感知雜訊調高到 1.25 倍，或球員的把握偏高、偏低時，照卡片挑戰會低於球員實際拿回的價值。所以相對球員實際的增益，大小和是不是正的，都看感知和把握的設定。</li>
 </ul>
+<div class="panel">
+<h3 style="margin-top:0">動畫：模擬裡，球員看到的球和量測到的球</h3>
+<div class="stage"><svg id="an6svg" role="img" aria-label="好球帶邊緣附近，量測到的位置是一個點，球員看到的位置是周圍一團範圍；打者的範圍比捕手和投手大"></svg></div>
+<p class="an-cap" id="an6cap"></p>
+<div class="an-ctl"><button class="btn" id="an6play" type="button">播放</button><button class="btn g" id="an6end" type="button">直接看結果</button></div>
+<p class="note" style="margin:12px 0 0">示意圖：只畫好球帶的一條邊，小點是依誤差大小隨機畫出來的例子，不是實際的投球。誤差大小是模擬裡的設定，借用 Pathak 2026 對 MLB 球員行為的估計，不是中職球員的實測；好壞球的結果是試算。</p>
+</div>
 <p class="note">以上是模型內的檢驗，不是實際戰績；不能據此說球隊照卡片可以多拿幾勝。</p>
 <div class="grid2">
 <figure style="margin:0"><a href="figs/fig1_we_calibration.png" target="_blank" rel="noopener"><img src="figs/fig1_we_calibration.png" alt="勝率模型的預測勝率和實際勝率對照圖" loading="lazy"></a><figcaption class="note">勝率模型：預測和實際（點圖看大圖）</figcaption></figure>
@@ -412,9 +440,24 @@ function calc(){
 document.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>{$("c").value=b.dataset.c;[...b.parentNode.children].forEach(x=>x.classList.toggle("on",x===b));calc()}));
 /* 一個判決的兩條路 */
 (function(){
-  const W=318,caps=["先看局面：8 局下兩出局，台鋼落後 1 分，二壘跑者衝本壘，原判安全。按「下一步」。","如果維持安全，比賽追平，台鋼的勝率是 62.1%。","如果改判出局，半局結束，台鋼的勝率掉到 12.7%。","兩者相差 49.4 個百分點。這就是這個判決的價值，也是味全挑戰成功能拿回的東西。","味全當時還剩 2 次，挑戰失敗只損失 0.02 個百分點。代價和收益差了兩千多倍，模型算出的門檻不到 0.1%。"];
-  let st=0;
-  function draw(){
+  const W=318,caps=["先看局面：8 局下兩出局，台鋼落後 1 分，二壘跑者衝本壘，原判安全。按「下一步」。","右外野安打，二壘跑者繞過三壘衝本壘，右外野手回傳。原判安全：比賽追平，台鋼的勝率是 62.1%。","味全提出挑戰，改判出局：半局結束，比數維持 1：0，台鋼的勝率掉到 12.7%。","兩者相差 49.4 個百分點。這就是這個判決的價值，也是味全挑戰成功能拿回的東西。","味全當時還剩 2 次，挑戰失敗只損失 0.02 個百分點。代價和收益差了兩千多倍，模型算出的門檻不到 0.1%。"];
+  let st=0,prev=0,fa=[];
+  const fr=$("fRun"),fb=$("fBall"),P2=[210,55],P3=[130,135],PH=[210,215],RF=[322,64],tr=p=>"translate("+p[0]+"px,"+p[1]+"px)";
+  function field(){   /* 球場圖：只畫球和二壘跑者；其他跑者的去向提案沒有寫，所以不畫 */
+    fa.forEach(a=>a.cancel());fa=[];const hit=st>=1,call=$("fCall");
+    $("fScore").textContent=st===0?"味全 1：0 台鋼":(st===1?"原判安全，台鋼追平 1：1":"改判出局，半局結束，維持 1：0");
+    $("fOth").setAttribute("opacity",hit?.3:1);$("fLab").setAttribute("opacity",hit?0:1);
+    fr.style.transform=tr(hit?PH:P2);fb.style.transform=tr(PH);fb.setAttribute("opacity",hit?1:0);
+    call.textContent=st>=2?"改判：出局":"原判：安全";call.setAttribute("fill",st>=2?"#f0a06a":"#7fd0c8");fr.firstElementChild.setAttribute("fill",st>=2?"#f0a06a":"#7fd0c8");
+    if(st===1&&prev===0&&fr.animate&&!matchMedia("(prefers-reduced-motion: reduce)").matches){
+      call.setAttribute("opacity",0);
+      fa.push(fr.animate([{transform:tr(P2),offset:0},{transform:tr(P2),offset:.1},{transform:tr(P3),offset:.52},{transform:tr(PH),offset:1}],{duration:3000,easing:"linear"}));
+      fa.push(fb.animate([{transform:tr(PH),offset:0},{transform:tr(RF),offset:.3},{transform:tr(RF),offset:.55},{transform:tr(PH),offset:.97},{transform:tr(PH),offset:1}],{duration:3000}));
+      fa[0].onfinish=()=>call.setAttribute("opacity",1);
+    }else call.setAttribute("opacity",hit?1:0);
+    prev=st;
+  }
+  function draw(){field();
     $("b1").setAttribute("width",st>=1?W*0.621:0);$("t1").setAttribute("opacity",st>=1?1:0);
     $("b2").setAttribute("width",st>=2?W*0.127:0);$("t2").setAttribute("opacity",st>=2?1:0);
     $("g3").setAttribute("opacity",st>=3?1:0);$("g4").setAttribute("opacity",st>=4?1:0);
@@ -423,10 +466,10 @@ document.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>
   }
   const g3=$("g3").querySelectorAll("line");g3[0].setAttribute("x1",8+W*0.127);g3[0].setAttribute("x2",8+W*0.621);g3[1].setAttribute("x1",8+W*0.127);g3[1].setAttribute("x2",8+W*0.127);g3[2].setAttribute("x1",8+W*0.621);g3[2].setAttribute("x2",8+W*0.621);$("g3").querySelector("text").setAttribute("x",8+W*0.374);
   $("stnext").addEventListener("click",()=>{if(st<4){st++;draw()}});$("stre").addEventListener("click",()=>{st=0;draw()});draw();
-  if("IntersectionObserver" in window){let played=false;new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!played){played=true;let k=0;const t=setInterval(()=>{if(st>=4||k++>3){clearInterval(t);return}st++;draw()},1500)}})},{threshold:.6}).observe($("story"))}
+  if("IntersectionObserver" in window){let played=false;new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!played){played=true;const D=[1500,4800,2800,2800];(function go(){if(st>=4)return;setTimeout(()=>{if(st<4){st++;draw();go()}},D[st])})()}})},{threshold:.6}).observe($("story"))}
 })();
 /* 概念動畫一：往回推（數字由 build_site.py 從 work/dp_C_diff.csv 讀進來） */
-const ANIM={"lat": [{"t": 15, "d": 1, "c": "0.24", "cont": "0.22", "e": [[1, "75"]], "rest": "25", "over": false}, {"t": 15, "d": 0, "c": "0.39", "cont": "0.29", "e": [[0, "75"], [1, "13"]], "rest": "11", "over": false}, {"t": 15, "d": -1, "c": "0.41", "cont": "0.25", "e": [[-1, "75"], [0, "13"], [1, "6"]], "rest": "5", "over": false}, {"t": 16, "d": 1, "c": "0.26", "cont": "0.04", "e": [[1, "75"], [0, "13"], [-1, "6"]], "rest": "5", "over": false}, {"t": 16, "d": 0, "c": "0.32", "cont": "0.16", "e": [[0, "75"], [-1, "13"]], "rest": "11", "over": false}, {"t": 16, "d": -1, "c": "0.25", "cont": "0.22", "e": [[-1, "75"]], "rest": "25", "over": false}, {"t": 17, "d": 1, "c": "0.00", "cont": "0.00", "e": [], "rest": "", "over": true}, {"t": 17, "d": 0, "c": "0.16", "cont": "0.00", "e": [], "rest": "", "over": false}, {"t": 17, "d": -1, "c": "0.25", "cont": "0.00", "e": [], "rest": "", "over": false}], "th": {"dw": "17.2", "c1": "0.63", "p1": "3.5", "c2": "0.045", "p2": "0.3", "hi": "30", "lo": "3"}, "back": {"c1": [0.9329, 0.9077, 0.893, 0.8735, 0.8621, 0.836, 0.8291, 0.7872, 0.7572, 0.7254, 0.6852, 0.6371, 0.5943, 0.5247, 0.4803, 0.3866, 0.3202, 0.1574], "c2": [0.1118, 0.1055, 0.1008, 0.0951, 0.0905, 0.0843, 0.0801, 0.0719, 0.0655, 0.058, 0.0512, 0.0434, 0.0368, 0.0287, 0.0227, 0.0151, 0.0096, 0.0027], "s1": ["0.93", "0.91", "0.89", "0.87", "0.86", "0.84", "0.83", "0.79", "0.76", "0.73", "0.69", "0.64", "0.59", "0.52", "0.48", "0.39", "0.32", "0.16"], "s2": ["0.112", "0.106", "0.101", "0.095", "0.091", "0.084", "0.080", "0.072", "0.066", "0.058", "0.051", "0.043", "0.037", "0.029", "0.023", "0.015", "0.010", "0.003"]}};
+const ANIM={"two": {"safe": {"rows": [{"p": 0.3423, "ps": "34", "w": 0.8366, "ws": "84"}, {"p": 0.382, "ps": "38", "w": 0.5729, "ws": "57"}, {"p": 0.129, "ps": "13", "w": 0.3969, "ws": "40"}, {"p": 0.1468, "ps": "15", "w": 0.1774, "ws": "18"}], "res": "58.2", "n": 7, "win": 6, "dir": "85.7"}, "out": {"rows": [{"p": 0.7407, "ps": "74", "w": 0.8366, "ws": "84"}, {"p": 0.2025, "ps": "20", "w": 0.5729, "ws": "57"}, {"p": 0.0366, "ps": "4", "w": 0.3969, "ws": "40"}, {"p": 0.0202, "ps": "2", "w": 0.2033, "ws": "20"}], "res": "75.4", "n": 6, "win": 5, "dir": "83.3"}, "ddiff": "−2.4", "diff": "17.2"}, "per": {"bat": "2.5", "def": "1.7"}, "lat": [{"t": 15, "d": 1, "c": "0.24", "cont": "0.22", "e": [[1, "75"]], "rest": "25", "over": false}, {"t": 15, "d": 0, "c": "0.39", "cont": "0.29", "e": [[0, "75"], [1, "13"]], "rest": "11", "over": false}, {"t": 15, "d": -1, "c": "0.41", "cont": "0.25", "e": [[-1, "75"], [0, "13"], [1, "6"]], "rest": "5", "over": false}, {"t": 16, "d": 1, "c": "0.26", "cont": "0.04", "e": [[1, "75"], [0, "13"], [-1, "6"]], "rest": "5", "over": false}, {"t": 16, "d": 0, "c": "0.32", "cont": "0.16", "e": [[0, "75"], [-1, "13"]], "rest": "11", "over": false}, {"t": 16, "d": -1, "c": "0.25", "cont": "0.22", "e": [[-1, "75"]], "rest": "25", "over": false}, {"t": 17, "d": 1, "c": "0.00", "cont": "0.00", "e": [], "rest": "", "over": true}, {"t": 17, "d": 0, "c": "0.16", "cont": "0.00", "e": [], "rest": "", "over": false}, {"t": 17, "d": -1, "c": "0.25", "cont": "0.00", "e": [], "rest": "", "over": false}], "th": {"dw": "17.2", "c1": "0.63", "p1": "3.5", "c2": "0.045", "p2": "0.3", "hi": "30", "lo": "3"}, "back": {"c1": [0.9329, 0.9077, 0.893, 0.8735, 0.8621, 0.836, 0.8291, 0.7872, 0.7572, 0.7254, 0.6852, 0.6371, 0.5943, 0.5247, 0.4803, 0.3866, 0.3202, 0.1574], "c2": [0.1118, 0.1055, 0.1008, 0.0951, 0.0905, 0.0843, 0.0801, 0.0719, 0.0655, 0.058, 0.0512, 0.0434, 0.0368, 0.0287, 0.0227, 0.0151, 0.0096, 0.0027], "s1": ["0.93", "0.91", "0.89", "0.87", "0.86", "0.84", "0.83", "0.79", "0.76", "0.73", "0.69", "0.64", "0.59", "0.52", "0.48", "0.39", "0.32", "0.16"], "s2": ["0.112", "0.106", "0.101", "0.095", "0.091", "0.084", "0.080", "0.072", "0.066", "0.058", "0.051", "0.043", "0.037", "0.029", "0.023", "0.015", "0.010", "0.003"]}};
 const NS="http://www.w3.org/2000/svg";
 function sv(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e}
 const noMotion=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -661,6 +704,108 @@ const op=(e,v)=>e.setAttribute("opacity",v);
     focus(K);cap.textContent=CAP.end;done=true;
   }
   animCtl({svg:svg,btn:$("an4play"),end:$("an4end"),build:nar=>{build(nar);reset();cap.textContent=CAP.start},play:play,finish:finish});
+})();
+/* 概念動畫五：兩段拆解法（數字由 build_site.py 從 we_model 和提案 Slide 4 讀進來） */
+(function(){
+  const svg=$("an5svg"),cap=$("an5cap"),T=ANIM.two,GOLD="#e0c070",TEAL="#7fd0c8",HOT="#f0a06a";
+  const RN=["得 0 分","得 1 分","得 2 分","得 3 分以上"],SC=["領先 1 分","平手","落後 1 分","落後 2 分以上"],NM={safe:"判安全",out:"判出局"},DS={safe:"一三壘、1 出局",out:"三壘、2 出局"};
+  let G;
+  function build(nar){
+    const W=nar?360:720,H=nar?338:376,f=nar?12:15,x0=nar?10:40,sq=nar?13:18,yA=nar?46:58,rA=nar?24:32,xs=x0+(nar?52:72),
+      yD=yA+2*rA+(nar?12:10),yH=yD+(nar?22:28),yC=yH+(nar?40:30),yR=yC+(nar?24:28),rh=nar?26:30,
+      b1=nar?82:160,W1=nar?100:230,c3=nar?190:410,b2=nar?272:540,W2=nar?58:140;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.textContent="";
+    const add=(n,a,t)=>svg.appendChild(sv(n,a,t));
+    G={sq:{safe:[],out:[]},dp:{},row:[],W1:W1,W2:W2,b1:b1,b2:b2};
+    add("text",{x:x0,y:nar?20:26,"font-size":f+2,"font-weight":800,fill:"currentColor"},"直接計次");
+    const lx=x0+(nar?86:110);add("rect",{x:lx,y:(nar?20:26)-sq+3,width:sq-3,height:sq-3,rx:2,fill:TEAL});add("text",{x:lx+sq+2,y:nar?20:26,"font-size":f-1,fill:"currentColor",opacity:.75},"主隊贏");
+    add("rect",{x:lx+(nar?64:84),y:(nar?20:26)-sq+3,width:sq-3,height:sq-3,rx:2,fill:"none",stroke:"currentColor","stroke-opacity":.6});add("text",{x:lx+(nar?64:84)+sq+2,y:nar?20:26,"font-size":f-1,fill:"currentColor",opacity:.75},"主隊輸");
+    ["safe","out"].forEach((k,j)=>{const y=yA+j*rA,d=T[k];
+      add("text",{x:x0,y:y,"font-size":f,fill:"currentColor"},NM[k]);
+      for(let i=0;i<d.n;i++)G.sq[k].push(add("rect",{x:xs+i*(sq+3),y:y-sq+3,width:sq,height:sq,rx:2,fill:i<d.win?TEAL:"none",stroke:i<d.win?TEAL:"currentColor","stroke-opacity":i<d.win?1:.6,class:"an-f",opacity:0}));
+      G.dp[k]=add("text",{x:xs+7*(sq+3)+8,y:y,"font-size":f+1,"font-weight":700,fill:"currentColor",class:"an-f",opacity:0},d.dir+"%（"+d.n+" 場）")});
+    G.dv=add("text",{x:x0,y:yD-(nar?-6:0),"font-size":f+1,"font-weight":800,fill:HOT,class:"an-f",opacity:0},"出局比安全 "+T.ddiff+" 個百分點：方向相反");
+    G.tb=add("g",{class:"an-f",opacity:0});const tb=(n,a,t)=>G.tb.appendChild(sv(n,a,t));
+    tb("line",{x1:x0,x2:W-x0,y1:yD+(nar?16:12),y2:yD+(nar?16:12),stroke:"currentColor",opacity:.25});
+    tb("text",{x:x0,y:yH+(nar?14:12),"font-size":f+2,"font-weight":800,fill:"currentColor"},"兩段拆解法");
+    G.hs=tb("text",{x:nar?x0:x0+110,y:yH+(nar?32:12),"font-size":f,fill:GOLD,"font-weight":700});
+    tb("text",{x:x0,y:yC+(nar?10:14),"font-size":f-1.5,fill:"currentColor",opacity:.7},nar?"客隊再得幾分、多常見":"這個半局客隊再得幾分、有多常見");
+    tb("text",{x:c3,y:yC+(nar?10:14),"font-size":f-1.5,fill:"currentColor",opacity:.7},nar?"半局結束 → 主隊贏球機率":"半局結束時的比分 → 主隊的贏球機率");
+    for(let i=0;i<4;i++){const y=yR+i*rh+(nar?8:14),g=G.tb.appendChild(sv("g",{class:"an-f",opacity:0})),a=(n,o,t)=>g.appendChild(sv(n,o,t));
+      a("text",{x:x0,y:y,"font-size":f,fill:"currentColor"},RN[i]);
+      const p=a("rect",{x:b1,y:y-(nar?11:13),width:W1,height:nar?14:16,rx:2,fill:GOLD,class:"an-barx"}),pt=a("text",{y:y,"font-size":f,"font-weight":700,fill:GOLD});
+      const w3=a("text",{x:c3,y:y,"font-size":f,fill:"currentColor",class:"an-f",opacity:0},SC[i]);
+      const w=a("rect",{x:b2,y:y-(nar?11:13),width:W2,height:nar?14:16,rx:2,fill:TEAL,class:"an-barx"}),wt=a("text",{y:y,"font-size":f,"font-weight":700,fill:TEAL,class:"an-f",opacity:0});
+      G.row.push({g:g,p:p,pt:pt,w:w,wt:wt,w3:w3})}
+    const yS=yR+4*rh+(nar?14:22);
+    G.r1=add("text",{x:x0,y:yS,"font-size":f+2,"font-weight":800,fill:"currentColor",class:"an-f",opacity:0},"判安全 "+T.safe.res+"%");
+    G.r2=add("text",{x:x0+(nar?112:160),y:yS,"font-size":f+2,"font-weight":800,fill:"currentColor",class:"an-f",opacity:0},"判出局 "+T.out.res+"%");
+    G.r3=add("text",{x:nar?x0+224:x0+330,y:yS,"font-size":nar?f+1:f+2,"font-weight":800,fill:TEAL,class:"an-f",opacity:0},nar?"差 +"+T.diff:"出局比安全 +"+T.diff+" 個百分點");
+  }
+  function state(k,showW){G.hs.textContent=NM[k]+"（"+DS[k]+"）";T[k].rows.forEach((d,i)=>{const r=G.row[i];
+    r.p.style.transform="scaleX("+d.p+")";r.pt.textContent=d.ps+"%";r.pt.setAttribute("x",G.b1+d.p*G.W1+5);
+    r.w.style.transform="scaleX("+(showW?d.w:0)+")";r.wt.textContent=d.ws+"%";r.wt.setAttribute("x",G.b2+d.w*G.W2+4);op(r.wt,showW?1:0);op(r.w3,showW?1:0)})}
+  function reset(){[...G.sq.safe,...G.sq.out,G.dp.safe,G.dp.out,G.dv,G.tb,G.r1,G.r2,G.r3,...G.row.map(r=>r.g)].forEach(e=>op(e,0));G.row.forEach(r=>{r.p.style.transform="";r.w.style.transform="";op(r.wt,0);op(r.w3,0)});G.hs.textContent="";svg.getBoundingClientRect()}
+  const CAP=["例子：6 局上、主隊領先 1 分，客隊進攻。一個壘上判決，判安全是一三壘 1 出局，判出局是三壘 2 出局。判出局對防守的主隊有利，主隊的勝率應該比較高。",
+    "直接計次：找歷史上完全相同的局面，數主隊贏了幾場。判安全只有 "+T.safe.n+" 場，判出局只有 "+T.out.n+" 場。",
+    "算出來判出局反而比較低（"+T.ddiff+" 個百分點），方向相反。樣本太少了。",
+    "兩段拆解法，第一段：判安全之後，這個半局客隊還會再得幾分、各有多常見。這一步可以合併其他局數、分差裡同樣是一三壘 1 出局的資料。",
+    "第二段：半局結束時的比分，各自接上下個半局開始時主隊的贏球機率。",
+    "每一列的兩個數字相乘，再全部加起來：判安全時主隊勝率 "+T.safe.res+"%。",
+    "判出局（三壘、2 出局）用同樣的算法：客隊不再得分的機會變成 "+T.out.rows[0].ps+"%，主隊勝率 "+T.out.res+"%。",
+    "判出局比判安全高 "+T.diff+" 個百分點，方向對了。這個差就是這個判決的價值 ΔW。"];
+  function finish(){reset();[...G.sq.safe,...G.sq.out,G.dp.safe,G.dp.out,G.dv,G.tb,G.r1,G.r2,G.r3,...G.row.map(r=>r.g)].forEach(e=>op(e,1));state("out",true);cap.textContent=CAP[7]}
+  async function play(w){
+    reset();cap.textContent=CAP[0];if(!await w(6500))return;
+    cap.textContent=CAP[1];for(const k of ["safe","out"]){for(const q of G.sq[k]){op(q,1);if(!await w(160))return}op(G.dp[k],1);if(!await w(900))return}
+    if(!await w(2600))return;cap.textContent=CAP[2];op(G.dv,1);if(!await w(4600))return;
+    cap.textContent=CAP[3];op(G.tb,1);state("safe",false);G.row.forEach(r=>r.p.style.transform="");svg.getBoundingClientRect();
+    for(let i=0;i<4;i++){op(G.row[i].g,1);G.row[i].p.style.transform="scaleX("+T.safe.rows[i].p+")";if(!await w(700))return}
+    if(!await w(4200))return;cap.textContent=CAP[4];state("safe",true);if(!await w(5200))return;
+    cap.textContent=CAP[5];op(G.r1,1);if(!await w(4200))return;
+    cap.textContent=CAP[6];state("out",true);if(!await w(1200))return;op(G.r2,1);if(!await w(4600))return;
+    cap.textContent=CAP[7];op(G.r3,1);
+  }
+  animCtl({svg:svg,btn:$("an5play"),end:$("an5end"),build:nar=>{build(nar);reset();cap.textContent=CAP[0]},play:play,finish:finish});
+})();
+/* 概念動畫六：球員看到的球和量測到的球（誤差大小由 build_site.py 從提案 Slide 10 讀進來；小點是示意） */
+(function(){
+  const svg=$("an6svg"),cap=$("an6cap"),P=ANIM.per,TEAL="#7fd0c8",HOT="#f0a06a",FAR=-6.5,NEAR=.6,ND=16;
+  const KS=[{nm:"打者",s:+P.bat,t:P.bat},{nm:"捕手和投手",s:+P.def,t:P.def}];
+  let seed=20261117;const rnd=()=>{seed=(seed*1664525+1013904223)>>>0;return (seed+.5)/4294967296},nrm=()=>Math.sqrt(-2*Math.log(rnd()))*Math.cos(6.2831853*rnd());
+  const Z=KS.map(()=>Array.from({length:ND},()=>[nrm(),rnd()*2-1]));   /* 固定的亂數，每次播放畫的點都一樣 */
+  let G,U;
+  function build(nar){
+    const W=nar?360:720,H=nar?286:330,pw=nar?170:330,gap=nar?10:30,x0=nar?5:15,yt=nar?40:50,yb=H-(nar?40:46),cy=(yt+yb)/2+(nar?8:10),ry=(yb-yt)*.3,f=nar?12:15;
+    U=nar?8.5:17;svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.textContent="";
+    const add=(n,a,t)=>svg.appendChild(sv(n,a,t)),df=add("defs",{});G=[];
+    KS.forEach((k,j)=>{const px=x0+j*(pw+gap),ex=px+pw*.56;
+      df.appendChild(sv("clipPath",{id:"an6c"+j})).appendChild(sv("rect",{x:px,y:yt,width:pw,height:yb-yt}));
+      add("text",{x:px+pw/2,y:nar?22:28,"font-size":f+1,"font-weight":800,"text-anchor":"middle",fill:"currentColor"},k.nm+"：誤差約 "+k.t+" 吋");
+      add("rect",{x:px,y:yt,width:ex-px,height:yb-yt,fill:TEAL,opacity:.13});add("rect",{x:px,y:yt,width:pw,height:yb-yt,fill:"none",stroke:"currentColor","stroke-opacity":.3,rx:2});
+      add("line",{x1:ex,x2:ex,y1:yt,y2:yb,stroke:"currentColor","stroke-width":2.5,opacity:.85});
+      add("text",{x:px+8,y:yt+(nar?16:20),"font-size":f-1,fill:TEAL},"好球帶內");add("text",{x:px+pw-8,y:yt+(nar?16:20),"font-size":f-1,"text-anchor":"end",fill:HOT},"好球帶外");
+      const c=add("g",{"clip-path":"url(#an6c"+j+")"}),g=c.appendChild(sv("g",{class:"an-m"})),bd=g.appendChild(sv("g",{class:"an-f",opacity:0}));
+      bd.appendChild(sv("ellipse",{cx:0,cy:cy,rx:2*k.s*U,ry:ry,fill:"#fff",opacity:.08}));bd.appendChild(sv("ellipse",{cx:0,cy:cy,rx:k.s*U,ry:ry*.8,fill:"#fff",opacity:.12}));
+      const dots=Z[j].map(z=>g.appendChild(sv("circle",{cx:z[0]*k.s*U,cy:cy+z[1]*ry*.7,r:nar?3:4,class:"an-f",opacity:0})));
+      g.appendChild(sv("circle",{cx:0,cy:cy,r:nar?6:8,fill:"#fff",stroke:"#0a1a20","stroke-width":2}));
+      G.push({g:g,bd:bd,dots:dots,ex:ex,s:k.s})});
+    const yl=H-(nar?14:16);add("circle",{cx:x0+8,cy:yl-4,r:nar?5:6,fill:"#fff"});add("text",{x:x0+18,y:yl,"font-size":f-1,fill:"currentColor",opacity:.85},"量測到的位置");
+    add("circle",{cx:x0+(nar?112:140),cy:yl-4,r:nar?3:4,fill:TEAL});add("circle",{cx:x0+(nar?122:152),cy:yl-4,r:nar?3:4,fill:HOT});add("text",{x:x0+(nar?130:162),y:yl,"font-size":f-1,fill:"currentColor",opacity:.85},"球員看到的位置（示意）");
+  }
+  function place(d){G.forEach((p,j)=>{p.g.style.transform="translate("+(p.ex+d*U)+"px,0)";p.dots.forEach((c,i)=>c.setAttribute("fill",d+Z[j][i][0]*p.s<0?TEAL:HOT))})}
+  function reset(){G.forEach(p=>{op(p.bd,0);p.dots.forEach(c=>op(c,0))});place(FAR);svg.getBoundingClientRect()}
+  const CAP=["白點是量測到的位置。模擬裡，球員看不到它，只看得到「量測位置加上誤差」。",
+    "誤差的大小借用 Pathak 2026 對 MLB 球員的估計：打者約 "+P.bat+" 吋，捕手和投手約 "+P.def+" 吋。球離好球帶邊緣遠的時候，看到的位置幾乎都在同一邊，不難判斷。",
+    "球靠近邊緣時，看到的位置有時在帶內、有時在帶外，就很難確定原判和量測符不符。打者的誤差比較大，更難確定。",
+    "所以球越靠近邊緣，改判的把握越說不準。這是模擬裡的設定，取自 MLB 球員的行為估計，不是中職球員的實測；好壞球的結果是試算。"];
+  function finish(){G.forEach(p=>{op(p.bd,1);p.dots.forEach(c=>op(c,1))});place(NEAR);cap.textContent=CAP[3]}
+  async function play(w){
+    reset();cap.textContent=CAP[0];if(!await w(4600))return;
+    cap.textContent=CAP[1];G.forEach(p=>op(p.bd,1));for(let i=0;i<ND;i++){G.forEach(p=>op(p.dots[i],1));if(!await w(130))return}
+    if(!await w(6000))return;cap.textContent=CAP[2];place(NEAR);if(!await w(7000))return;cap.textContent=CAP[3];
+  }
+  animCtl({svg:svg,btn:$("an6play"),end:$("an6end"),build:nar=>{build(nar);reset();cap.textContent=CAP[0]},play:play,finish:finish});
 })();
 /* 導覽目前位置 */
 (function(){const links=[...document.querySelectorAll("#topnav a, #tab a")];if(!("IntersectionObserver" in window))return;
