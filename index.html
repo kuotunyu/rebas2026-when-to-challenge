@@ -2,6 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f3b45'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='700' text-anchor='middle' fill='%23f7f3ea' font-family='sans-serif'%3Ep*%3C/text%3E%3C/svg%3E">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>挑戰研究員｜中職挑戰決策門檻卡</title>
 <meta name="description" content="這一次值不值得挑戰？用一條公式和兩張門檻卡回答中職的重播挑戰與好壞球挑戰決策。2026 野革盃台灣棒球數據黑客松初審提案的互動附件：門檻卡、計算機、規則試算沙盤。">
@@ -147,7 +148,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <text x="8" y="62" font-size="15" fill="currentColor">維持安全（追平）</text>
 <rect x="8" y="70" height="30" rx="5" class="bar" id="b1" width="0" fill="#1d7a80"/><text x="16" y="91" font-size="16" font-weight="700" fill="#fff" class="fade" id="t1" opacity="0">62.1%</text>
 <text x="8" y="132" font-size="15" fill="currentColor">改判出局（半局結束）</text>
-<rect x="8" y="140" height="30" rx="5" class="bar" id="b2" width="0" fill="#b3541e"/><text x="16" y="161" font-size="16" font-weight="700" fill="#fff" class="fade" id="t2" opacity="0">12.7%</text>
+<rect x="8" y="140" height="30" rx="5" class="bar" id="b2" width="0" fill="#b3541e"/><text x="58" y="161" font-size="16" font-weight="700" fill="currentColor" class="fade" id="t2" opacity="0">12.7%</text>
 <g class="fade" id="g3" opacity="0"><line x1="58.8" y1="182" x2="256.4" y2="182" stroke="#a8842c" stroke-width="3"/><line x1="58.8" y1="176" x2="58.8" y2="188" stroke="#a8842c" stroke-width="3"/><line x1="256.4" y1="176" x2="256.4" y2="188" stroke="#a8842c" stroke-width="3"/><text x="157" y="204" font-size="15" font-weight="700" fill="#a8842c" text-anchor="middle">判決價值 49.4 個百分點</text></g>
 <g class="fade" id="g4" opacity="0"><rect x="8" y="218" width="3" height="20" fill="currentColor"/><text x="18" y="233" font-size="15" fill="currentColor">挑戰失敗的代價：0.02 個百分點（還剩 2 次）</text></g>
 </svg>
@@ -356,7 +357,7 @@ function calc(){
 document.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>{$("c").value=b.dataset.c;[...b.parentNode.children].forEach(x=>x.classList.toggle("on",x===b));calc()}));
 /* 一個判決的兩條路 */
 (function(){
-  const W=318,caps=["先看局面：8 局下兩出局，台鋼落後 1 分，二壘跑者衝本壘，原判安全。按「下一步」。","如果維持安全，比賽追平，台鋼的勝率是 62.1%。","如果改判出局，半局結束，台鋼的勝率掉到 12.7%。","兩者相差 49.4 個百分點。這就是這個判決的價值，也是味全挑戰成功能拿回的東西。","味全當時還剩 2 次，挑戰失敗只損失 0.02 個百分點。代價和收益差了兩千多倍，門檻不到 0.1%：有一點懷疑就值得挑。"];
+  const W=318,caps=["先看局面：8 局下兩出局，台鋼落後 1 分，二壘跑者衝本壘，原判安全。按「下一步」。","如果維持安全，比賽追平，台鋼的勝率是 62.1%。","如果改判出局，半局結束，台鋼的勝率掉到 12.7%。","兩者相差 49.4 個百分點。這就是這個判決的價值，也是味全挑戰成功能拿回的東西。","味全當時還剩 2 次，挑戰失敗只損失 0.02 個百分點。代價和收益差了兩千多倍，模型算出的門檻不到 0.1%。"];
   let st=0;
   function draw(){
     $("b1").setAttribute("width",st>=1?W*0.621:0);$("t1").setAttribute("opacity",st>=1?1:0);
