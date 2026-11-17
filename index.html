@@ -97,7 +97,18 @@ input[type=range]{width:100%;accent-color:var(--accent);height:34px}
 /* 天平 */
 #beam{transition:transform .5s cubic-bezier(.2,.7,.2,1);transform-origin:200px 70px}
 .pan{transition:transform .5s cubic-bezier(.2,.7,.2,1)}
-@media (prefers-reduced-motion:reduce){.bar,.fade,#beam,.pan{transition:none}html{scroll-behavior:auto}}
+/* 概念動畫（黑板式的舞台，淺色深色主題都用深底） */
+.stage{background:var(--hero);color:var(--hero-ink);border-radius:6px;padding:12px 10px 6px}
+.stage svg{width:100%;height:auto;display:block;touch-action:manipulation}
+.an-bar{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(0);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.an-bar.on{transform:scaleY(1)}
+.an-f{transition:opacity .5s}
+.an-barx{transform-box:fill-box;transform-origin:0 50%;transform:scaleX(0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.an-zone{transform-box:fill-box;transform-origin:100% 50%;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.an-m{transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.an-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.an-cap{min-height:3.6em;font-size:20px;margin:12px 0 10px}
+@media (prefers-reduced-motion:reduce){.bar,.fade,#beam,.pan,.an-bar,.an-f,.an-barx,.an-zone,.an-m{transition:none}html{scroll-behavior:auto}}
 /* 手機：這一局的卡 */
 .inn-card{display:none}
 .six{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:center;font-size:17px}
@@ -118,6 +129,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
   .try{gap:10px}.try .out{text-align:left;padding:14px 16px}
   section{padding:24px 0 2px}
   .cap{min-height:5.4em;font-size:inherit}
+  .an-cap{min-height:6.2em;font-size:inherit}.stage{padding:10px 2px 4px;margin:0 -14px}
   .full-tables{display:none}.inn-card{display:block}
   .tab{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--hero);border-top:1px solid #ffffff22;padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
   .tab a{flex:1;text-align:center;color:var(--hero-ink);text-decoration:none;font-size:14px;padding:9px 2px;border-radius:8px;opacity:.82}
@@ -131,7 +143,7 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <body>
 <div class="nav"><div class="wrap">
 <a class="brand" href="#top">挑戰研究員</a>
-<nav id="topnav"><a href="#story">一個判決</a><a href="#formula">公式</a><a href="#try">查門檻</a><a href="#cards">門檻卡</a><a href="#method">方法</a><a href="#check">檢驗</a><a href="#limits">邊界</a><a href="#tools">工具</a></nav>
+<nav id="topnav"><a href="#story">一個判決</a><a href="#formula">公式</a><a href="#anim">往回推</a><a href="#try">查門檻</a><a href="#cards">門檻卡</a><a href="#method">方法</a><a href="#check">檢驗</a><a href="#limits">邊界</a><a href="#tools">工具</a></nav>
 <button class="tgl" id="tgl" type="button" aria-label="切換淺色或深色">深色</button>
 </div></div>
 
@@ -177,6 +189,13 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 <p class="prose">挑戰成功，拿回判決價值 ΔW；挑戰失敗，損失一次挑戰權的價值 C。把握是 p 時，預期賺到 p × ΔW，預期賠掉（1 − p）× C。兩邊相等時的 p 就是門檻。</p>
 <div class="panel"><div class="formula">門檻 ＝ C ÷（ΔW ＋ C）</div>
 <p class="note" style="text-align:center;margin:0">適用「成功保留、失敗扣一次」的規則；ΔW 和 C 的單位都是勝率百分點。</p></div>
+<div class="panel">
+<h3 style="margin-top:0">動畫：門檻怎麼來，把握放進去會怎樣</h3>
+<div class="stage"><svg id="an2svg" role="img" aria-label="判決價值和挑戰權價值兩條長條，推出門檻，再放進把握判斷值不值得挑戰的動畫"></svg></div>
+<p class="an-cap" id="an2cap"></p>
+<div class="an-ctl"><button class="btn" id="an2play" type="button">播放</button><button class="btn g" id="an2end" type="button">直接看結果</button></div>
+<p class="note" style="margin:12px 0 0">例子是提案裡的壘上判決：六局上、主隊領先 1 分。門檻用未取整的值算。</p>
+</div>
 <div class="grid2">
 <div class="panel" style="margin:0">
 <h3 style="margin-top:0">拖動把握，看天平往哪邊倒</h3>
@@ -207,6 +226,17 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 </div>
 </section>
 
+<section id="anim">
+<h2>挑戰權價值 C 怎麼算：從九局往回推</h2>
+<p class="prose">公式裡的挑戰權價值 C 不是猜的，是從比賽的最後面一個半局一個半局往回算出來的。</p>
+<div class="panel">
+<div class="stage"><svg id="an1svg" role="img" aria-label="重播挑戰、比分平手時，挑戰權價值從九局結束的 0 往回推到一局上的動畫"></svg></div>
+<p class="an-cap" id="an1cap"></p>
+<div class="an-ctl"><button class="btn" id="an1play" type="button">播放</button><button class="btn g" id="an1end" type="button">直接看結果</button></div>
+<p class="note" style="margin:12px 0 0">重播挑戰、每個半局開始時比分平手的值，單位是勝率百分點。每一局有兩格：左邊是上半局，右邊是下半局。播完後可以點任何一格看那個半局的數字。</p>
+</div>
+</section>
+
 <section id="try">
 <h2>直接查門檻</h2>
 <div class="panel try"><div>
@@ -225,6 +255,12 @@ footer{border-top:1px solid var(--line);margin-top:50px;padding:20px 0 90px;colo
 
 <section id="cards">
 <h2>兩張門檻卡</h2>
+<div class="panel">
+<h3 style="margin-top:0">動畫：重播的門檻一局一局往下降</h3>
+<div class="stage"><svg id="an3svg" role="img" aria-label="重播門檻卡兩列的門檻隨局數變化的動畫"></svg></div>
+<p class="an-cap" id="an3cap"></p>
+<div class="an-ctl"><button class="btn" id="an3play" type="button">播放</button><button class="btn g" id="an3end" type="button">直接看結果</button></div>
+</div>
 <div class="inn-card panel">
 <h3 style="margin-top:0">這一局要看的數字</h3>
 <div class="lab">局數</div><div class="seg inn" id="m-inn"></div>
@@ -381,6 +417,185 @@ document.querySelectorAll("[data-c]").forEach(b=>b.addEventListener("click",()=>
   const g3=$("g3").querySelectorAll("line");g3[0].setAttribute("x1",8+W*0.127);g3[0].setAttribute("x2",8+W*0.621);g3[1].setAttribute("x1",8+W*0.127);g3[1].setAttribute("x2",8+W*0.127);g3[2].setAttribute("x1",8+W*0.621);g3[2].setAttribute("x2",8+W*0.621);$("g3").querySelector("text").setAttribute("x",8+W*0.374);
   $("stnext").addEventListener("click",()=>{if(st<4){st++;draw()}});$("stre").addEventListener("click",()=>{st=0;draw()});draw();
   if("IntersectionObserver" in window){let played=false;new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&!played){played=true;let k=0;const t=setInterval(()=>{if(st>=4||k++>3){clearInterval(t);return}st++;draw()},1500)}})},{threshold:.6}).observe($("story"))}
+})();
+/* 概念動畫一：往回推（數字由 build_site.py 從 work/dp_C_diff.csv 讀進來） */
+const ANIM={"th": {"dw": "17.2", "c1": "0.63", "p1": "3.5", "c2": "0.045", "p2": "0.3", "hi": "30", "lo": "3"}, "back": {"c1": [0.9329, 0.9077, 0.893, 0.8735, 0.8621, 0.836, 0.8291, 0.7872, 0.7572, 0.7254, 0.6852, 0.6371, 0.5943, 0.5247, 0.4803, 0.3866, 0.3202, 0.1574], "c2": [0.1118, 0.1055, 0.1008, 0.0951, 0.0905, 0.0843, 0.0801, 0.0719, 0.0655, 0.058, 0.0512, 0.0434, 0.0368, 0.0287, 0.0227, 0.0151, 0.0096, 0.0027], "s1": ["0.93", "0.91", "0.89", "0.87", "0.86", "0.84", "0.83", "0.79", "0.76", "0.73", "0.69", "0.64", "0.59", "0.52", "0.48", "0.39", "0.32", "0.16"], "s2": ["0.112", "0.106", "0.101", "0.095", "0.091", "0.084", "0.080", "0.072", "0.066", "0.058", "0.051", "0.043", "0.037", "0.029", "0.023", "0.015", "0.010", "0.003"]}};
+const NS="http://www.w3.org/2000/svg";
+function sv(n,a,t){const e=document.createElementNS(NS,n);for(const k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e}
+const noMotion=()=>matchMedia("(prefers-reduced-motion: reduce)").matches;
+(function(){
+  const svg=$("an1svg"),cap=$("an1cap"),btn=$("an1play"),mq=matchMedia("(max-width:820px)"),D=ANIM.back,N=D.c1.length;
+  const GOLD="#e0c070",TEAL="#7fd0c8",HOT="#f0a06a";
+  const name=t=>((t>>1)+1)+" 局"+(t%2?"下":"上");
+  let G={},run=0,phase=0,done=false;
+  function build(){
+    const nar=mq.matches,W=nar?360:720,H=nar?318:372,x0=nar?34:58,x1=W-(nar?26:44),yt=nar?92:112,yb=H-(nar?30:48),slot=(x1-x0)/N,bw=slot*.72,f=nar?11:13,sc=(yb-yt)/1.0;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.textContent="";
+    G={l1:sv("text",{x:x0,y:nar?20:26,"font-size":nar?13:15,fill:"currentColor",opacity:.8}),
+       l2:sv("text",{x:x0,y:nar?46:58,"font-size":nar?21:27,"font-weight":800,fill:GOLD}),
+       l3:sv("text",{x:x0,y:nar?72:90,"font-size":nar?21:27,"font-weight":800,fill:TEAL,class:"an-f",opacity:0}),b1:[],b2:[],hit:[]};
+    [0,.5,1].forEach(v=>{const y=yb-v*sc;svg.appendChild(sv("line",{x1:x0,x2:x1+slot*.9,y1:y,y2:y,stroke:"currentColor",opacity:v?.16:.5}));svg.appendChild(sv("text",{x:x0-6,y:y+4,"font-size":f,"text-anchor":"end",fill:"currentColor",opacity:.7},v===0?"0":v.toFixed(1)))});
+    for(let t=0;t<N;t++){
+      const x=x0+t*slot+(slot-bw)/2,h1=Math.max(1.5,D.c1[t]*sc),h2=Math.max(1.5,D.c2[t]*sc);
+      svg.appendChild(sv("rect",{x:x,y:yt,width:bw,height:yb-yt,fill:"currentColor",opacity:.05,rx:2}));
+      G.b1[t]=svg.appendChild(sv("rect",{x:x,y:yb-h1,width:bw,height:h1,fill:GOLD,rx:2,class:"an-bar"}));
+      G.b2[t]=svg.appendChild(sv("rect",{x:x,y:yb-h2,width:bw,height:h2,fill:TEAL,class:"an-bar"}));
+      if(t%2===0){svg.appendChild(sv("line",{x1:x0+t*slot,x2:x0+t*slot,y1:yb,y2:yb+6,stroke:"currentColor",opacity:.5}));
+        svg.appendChild(sv("text",{x:x0+(t+1)*slot,y:yb+(nar?19:34),"font-size":nar?13:15,"text-anchor":"middle",fill:"currentColor"},(t>>1)+1))}
+      if(!nar)svg.appendChild(sv("text",{x:x0+(t+.5)*slot,y:yb+15,"font-size":10.5,"text-anchor":"middle",fill:"currentColor",opacity:.6},t%2?"下":"上"));
+    }
+    svg.appendChild(sv("text",{x:x0-6,y:yb+(nar?19:34),"font-size":nar?12:14,"text-anchor":"end",fill:"currentColor",opacity:.7},"局"));
+    const xe=x0+N*slot;
+    G.end=svg.appendChild(sv("g",{class:"an-f",opacity:.35}));
+    G.end.appendChild(sv("line",{x1:xe,x2:xe,y1:yt,y2:yb+6,stroke:HOT,"stroke-width":2,"stroke-dasharray":"5 4"}));
+    G.end.appendChild(sv("text",{x:xe+5,y:yt+12,"font-size":f,fill:HOT,"font-weight":700},nar?"終":"九局"));
+    if(!nar)G.end.appendChild(sv("text",{x:xe+5,y:yt+28,"font-size":f,fill:HOT,"font-weight":700},"結束"));
+    G.end.appendChild(sv("text",{x:xe+5,y:yb-4,"font-size":nar?14:17,fill:HOT,"font-weight":800},"0"));
+    G.ring=svg.appendChild(sv("rect",{y:yt-3,width:slot,height:yb-yt+6,fill:"none",stroke:HOT,"stroke-width":2,rx:3,class:"an-f",opacity:0}));
+    G.arc=svg.appendChild(sv("path",{fill:"none",stroke:HOT,"stroke-width":2,"stroke-linecap":"round",class:"an-f",opacity:0}));
+    G.pos=t=>{const xa=x0+(t+.5)*slot,xb=xa+slot,ya=yb-(t+1<N?D.c1[t+1]*sc:0)-8,yc=yb-D.c1[t]*sc-8,top=Math.min(ya,yc)-(nar?16:22);
+      G.ring.setAttribute("x",x0+t*slot);G.arc.setAttribute("d","M"+xb+" "+ya+" Q"+(xa+xb)/2+" "+top+" "+xa+" "+yc+" m0 0 l"+(nar?6:8)+" -1 m-"+(nar?6:8)+" 1 l1 -"+(nar?7:9))};
+    for(let t=0;t<N;t++){const h=svg.appendChild(sv("rect",{x:x0+t*slot,y:yt,width:slot,height:yb-yt+(nar?24:40),fill:"transparent",style:"cursor:pointer"}));h.addEventListener("click",()=>{if(done){mark(t);read(t,true)}})}
+    [G.l1,G.l2,G.l3].forEach(e=>svg.appendChild(e));
+  }
+  function mark(t){G.pos(t);G.ring.setAttribute("opacity",1)}
+  function read(t,both){G.l1.textContent=name(t)+"開始，比分平手";G.l2.textContent="只剩 1 次　C ＝ "+D.s1[t];G.l3.textContent="還剩 2 次　C ＝ "+D.s2[t];G.l3.setAttribute("opacity",both?1:0)}
+  function dur(ms){[...G.b1,...G.b2].forEach(b=>b.style.transitionDuration=ms+"ms")}
+  function reset(){dur(0);[...G.b1,...G.b2].forEach(b=>b.classList.remove("on"));G.ring.setAttribute("opacity",0);G.arc.setAttribute("opacity",0);G.end.setAttribute("opacity",.35);G.l1.textContent="";G.l2.textContent="";G.l3.setAttribute("opacity",0);done=false;svg.getBoundingClientRect()}
+  function finish(){run++;reset();[...G.b1,...G.b2].forEach(b=>b.classList.add("on"));G.end.setAttribute("opacity",1);mark(0);read(0,true);cap.textContent=CAP.end;done=true;phase=2;btn.textContent="重播"}
+  const CAP={
+    start:"一場比賽有九局、18 個半局。手上的挑戰權值多少？從最後面開始算。",
+    zero:"九局打完，沒用掉的挑戰權就作廢，所以九局結束時，挑戰權價值是 0。",
+    last:"往回一個半局。"+name(N-1)+"開始時比分平手：這個半局還可能出現值得挑戰的判決，所以留著最後一次挑戰權，預期可以多拿回 "+D.s1[N-1]+" 個百分點。",
+    prev:"再往回一個半局。"+name(N-2)+"的價值 ＝ 這個半局用掉的預期收益 ＋ 留到下個半局的價值，合起來是 "+D.s1[N-2]+"。",
+    sweep:"每一格都用同一個算法，接在後一格上面，一路推回一局上。",
+    top:"推到一局上：只剩 1 次時，C ＝ "+D.s1[0]+" 個百分點。越早，後面還能用到的機會越多，挑戰權越值錢。",
+    two:"還剩 2 次時，用同樣的方法再推一遍。少掉一次，手上還有一次，所以這一次的價值小很多。",
+    end:"開賽平手時，只剩 1 次的挑戰權值 "+D.s1[0]+" 個百分點，還剩 2 次時只值 "+D.s2[0]+"。門檻公式裡的 C，就是這樣算出來的。"};
+  async function play(){
+    const me=++run,w=ms=>new Promise(r=>setTimeout(()=>r(me===run),ms));
+    if(noMotion()){finish();return}
+    reset();phase=1;btn.textContent="重播";cap.textContent=CAP.start;if(!await w(2200))return;
+    G.end.setAttribute("opacity",1);G.l1.textContent="九局結束";G.l2.textContent="C ＝ 0";cap.textContent=CAP.zero;if(!await w(3000))return;
+    const step=(t,ms)=>{dur(ms);G.pos(t);G.ring.setAttribute("opacity",1);G.arc.setAttribute("opacity",1);G.b1[t].classList.add("on");read(t,false)};
+    step(N-1,900);cap.textContent=CAP.last;if(!await w(4600))return;
+    step(N-2,900);cap.textContent=CAP.prev;if(!await w(4600))return;
+    cap.textContent=CAP.sweep;
+    for(let t=N-3;t>=0;t--){step(t,360);if(!await w(t>N-6?900:420))return}
+    G.arc.setAttribute("opacity",0);cap.textContent=CAP.top;if(!await w(4200))return;
+    cap.textContent=CAP.two;dur(300);
+    for(let t=N-1;t>=0;t--){G.b2[t].classList.add("on");mark(t);read(t,true);if(!await w(150))return}
+    if(!await w(1200))return;
+    cap.textContent=CAP.end;done=true;phase=2;
+  }
+  build();cap.textContent=CAP.start;
+  btn.addEventListener("click",play);$("an1end").addEventListener("click",finish);
+  mq.addEventListener("change",()=>{run++;build();if(phase)finish()});
+  if("IntersectionObserver" in window){new IntersectionObserver((es,o)=>{es.forEach(e=>{if(e.isIntersecting&&!phase){o.disconnect();play()}})},{threshold:.6}).observe(svg)}
+})();
+/* 動畫二、三共用：播放、重播、直接看結果、版面切換、捲到才自動播一次 */
+function animCtl(o){
+  const mq=matchMedia("(max-width:820px)");let run=0,started=false;
+  const start=async()=>{const me=++run;started=true;o.btn.textContent="重播";if(noMotion()){o.finish();return}await o.play(ms=>new Promise(r=>setTimeout(()=>r(me===run),ms)))};
+  const fin=()=>{run++;started=true;o.btn.textContent="重播";o.finish()};
+  o.build(mq.matches);o.btn.addEventListener("click",start);o.end.addEventListener("click",fin);
+  mq.addEventListener("change",()=>{run++;o.build(mq.matches);if(started)o.finish()});
+  if("IntersectionObserver" in window)new IntersectionObserver((es,ob)=>{es.forEach(e=>{if(e.isIntersecting&&!started){ob.disconnect();start()}})},{threshold:.6}).observe(o.svg);
+}
+const op=(e,v)=>e.setAttribute("opacity",v);
+/* 概念動畫二：門檻判斷（數字由 build_site.py 從提案 Slide 4、5、8 讀進來） */
+(function(){
+  const svg=$("an2svg"),cap=$("an2cap"),E=ANIM.th,TEAL="#7fd0c8",HOT="#f0a06a",GOLD="#e0c070";
+  let G,X;
+  const tB=k=>"挑戰失敗，損失挑戰權價值 C ＝ "+(k===1?E.c1+"（只剩 1 次）":E.c2+"（還剩 2 次）");
+  const e3=k=>"＝ "+(k===1?E.c1:E.c2)+" ÷（"+E.dw+" ＋ "+(k===1?E.c1:E.c2)+"）＝ "+(k===1?E.p1:E.p2)+"%";
+  function build(nar){
+    const W=nar?360:720,H=nar?392:400,x0=nar?16:60,x1=W-x0,bw=x1-x0,f=nar?13:16,F=nar?19:26,ya=H-(nar?62:60),cx=W/2;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.textContent="";
+    const add=(n,a,t)=>svg.appendChild(sv(n,a,t));
+    G={tA:add("text",{x:x0,y:22,"font-size":f,fill:"currentColor",class:"an-f",opacity:0},"挑戰成功，拿回判決價值 ΔW ＝ "+E.dw),
+       bA:add("rect",{x:x0,y:30,width:bw,height:16,rx:3,fill:TEAL,class:"an-barx"}),
+       tB:add("text",{x:x0,y:74,"font-size":f,fill:"currentColor",class:"an-f",opacity:0}),
+       bB:add("rect",{x:x0,y:82,width:Math.max(2,bw*E.c1/E.dw),height:16,rx:2,fill:HOT,class:"an-barx"}),
+       e1:add("text",{x:cx,y:nar?140:142,"font-size":F-4,"text-anchor":"middle",fill:"currentColor",class:"an-f",opacity:0},"p × ΔW ＝（1 − p）× C"),
+       e2:add("text",{x:cx,y:nar?172:180,"font-size":F,"font-weight":800,"text-anchor":"middle",fill:GOLD,class:"an-f",opacity:0},"p* ＝ C ÷（ΔW ＋ C）"),
+       e3:add("text",{x:cx,y:nar?202:216,"font-size":F-2,"font-weight":700,"text-anchor":"middle",fill:GOLD,class:"an-f",opacity:0}),
+       v:add("text",{x:cx,y:nar?252:266,"font-size":F+2,"font-weight":800,"text-anchor":"middle",class:"an-f",opacity:0}),
+       ax:add("g",{class:"an-f",opacity:0}),tk:{}};
+    G.zone=G.ax.appendChild(sv("rect",{x:x0,y:ya-9,width:bw,height:18,fill:TEAL,opacity:.22,class:"an-zone"}));
+    G.ax.appendChild(sv("line",{x1:x0,x2:x1,y1:ya,y2:ya,stroke:"currentColor","stroke-width":2,opacity:.7}));
+    [[40,[0,10,20,30,40]],[5,[0,1,2,3,4,5]]].forEach(([M,ts])=>{const g=G.tk[M]=G.ax.appendChild(sv("g",{class:"an-f",opacity:0}));
+      ts.forEach(t=>{const x=x0+t/M*bw;g.appendChild(sv("line",{x1:x,x2:x,y1:ya-5,y2:ya+5,stroke:"currentColor",opacity:.7}));g.appendChild(sv("text",{x:x,y:ya+21,"font-size":f-1,"text-anchor":"middle",fill:"currentColor",opacity:.75},t+"%"))})});
+    G.ax.appendChild(sv("text",{x:x1,y:ya+(nar?40:42),"font-size":f-1,"text-anchor":"end",fill:"currentColor",opacity:.75},"改判的把握 p"));
+    G.mk=G.ax.appendChild(sv("g",{class:"an-m"}));G.mk.appendChild(sv("line",{x1:0,x2:0,y1:ya-16,y2:ya+26,stroke:GOLD,"stroke-width":3}));
+    G.mkt=G.mk.appendChild(sv("text",{x:-3,y:ya+(nar?40:42),"font-size":f,"font-weight":700,fill:GOLD}));
+    G.dot=G.ax.appendChild(sv("g",{class:"an-m"}));G.dot.appendChild(sv("circle",{cx:0,cy:ya,r:nar?7:8,fill:"#fff",stroke:"#0a1a20","stroke-width":2}));
+    G.dott=G.dot.appendChild(sv("text",{x:0,y:ya-18,"font-size":f,"font-weight":700,"text-anchor":"middle",fill:"#fff"}));
+    X=(v,M)=>x0+Math.min(1,v/M)*bw;G.bw=bw;
+  }
+  function axis(M,k,p){const th=+(k===1?E.p1:E.p2);
+    op(G.tk[40],M===40?1:0);op(G.tk[5],M===5?1:0);
+    G.mk.style.transform="translate("+X(th,M)+"px,0)";G.mkt.textContent="門檻 "+(k===1?E.p1:E.p2)+"%";
+    G.zone.style.transform="scaleX("+(1-Math.min(1,th/M))+")";
+    G.dot.style.transform="translate("+X(p,M)+"px,0)";G.dott.textContent=p?"把握 "+p+"%":"";}
+  function verdict(p,k){const yes=+p>+(k===1?E.p1:E.p2);G.v.textContent=yes?"值得挑戰":"不值得挑戰";G.v.setAttribute("fill",yes?TEAL:HOT);op(G.v,1)}
+  function side(k){G.tB.textContent=tB(k);G.e3.textContent=e3(k);G.bB.style.transform="scaleX("+(k===1?1:E.c2/E.c1)+")"}
+  function reset(){[G.tA,G.tB,G.e1,G.e2,G.e3,G.v,G.ax].forEach(e=>op(e,0));G.bA.style.transform="";G.bB.style.transform="";G.tB.textContent=tB(1);G.e3.textContent=e3(1);axis(40,1,0);svg.getBoundingClientRect()}
+  const CAP=[
+    "提案裡的例子：六局上、主隊領先 1 分的一個壘上判決。挑戰成功，可以拿回判決價值 ΔW ＝ "+E.dw+" 個百分點。",
+    "挑戰失敗，會少一次挑戰權。只剩 1 次時，這一次值 C ＝ "+E.c1+" 個百分點，比判決價值小很多。",
+    "把握是 p 時，預期拿回 p × ΔW，預期損失（1 − p）× C。兩邊剛好相等的那個 p，就是門檻 p*。",
+    "代入數字："+E.c1+" ÷（"+E.dw+" ＋ "+E.c1+"）＝ "+E.p1+"%。",
+    "把握放進來。把握 "+E.hi+"%，遠高於門檻 "+E.p1+"%：值得挑戰。",
+    "把握只有 "+E.lo+"% 呢？把刻度放大來看：比門檻 "+E.p1+"% 低，不值得挑戰。",
+    "如果手上還剩 2 次，少一次只值 C ＝ "+E.c2+"，門檻降到 "+E.p2+"%。同樣 "+E.lo+"% 的把握，現在值得挑戰。"];
+  function finish(){reset();[G.tA,G.tB,G.e1,G.e2,G.e3,G.ax].forEach(e=>op(e,1));G.bA.style.transform="scaleX(1)";side(2);axis(5,2,E.lo);verdict(E.lo,2);cap.textContent=CAP[6]}
+  async function play(w){
+    reset();cap.textContent=CAP[0];op(G.tA,1);G.bA.style.transform="scaleX(1)";if(!await w(3800))return;
+    cap.textContent=CAP[1];op(G.tB,1);G.bB.style.transform="scaleX(1)";if(!await w(4200))return;
+    cap.textContent=CAP[2];op(G.e1,1);if(!await w(4200))return;op(G.e2,1);if(!await w(2600))return;
+    cap.textContent=CAP[3];op(G.e3,1);if(!await w(3600))return;
+    cap.textContent=CAP[4];op(G.ax,1);if(!await w(700))return;axis(40,1,E.hi);if(!await w(1000))return;verdict(E.hi,1);if(!await w(3800))return;
+    cap.textContent=CAP[5];op(G.v,0);axis(5,1,E.lo);if(!await w(1200))return;verdict(E.lo,1);if(!await w(4400))return;
+    cap.textContent=CAP[6];op(G.v,0);side(2);axis(5,2,E.lo);if(!await w(1200))return;verdict(E.lo,2);
+  }
+  animCtl({svg:svg,btn:$("an2play"),end:$("an2end"),build:nar=>{build(nar);reset();cap.textContent=CAP[0]},play:play,finish:finish});
+})();
+/* 概念動畫三：重播門檻隨局數下降（用首頁查詢工具同一份 CARD.replay） */
+(function(){
+  const svg=$("an3svg"),cap=$("an3cap"),R1=CARD.replay["1"],R2=CARD.replay["2"],N=R1.length,GOLD="#e0c070",TEAL="#7fd0c8";
+  let G;
+  function build(nar){
+    const W=nar?360:720,H=nar?300:340,x0=nar?38:64,x1=W-(nar?8:24),yt=nar?52:58,yb=H-(nar?34:44),slot=(x1-x0)/N,bw=slot*(nar?.38:.3),top=Math.ceil(Math.max(...R1)/5)*5,sc=(yb-yt)/top,f=nar?12:14;
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.textContent="";
+    const add=(n,a,t)=>svg.appendChild(sv(n,a,t));G={b1:[],b2:[],t1:[],t2:[]};
+    add("rect",{x:x0,y:10,width:14,height:14,rx:2,fill:GOLD});add("text",{x:x0+20,y:22,"font-size":f+1,fill:"currentColor"},"只剩 1 次");
+    G.lg=add("g",{class:"an-f",opacity:0});G.lg.appendChild(sv("rect",{x:x0+(nar?96:110),y:10,width:14,height:14,rx:2,fill:TEAL}));G.lg.appendChild(sv("text",{x:x0+(nar?116:130),y:22,"font-size":f+1,fill:"currentColor"},"還剩 2 次"));
+    for(let v=0;v<=top;v+=5){const y=yb-v*sc;add("line",{x1:x0,x2:x1,y1:y,y2:y,stroke:"currentColor",opacity:v?.16:.5});add("text",{x:x0-6,y:y+4,"font-size":f,"text-anchor":"end",fill:"currentColor",opacity:.7},v+"%")}
+    for(let i=0;i<N;i++){
+      const c=x0+(i+.5)*slot,h1=R1[i]*sc,h2=R2[i]*sc,u=nar?"":"%";
+      G.b1[i]=add("rect",{x:c-bw-1,y:yb-h1,width:bw,height:h1,rx:2,fill:GOLD,class:"an-bar"});
+      G.b2[i]=add("rect",{x:c+1,y:yb-h2,width:bw,height:h2,rx:2,fill:TEAL,class:"an-bar"});
+      G.t1[i]=add("text",{x:c-bw/2-1,y:yb-h1-6,"font-size":nar?13:16,"font-weight":800,"text-anchor":"middle",fill:GOLD,class:"an-f",opacity:0},R1[i]+u);
+      G.t2[i]=add("text",{x:c+bw/2+1,y:yb-h2-6,"font-size":nar?13:16,"font-weight":800,"text-anchor":"middle",fill:TEAL,class:"an-f",opacity:0},R2[i]+u);
+      add("text",{x:c,y:yb+(nar?20:26),"font-size":nar?13:15,"text-anchor":"middle",fill:"currentColor"},i+1);
+    }
+    add("text",{x:x0-6,y:yb+(nar?20:26),"font-size":f,"text-anchor":"end",fill:"currentColor",opacity:.7},"局");
+  }
+  const lo=Math.min(...R2),hi=Math.max(...R2);
+  const CAP=["重播門檻卡，先看只剩 1 次那一列：一局的門檻是 "+R1[0]+"%。",
+    "挑戰權價值 C 越到後面越小（前面「往回推」的動畫），門檻也跟著一局一局往下降。",
+    "到九局只剩 "+R1[N-1]+"%：比賽快結束，留著也沒有多少機會再用。",
+    "還剩 2 次那一列：少一次還有一次，整場的門檻都只有 "+lo+"–"+hi+"%。"];
+  function reset(){[...G.b1,...G.b2].forEach(b=>b.classList.remove("on"));[...G.t1,...G.t2,G.lg].forEach(e=>op(e,0));svg.getBoundingClientRect()}
+  function finish(){[...G.b1,...G.b2].forEach(b=>b.classList.add("on"));[...G.t1,...G.t2,G.lg].forEach(e=>op(e,1));cap.textContent=CAP[3]}
+  async function play(w){
+    reset();cap.textContent=CAP[0];G.b1[0].classList.add("on");op(G.t1[0],1);if(!await w(3000))return;
+    cap.textContent=CAP[1];for(let i=1;i<N;i++){G.b1[i].classList.add("on");op(G.t1[i],1);if(!await w(620))return}
+    if(!await w(1200))return;cap.textContent=CAP[2];if(!await w(3600))return;
+    cap.textContent=CAP[3];op(G.lg,1);for(let i=0;i<N;i++){G.b2[i].classList.add("on");op(G.t2[i],1);if(!await w(260))return}
+  }
+  animCtl({svg:svg,btn:$("an3play"),end:$("an3end"),build:nar=>{build(nar);cap.textContent=CAP[0]},play:play,finish:finish});
 })();
 /* 導覽目前位置 */
 (function(){const links=[...document.querySelectorAll("#topnav a, #tab a")];if(!("IntersectionObserver" in window))return;
