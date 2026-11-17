@@ -47,7 +47,24 @@ input[type=range]{width:100%}
 .hide{display:none}
 ul{margin:6px 0 6px 20px;padding:0}
 </style>
-</head>
+<style>
+@media (min-width:900px){.wrap{max-width:1180px}.calc2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}.calc2 .cout{position:sticky;top:10px}}
+#mbar{display:none}
+@media (max-width:899px){
+  body{padding-bottom:64px}
+  #mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;align-items:center;gap:10px;padding:8px 14px calc(8px + env(safe-area-inset-bottom));background:var(--card);border:0;border-top:1.5px solid var(--line);font:inherit;font-size:14px;line-height:1.3;color:inherit;text-align:left;width:100%;cursor:pointer}
+  #mbar b{font-size:24px;font-weight:800}#mbar span{flex:1;color:var(--muted)}#mbar.off{display:none}
+}
+.seg button,.tabs button,.btn{min-height:44px}
+#cRun{display:none}
+</style><style>.paxwrap{display:block;flex:1 1 100%;width:100%;min-width:0;max-width:100%}.pax{overflow:hidden}
+.paxrow{display:flex;align-items:center;gap:8px}.paxrow input[type=range]{flex:1;min-width:0;margin:0}
+.paxbtn{width:44px;height:44px;flex:none;font:inherit;font-size:22px;font-weight:800;line-height:1;border:1.5px solid currentColor;border-radius:8px;background:transparent;color:inherit;cursor:pointer;opacity:.8}
+.pax{position:relative;height:30px;margin:2px 60px 0}.paxbar{height:6px;border-radius:3px;position:relative}
+.paxbar i{position:absolute;top:-4px;width:2px;height:14px;margin-left:-1px;background:currentColor}
+.paxt{position:absolute;top:11px;font-size:12.5px;white-space:nowrap;font-style:normal}
+.paxz{display:block;margin:0 0 6px 60px;min-height:36px;padding:4px 10px;font:inherit;font-size:13px;border:1px solid currentColor;border-radius:6px;background:transparent;color:inherit;cursor:pointer;opacity:.85}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}</style></head>
 <body>
 <div class="noprint sitenav"><a class="sn-brand" href="../">挑戰研究員</a><span class="sn-links"><a href="../">首頁</a><a href="../demo/">互動 Demo</a><a href="../calculator/" class="on">計算機</a><a href="../card/">門檻卡列印版</a></span></div><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23203458'/%3E%3Ctext x='16' y='22' font-size='17' font-weight='700' text-anchor='middle' fill='%23f7f3ea' font-family='sans-serif'%3Ep*%3C/text%3E%3C/svg%3E"><style>.sitenav{background:#203458;display:flex;align-items:center;gap:14px;padding:0 16px;height:52px;font:17px/1.2 system-ui,-apple-system,"Segoe UI","Noto Sans TC","Microsoft JhengHei",sans-serif;overflow-x:auto;white-space:nowrap;border-bottom:1px solid #ffffff22}.sitenav a{color:#efe9db;text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.86}.sitenav a:hover,.sitenav a.on{background:#ffffff22;opacity:1}.sitenav .sn-brand{font-weight:800;letter-spacing:.04em;opacity:1;padding-left:0}.sitenav .sn-links{display:flex;gap:2px;margin-left:auto}@media print{.noprint{display:none}}@media(max-width:560px){.sitenav{padding:0 6px;gap:2px;font-size:15px;height:46px}.sitenav .sn-brand{display:none}.sitenav .sn-links{margin-left:0}.sitenav a{padding:6px 8px}}@media(max-width:350px){.sitenav{font-size:13.5px}.sitenav a{padding:6px 5px}}</style>
 <div class="wrap">
@@ -58,7 +75,7 @@ ul{margin:6px 0 6px 20px;padding:0}
   </div>
 
   <!-- 快速計算 -->
-  <section id="calc">
+  <section id="calc"><div class="calc2"><div class="cin">
     <div class="card">
       <h2>第 1 步　這個判決值多少</h2>
       <div class="row" style="margin-bottom:10px"><span class="note">直接試一個例子：</span><span id="examples" class="row"></span></div>
@@ -83,7 +100,7 @@ ul{margin:6px 0 6px 20px;padding:0}
       </div>
       <p class="note">只算九局內、還有挑戰權時。延長賽和挑戰權已經用完的情況不適用。</p>
     </div>
-    <div class="card">
+    </div><div class="cout"><div class="card">
       <h2>結果</h2>
       <div class="grid">
         <div><div class="note" id="pLabel">把握超過這個數字就挑戰</div><div class="big" id="pstar">–</div><div class="note" id="pstarWords"></div></div>
@@ -99,7 +116,7 @@ ul{margin:6px 0 6px 20px;padding:0}
       <div class="say" id="say"></div>
       <div class="row" style="margin-top:8px"><button class="btn ghost" id="copy">複製這句話</button><span class="note" id="copied"></span></div>
     </div>
-  </section>
+  </div></div></section>
 
   <!-- 門檻卡 -->
   <section id="cards" class="hide">
@@ -110,6 +127,7 @@ ul{margin:6px 0 6px 20px;padding:0}
 
   <!-- 自訂係數 -->
   <section id="custom" class="hide">
+    <p class="note" style="margin:0 0 12px">提案用的規則比較在<a href="../demo/#rules">互動 Demo 的「規則試算」</a>。這一頁是簡化的模型，讓你自己改次數和頻率，只適合看方向；算出來的是挑戰權的價值，不是勝場。</p>
     <div class="card">
       <h2>換一套係數，重算挑戰權價值</h2>
       <p class="note">想用別的聯盟、別的規則、或自己的估計？改下面的數字，網頁會當場用動態規劃重算。這是簡化版：不分分差，判決價值的分布用內建的形狀再乘上倍率。</p>
@@ -161,9 +179,10 @@ ul{margin:6px 0 6px 20px;padding:0}
 window.CALC_DATA.好壞球.門檻卡 = [{"剩餘次數": 1, "局": 1, "球數": "滿球數", "壘上": "無人", "卡片顯示": 28, "未取整門檻": 28.2, "白話": "未取整 28.2%"}, {"剩餘次數": 1, "局": 1, "球數": "滿球數", "壘上": "有人", "卡片顯示": 19, "未取整門檻": 19.3, "白話": "未取整 19.3%"}, {"剩餘次數": 1, "局": 1, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 50, "未取整門檻": 49.5, "白話": "未取整 49.5%"}, {"剩餘次數": 1, "局": 1, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 33, "未取整門檻": 33.4, "白話": "未取整 33.4%"}, {"剩餘次數": 1, "局": 1, "球數": "其他球數", "壘上": "無人", "卡片顯示": 69, "未取整門檻": 68.6, "白話": "未取整 68.6%"}, {"剩餘次數": 1, "局": 1, "球數": "其他球數", "壘上": "有人", "卡片顯示": 57, "未取整門檻": 57.0, "白話": "未取整 57.0%"}, {"剩餘次數": 1, "局": 2, "球數": "滿球數", "壘上": "無人", "卡片顯示": 27, "未取整門檻": 27.0, "白話": "未取整 27.0%"}, {"剩餘次數": 1, "局": 2, "球數": "滿球數", "壘上": "有人", "卡片顯示": 18, "未取整門檻": 18.1, "白話": "未取整 18.1%"}, {"剩餘次數": 1, "局": 2, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 51, "未取整門檻": 50.6, "白話": "未取整 50.6%"}, {"剩餘次數": 1, "局": 2, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 33, "未取整門檻": 32.5, "白話": "未取整 32.5%"}, {"剩餘次數": 1, "局": 2, "球數": "其他球數", "壘上": "無人", "卡片顯示": 70, "未取整門檻": 69.7, "白話": "未取整 69.7%"}, {"剩餘次數": 1, "局": 2, "球數": "其他球數", "壘上": "有人", "卡片顯示": 56, "未取整門檻": 56.0, "白話": "未取整 56.0%"}, {"剩餘次數": 1, "局": 3, "球數": "滿球數", "壘上": "無人", "卡片顯示": 25, "未取整門檻": 25.5, "白話": "未取整 25.5%"}, {"剩餘次數": 1, "局": 3, "球數": "滿球數", "壘上": "有人", "卡片顯示": 17, "未取整門檻": 17.1, "白話": "未取整 17.1%"}, {"剩餘次數": 1, "局": 3, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 47, "未取整門檻": 46.7, "白話": "未取整 46.7%"}, {"剩餘次數": 1, "局": 3, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 30, "未取整門檻": 30.2, "白話": "未取整 30.2%"}, {"剩餘次數": 1, "局": 3, "球數": "其他球數", "壘上": "無人", "卡片顯示": 66, "未取整門檻": 66.4, "白話": "未取整 66.4%"}, {"剩餘次數": 1, "局": 3, "球數": "其他球數", "壘上": "有人", "卡片顯示": 53, "未取整門檻": 53.4, "白話": "未取整 53.4%"}, {"剩餘次數": 1, "局": 4, "球數": "滿球數", "壘上": "無人", "卡片顯示": 23, "未取整門檻": 23.1, "白話": "未取整 23.1%"}, {"剩餘次數": 1, "局": 4, "球數": "滿球數", "壘上": "有人", "卡片顯示": 15, "未取整門檻": 15.2, "白話": "未取整 15.2%"}, {"剩餘次數": 1, "局": 4, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 44, "未取整門檻": 43.8, "白話": "未取整 43.8%"}, {"剩餘次數": 1, "局": 4, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 28, "未取整門檻": 27.7, "白話": "未取整 27.7%"}, {"剩餘次數": 1, "局": 4, "球數": "其他球數", "壘上": "無人", "卡片顯示": 64, "未取整門檻": 63.8, "白話": "未取整 63.8%"}, {"剩餘次數": 1, "局": 4, "球數": "其他球數", "壘上": "有人", "卡片顯示": 51, "未取整門檻": 51.2, "白話": "未取整 51.2%"}, {"剩餘次數": 1, "局": 5, "球數": "滿球數", "壘上": "無人", "卡片顯示": 21, "未取整門檻": 21.3, "白話": "未取整 21.3%"}, {"剩餘次數": 1, "局": 5, "球數": "滿球數", "壘上": "有人", "卡片顯示": 14, "未取整門檻": 14.1, "白話": "未取整 14.1%"}, {"剩餘次數": 1, "局": 5, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 42, "未取整門檻": 41.6, "白話": "未取整 41.6%"}, {"剩餘次數": 1, "局": 5, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 27, "未取整門檻": 26.9, "白話": "未取整 26.9%"}, {"剩餘次數": 1, "局": 5, "球數": "其他球數", "壘上": "無人", "卡片顯示": 62, "未取整門檻": 61.9, "白話": "未取整 61.9%"}, {"剩餘次數": 1, "局": 5, "球數": "其他球數", "壘上": "有人", "卡片顯示": 49, "未取整門檻": 48.9, "白話": "未取整 48.9%"}, {"剩餘次數": 1, "局": 6, "球數": "滿球數", "壘上": "無人", "卡片顯示": 19, "未取整門檻": 19.4, "白話": "未取整 19.4%"}, {"剩餘次數": 1, "局": 6, "球數": "滿球數", "壘上": "有人", "卡片顯示": 11, "未取整門檻": 11.1, "白話": "未取整 11.1%"}, {"剩餘次數": 1, "局": 6, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 38, "未取整門檻": 38.0, "白話": "未取整 38.0%"}, {"剩餘次數": 1, "局": 6, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 23, "未取整門檻": 22.6, "白話": "未取整 22.6%"}, {"剩餘次數": 1, "局": 6, "球數": "其他球數", "壘上": "無人", "卡片顯示": 58, "未取整門檻": 58.1, "白話": "未取整 58.1%"}, {"剩餘次數": 1, "局": 6, "球數": "其他球數", "壘上": "有人", "卡片顯示": 44, "未取整門檻": 43.6, "白話": "未取整 43.6%"}, {"剩餘次數": 1, "局": 7, "球數": "滿球數", "壘上": "無人", "卡片顯示": 16, "未取整門檻": 15.9, "白話": "未取整 15.9%"}, {"剩餘次數": 1, "局": 7, "球數": "滿球數", "壘上": "有人", "卡片顯示": 10, "未取整門檻": 10.2, "白話": "未取整 10.2%"}, {"剩餘次數": 1, "局": 7, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 33, "未取整門檻": 33.3, "白話": "未取整 33.3%"}, {"剩餘次數": 1, "局": 7, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 20, "未取整門檻": 19.9, "白話": "未取整 19.9%"}, {"剩餘次數": 1, "局": 7, "球數": "其他球數", "壘上": "無人", "卡片顯示": 53, "未取整門檻": 53.0, "白話": "未取整 53.0%"}, {"剩餘次數": 1, "局": 7, "球數": "其他球數", "壘上": "有人", "卡片顯示": 38, "未取整門檻": 38.3, "白話": "未取整 38.3%"}, {"剩餘次數": 1, "局": 8, "球數": "滿球數", "壘上": "無人", "卡片顯示": 12, "未取整門檻": 12.1, "白話": "未取整 12.1%"}, {"剩餘次數": 1, "局": 8, "球數": "滿球數", "壘上": "有人", "卡片顯示": 8, "未取整門檻": 8.2, "白話": "未取整 8.2%"}, {"剩餘次數": 1, "局": 8, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 26, "未取整門檻": 26.1, "白話": "未取整 26.1%"}, {"剩餘次數": 1, "局": 8, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 16, "未取整門檻": 15.7, "白話": "未取整 15.7%"}, {"剩餘次數": 1, "局": 8, "球數": "其他球數", "壘上": "無人", "卡片顯示": 44, "未取整門檻": 44.4, "白話": "未取整 44.4%"}, {"剩餘次數": 1, "局": 8, "球數": "其他球數", "壘上": "有人", "卡片顯示": 32, "未取整門檻": 32.1, "白話": "未取整 32.1%"}, {"剩餘次數": 1, "局": 9, "球數": "滿球數", "壘上": "無人", "卡片顯示": 6, "未取整門檻": 5.7, "白話": "未取整 5.7%"}, {"剩餘次數": 1, "局": 9, "球數": "滿球數", "壘上": "有人", "卡片顯示": 4, "未取整門檻": 3.8, "白話": "未取整 3.8%"}, {"剩餘次數": 1, "局": 9, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 15, "未取整門檻": 14.9, "白話": "未取整 14.9%"}, {"剩餘次數": 1, "局": 9, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 8, "未取整門檻": 8.1, "白話": "未取整 8.1%"}, {"剩餘次數": 1, "局": 9, "球數": "其他球數", "壘上": "無人", "卡片顯示": 29, "未取整門檻": 28.8, "白話": "未取整 28.8%"}, {"剩餘次數": 1, "局": 9, "球數": "其他球數", "壘上": "有人", "卡片顯示": 18, "未取整門檻": 17.8, "白話": "未取整 17.8%"}, {"剩餘次數": 2, "局": 1, "球數": "滿球數", "壘上": "無人", "卡片顯示": 16, "未取整門檻": 15.7, "白話": "未取整 15.7%"}, {"剩餘次數": 2, "局": 1, "球數": "滿球數", "壘上": "有人", "卡片顯示": 10, "未取整門檻": 10.2, "白話": "未取整 10.2%"}, {"剩餘次數": 2, "局": 1, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 32, "未取整門檻": 31.8, "白話": "未取整 31.8%"}, {"剩餘次數": 2, "局": 1, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 19, "未取整門檻": 19.2, "白話": "未取整 19.2%"}, {"剩餘次數": 2, "局": 1, "球數": "其他球數", "壘上": "無人", "卡片顯示": 51, "未取整門檻": 51.0, "白話": "未取整 51.0%"}, {"剩餘次數": 2, "局": 1, "球數": "其他球數", "壘上": "有人", "卡片顯示": 39, "未取整門檻": 38.7, "白話": "未取整 38.7%"}, {"剩餘次數": 2, "局": 2, "球數": "滿球數", "壘上": "無人", "卡片顯示": 15, "未取整門檻": 14.7, "白話": "未取整 14.7%"}, {"剩餘次數": 2, "局": 2, "球數": "滿球數", "壘上": "有人", "卡片顯示": 9, "未取整門檻": 9.4, "白話": "未取整 9.4%"}, {"剩餘次數": 2, "局": 2, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 32, "未取整門檻": 32.3, "白話": "未取整 32.3%"}, {"剩餘次數": 2, "局": 2, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 18, "未取整門檻": 18.3, "白話": "未取整 18.3%"}, {"剩餘次數": 2, "局": 2, "球數": "其他球數", "壘上": "無人", "卡片顯示": 52, "未取整門檻": 51.7, "白話": "未取整 51.7%"}, {"剩餘次數": 2, "局": 2, "球數": "其他球數", "壘上": "有人", "卡片顯示": 37, "未取整門檻": 37.3, "白話": "未取整 37.3%"}, {"剩餘次數": 2, "局": 3, "球數": "滿球數", "壘上": "無人", "卡片顯示": 13, "未取整門檻": 13.4, "白話": "未取整 13.4%"}, {"剩餘次數": 2, "局": 3, "球數": "滿球數", "壘上": "有人", "卡片顯示": 9, "未取整門檻": 8.6, "白話": "未取整 8.6%"}, {"剩餘次數": 2, "局": 3, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 28, "未取整門檻": 28.5, "白話": "未取整 28.5%"}, {"剩餘次數": 2, "局": 3, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 16, "未取整門檻": 16.4, "白話": "未取整 16.4%"}, {"剩餘次數": 2, "局": 3, "球數": "其他球數", "壘上": "無人", "卡片顯示": 47, "未取整門檻": 47.3, "白話": "未取整 47.3%"}, {"剩餘次數": 2, "局": 3, "球數": "其他球數", "壘上": "有人", "卡片顯示": 34, "未取整門檻": 34.2, "白話": "未取整 34.2%"}, {"剩餘次數": 2, "局": 4, "球數": "滿球數", "壘上": "無人", "卡片顯示": 12, "未取整門檻": 11.7, "白話": "未取整 11.7%"}, {"剩餘次數": 2, "局": 4, "球數": "滿球數", "壘上": "有人", "卡片顯示": 7, "未取整門檻": 7.3, "白話": "未取整 7.3%"}, {"剩餘次數": 2, "局": 4, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 25, "未取整門檻": 25.5, "白話": "未取整 25.5%"}, {"剩餘次數": 2, "局": 4, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 14, "未取整門檻": 14.4, "白話": "未取整 14.4%"}, {"剩餘次數": 2, "局": 4, "球數": "其他球數", "壘上": "無人", "卡片顯示": 44, "未取整門檻": 43.6, "白話": "未取整 43.6%"}, {"剩餘次數": 2, "局": 4, "球數": "其他球數", "壘上": "有人", "卡片顯示": 32, "未取整門檻": 31.5, "白話": "未取整 31.5%"}, {"剩餘次數": 2, "局": 5, "球數": "滿球數", "壘上": "無人", "卡片顯示": 10, "未取整門檻": 10.2, "白話": "未取整 10.2%"}, {"剩餘次數": 2, "局": 5, "球數": "滿球數", "壘上": "有人", "卡片顯示": 6, "未取整門檻": 6.4, "白話": "未取整 6.4%"}, {"剩餘次數": 2, "局": 5, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 23, "未取整門檻": 23.0, "白話": "未取整 23.0%"}, {"剩餘次數": 2, "局": 5, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 13, "未取整門檻": 13.3, "白話": "未取整 13.3%"}, {"剩餘次數": 2, "局": 5, "球數": "其他球數", "壘上": "無人", "卡片顯示": 41, "未取整門檻": 40.5, "白話": "未取整 40.5%"}, {"剩餘次數": 2, "局": 5, "球數": "其他球數", "壘上": "有人", "卡片顯示": 29, "未取整門檻": 28.6, "白話": "未取整 28.6%"}, {"剩餘次數": 2, "局": 6, "球數": "滿球數", "壘上": "無人", "卡片顯示": 9, "未取整門檻": 8.7, "白話": "未取整 8.7%"}, {"剩餘次數": 2, "局": 6, "球數": "滿球數", "壘上": "有人", "卡片顯示": 5, "未取整門檻": 4.7, "白話": "未取整 4.7%"}, {"剩餘次數": 2, "局": 6, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 19, "未取整門檻": 19.4, "白話": "未取整 19.4%"}, {"剩餘次數": 2, "局": 6, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 10, "未取整門檻": 10.3, "白話": "未取整 10.3%"}, {"剩餘次數": 2, "局": 6, "球數": "其他球數", "壘上": "無人", "卡片顯示": 35, "未取整門檻": 35.3, "白話": "未取整 35.3%"}, {"剩餘次數": 2, "局": 6, "球數": "其他球數", "壘上": "有人", "卡片顯示": 23, "未取整門檻": 23.3, "白話": "未取整 23.3%"}, {"剩餘次數": 2, "局": 7, "球數": "滿球數", "壘上": "無人", "卡片顯示": 6, "未取整門檻": 6.4, "白話": "未取整 6.4%"}, {"剩餘次數": 2, "局": 7, "球數": "滿球數", "壘上": "有人", "卡片顯示": 4, "未取整門檻": 3.9, "白話": "未取整 3.9%"}, {"剩餘次數": 2, "局": 7, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 15, "未取整門檻": 15.3, "白話": "未取整 15.3%"}, {"剩餘次數": 2, "局": 7, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 8, "未取整門檻": 8.2, "白話": "未取整 8.2%"}, {"剩餘次數": 2, "局": 7, "球數": "其他球數", "壘上": "無人", "卡片顯示": 29, "未取整門檻": 28.9, "白話": "未取整 28.9%"}, {"剩餘次數": 2, "局": 7, "球數": "其他球數", "壘上": "有人", "卡片顯示": 18, "未取整門檻": 18.3, "白話": "未取整 18.3%"}, {"剩餘次數": 2, "局": 8, "球數": "滿球數", "壘上": "無人", "卡片顯示": 4, "未取整門檻": 4.1, "白話": "未取整 4.1%"}, {"剩餘次數": 2, "局": 8, "球數": "滿球數", "壘上": "有人", "卡片顯示": 3, "未取整門檻": 2.7, "白話": "未取整 2.7%"}, {"剩餘次數": 2, "局": 8, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 10, "未取整門檻": 9.9, "白話": "未取整 9.9%"}, {"剩餘次數": 2, "局": 8, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 5, "未取整門檻": 5.4, "白話": "未取整 5.4%"}, {"剩餘次數": 2, "局": 8, "球數": "其他球數", "壘上": "無人", "卡片顯示": 20, "未取整門檻": 19.9, "白話": "未取整 19.9%"}, {"剩餘次數": 2, "局": 8, "球數": "其他球數", "壘上": "有人", "卡片顯示": 13, "未取整門檻": 12.8, "白話": "未取整 12.8%"}, {"剩餘次數": 2, "局": 9, "球數": "滿球數", "壘上": "無人", "卡片顯示": 1, "未取整門檻": 1.3, "白話": "未取整 1.3%"}, {"剩餘次數": 2, "局": 9, "球數": "滿球數", "壘上": "有人", "卡片顯示": 1, "未取整門檻": 0.9, "白話": "未取整 0.9%"}, {"剩餘次數": 2, "局": 9, "球數": "兩好球或三壞球", "壘上": "無人", "卡片顯示": 4, "未取整門檻": 3.9, "白話": "未取整 3.9%"}, {"剩餘次數": 2, "局": 9, "球數": "兩好球或三壞球", "壘上": "有人", "卡片顯示": 2, "未取整門檻": 2.0, "白話": "未取整 2.0%"}, {"剩餘次數": 2, "局": 9, "球數": "其他球數", "壘上": "無人", "卡片顯示": 9, "未取整門檻": 8.6, "白話": "未取整 8.6%"}, {"剩餘次數": 2, "局": 9, "球數": "其他球數", "壘上": "有人", "卡片顯示": 5, "未取整門檻": 4.8, "白話": "未取整 4.8%"}];
 const D = window.CALC_DATA, $ = id => document.getElementById(id);
 const st = {kind:"重播", rem:2, half:0, custom:null};
-const fmtPct = x => x < 0.095 ? x.toFixed(2) + "%" : x < 9.95 ? x.toFixed(1) + "%" : x.toFixed(0) + "%";
+const NEAR = x => x >= 99.95 && x < 100;   // 取整後會印成 100%，但實際還沒到 100
+const fmtPct = x => NEAR(x) ? "接近 100%" : x < 0.095 ? x.toFixed(2) + "%" : x < 9.95 ? x.toFixed(1) + "%" : x.toFixed(0) + "%";
 const ONE = p => Math.abs(p - 100) < 1e-9;   // 剛好 100%
-const words = (p, v) => v <= 0 ? "判決沒有價值，怎樣都不值得挑戰" : p <= 0 ? "" : p > 100 && !ONE(p) ? "就算確定會改判也不值得挑戰" : ONE(p) ? "確定會改判也只是打平" : p >= 50 ? "把握要超過約 " + fmtPct(p) : "大約 " + Math.max(2, Math.round(100 / p)) + " 次裡有 1 次會改判，就值得挑戰";
+const words = (p, v) => v <= 0 ? "判決沒有價值，怎樣都不值得挑戰" : p <= 0 ? "" : p > 100 && !ONE(p) ? "就算確定會改判也不值得挑戰" : ONE(p) ? "確定會改判也只是打平" : NEAR(p) ? "幾乎要確定會改判，才值得挑戰" : p >= 50 ? "把握要超過約 " + fmtPct(p) : "大約 " + Math.max(2, Math.round(100 / p)) + " 次裡有 1 次會改判，就值得挑戰";
 function seg(id, key, cb){ $(id).querySelectorAll("button").forEach(b => b.onclick = () => { $(id).querySelectorAll("button").forEach(x => x.classList.remove("on")); b.classList.add("on"); if (key) st[key] = isNaN(+b.dataset.v) ? b.dataset.v : +b.dataset.v; (cb || update)(); }); }
 function setSeg(id, v){ $(id).querySelectorAll("button").forEach(x => x.classList.toggle("on", x.dataset.v == v)); }
 // 分頁
@@ -178,12 +197,24 @@ function tier(x){ return x <= 10 ? "t1" : x <= 30 ? "t2" : "t3"; }
 function lookupC(){
   const src = $("csrc").value, t = ($("inn").value - 1) * 2 + st.half, d = +$("diff").value;
   if (src === "manual") return {C: Math.max(0, +$("cman").value || 0), from: "自己填的"};
-  if (src === "custom"){ if (!st.custom) return {C: null, from: "還沒在「自訂係數」分頁按重算"}; const r = Math.min(st.rem, st.custom.R); return {C: st.custom.C[r][t], from: "自訂係數（" + st.custom.label + "）", ded: !st.custom.retain}; }
+  if (src === "custom"){ if (!st.custom) return {C: null, from: "「自訂係數」分頁的輸入有問題，請先回那一頁修正。"}; if (st.rem > st.custom.R) return {C: null, from: "自訂係數設定每場只有 " + st.custom.R + " 次，沒有「還剩 " + st.rem + " 次」的情況，請改選只剩 1 次。"}; const r = st.rem; return {C: st.custom.C[r][t], from: "自訂係數（" + st.custom.label + "）", ded: !st.custom.retain}; }
   return {C: D[st.kind].C[st.rem][t][d + 8], from: "內建：" + D[st.kind].名稱};
 }
 function update(){
   $("countBox").classList.toggle("hide", st.kind !== "好壞球"); $("cmanBox").classList.toggle("hide", $("csrc").value !== "manual");
+  window._ps = null; const Z_ = +$("conf").step < 1;
   const wa = +$("wa").value, wb = +$("wb").value, vd = $("vdirect").value;
+  $("confOut").textContent = (+$("conf").value).toFixed(Z_ ? 1 : 0) + "%";
+  const bad_ = (function(){
+    const num = id => { const s = $(id).value.trim(); return s === "" ? NaN : +s; };
+    if (vd.trim() !== ""){ const x = +vd; if (!Number.isFinite(x) || x < 0 || x > 100) return "判決價值要填 0 到 100 之間的數字。"; }
+    else { const a = num("wa"), b = num("wb"); if (!Number.isFinite(a) || !Number.isFinite(b)) return "請填兩種判決結果的主隊勝率，或直接填判決價值。"; if (a < 0 || a > 100 || b < 0 || b > 100) return "勝率要填 0 到 100 之間的數字。"; }
+    if ($("csrc").value === "manual"){ const s = $("cman").value.trim(), x = +s; if (s === "" || !Number.isFinite(x) || x < 0) return "挑戰權價值要填 0 以上的數字。"; }
+    if (+$("inn").value === 1 && st.half === 0 && +$("diff").value > 0) return "一局上主隊還沒進攻，不會領先，這個局面不適用。";
+    return ""; })();
+  if (bad_){ $("countBox").classList.toggle("hide", st.kind !== "好壞球"); $("cmanBox").classList.toggle("hide", $("csrc").value !== "manual");
+    ["vOut","cOut","pstar","verdict","cardOut"].forEach(id => $(id).textContent = "–"); $("pstar").style.fontSize = ""; $("pstarWords").textContent = bad_; $("verdict").className = "verdict";
+    ["formula","say","gain","cardWhere"].forEach(id => $(id).textContent = ""); return; }
   const v = vd !== "" ? Math.max(0, +vd) : Math.abs(wa - wb), c = lookupC(), inn = +$("inn").value;
   const card = D[st.kind].門檻卡.find(x => x.剩餘次數 === st.rem && x.局 === inn && (st.kind === "重播" || (x.球數 === $("count").value && x.壘上 === $("onb").value)));
   $("cardOut").textContent = card ? card.卡片顯示 + "%" : "–"; $("cardWhere").textContent = card ? "剩 " + st.rem + " 次｜第 " + inn + " 局" + (st.kind === "好壞球" ? "｜" + $("count").selectedOptions[0].text + "｜壘上" + $("onb").value : "") + "（" + card.白話 + "）" : "";
@@ -195,19 +226,19 @@ function update(){
   const C = c.C, ded = !!c.ded, ps = v > 0 ? (ded ? C / v * 100 : C / (v + C) * 100) : Infinity, over = v > 0 && ps > 100 && !ONE(ps), p = +$("conf").value / 100, G = ded ? p * v - C : p * v - (1 - p) * C;
   $("cOut").textContent = C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點"; $("pstar").textContent = v <= 0 ? "–" : over ? "就算確定會改判也不值得挑戰" : fmtPct(ps); $("pstar").style.fontSize = over ? "22px" : ""; $("pstarWords").textContent = words(ps, v) + (abs && words(ps, v) ? "（試算）" : "");
   const vsrc = vd !== "" ? "ΔW = " + v.toFixed(1) : "ΔW = | " + wa + " − " + wb + " | = " + v.toFixed(1);
-  $("formula").textContent = vsrc + " 個百分點\nC = " + C.toFixed(C < 0.1 ? 4 : 3) + " 個百分點（" + c.from + "）" + (ded ? "\n成功也扣次數：p* = C ÷ ΔW = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ " + v.toFixed(1) + " = " + (v > 0 ? fmtPct(ps) + (over ? "（超過 100%：就算確定會改判也不值得挑戰）" : "") : "沒有門檻（判決沒有價值）") : "\np* = C ÷ (ΔW + C) = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ (" + v.toFixed(1) + " + " + C.toFixed(C < 0.1 ? 4 : 3) + ") = " + fmtPct(ps)) +
-    "\n把握 " + (p * 100).toFixed(0) + "% 時：G = " + p.toFixed(2) + " × " + v.toFixed(1) + " − " + (ded ? "" : (1 - p).toFixed(2) + " × ") + C.toFixed(3) + " = " + (G >= 0 ? "+" : "") + G.toFixed(2) + " 個百分點";
-  $("confOut").textContent = (p * 100).toFixed(0) + "%"; const tie = Math.abs(p * 100 - ps) < 1e-9, go = !tie && p * 100 > ps;   // 11/16 統一：超過門檻才挑戰，剛好等於是打平、判定算不挑戰
+  $("formula").textContent = vsrc + " 個百分點\nC = " + C.toFixed(C < 0.1 ? 4 : 3) + " 個百分點（" + c.from + "）" + (ded ? "\n成功也扣次數：p* = C ÷ ΔW = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ " + v.toFixed(1) + " = " + (v > 0 ? fmtPct(ps) + (over ? "（超過 100%：就算確定會改判也不值得挑戰）" : "") : "沒有門檻（判決沒有價值）") : "\np* = C ÷ (ΔW + C) = " + C.toFixed(C < 0.1 ? 4 : 3) + " ÷ (" + v.toFixed(1) + " + " + C.toFixed(C < 0.1 ? 4 : 3) + ") = " + (v > 0 ? fmtPct(ps) : "100%（判決價值是 0，就算確定會改判也只是打平）")) +
+    "\n把握 " + (p * 100).toFixed(Z_ ? 1 : 0) + "% 時：G = " + p.toFixed(Z_ ? 4 : 2) + " × " + v.toFixed(1) + " − " + (ded ? "" : (1 - p).toFixed(Z_ ? 4 : 2) + " × ") + C.toFixed(3) + " = " + (G >= 0 ? "+" : "") + G.toFixed(2) + " 個百分點";
+  window._ps = (v > 0 && isFinite(ps) && !over) ? ps : null; $("confOut").textContent = (p * 100).toFixed(Z_ ? 1 : 0) + "%"; const tie = Math.abs(p * 100 - ps) < 1e-9, go = !tie && p * 100 > ps;   // 11/16 統一：超過門檻才挑戰，剛好等於是打平、判定算不挑戰
   $("verdict").textContent = (tie ? "剛好打平，可挑戰可不挑戰" : go ? "挑戰" : "不挑戰") + tag; $("verdict").className = "verdict " + (go ? "go" : "no"); $("gain").textContent = "期望淨收益 " + (G >= 0 ? "+" : "") + G.toFixed(2) + " 個百分點";
-  $("say").textContent = "第 " + inn + " 局" + (st.half ? "下" : "上") + "、" + $("diff").selectedOptions[0].text + "，" + (st.rem === 2 ? "還剩 2 次" : "只剩 1 次") + st.kind + "挑戰" + (abs ? "（試算，中職一軍細則尚未公布）" : "") + "。這個判決值 " + v.toFixed(1) + " 個勝率百分點，" + (ded ? "用掉一次的代價是 " : "失敗一次的代價是 ") + C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點，" + (v <= 0 ? "判決沒有價值，怎樣都不值得挑戰。" : over ? "就算確定會改判也不值得挑戰。" : ONE(ps) ? "確定會改判也只是打平。" : "所以在模型裡，只要有超過 " + fmtPct(ps) + " 的把握就值得挑戰。");
+  $("say").textContent = "第 " + inn + " 局" + (st.half ? "下" : "上") + "、" + $("diff").selectedOptions[0].text + "，" + (st.rem === 2 ? "還剩 2 次" : "只剩 1 次") + st.kind + "挑戰" + (abs ? "（試算，中職一軍細則尚未公布）" : "") + "。這個判決值 " + v.toFixed(1) + " 個勝率百分點，" + (ded ? "用掉一次的代價是 " : "失敗一次的代價是 ") + C.toFixed(C < 0.1 ? 3 : 2) + " 個百分點，" + (v <= 0 ? "判決沒有價值，怎樣都不值得挑戰。" : over ? "就算確定會改判也不值得挑戰。" : ONE(ps) ? "確定會改判也只是打平。" : NEAR(ps) ? "所以在模型裡，幾乎要確定會改判才值得挑戰。" : "所以在模型裡，只要有超過 " + fmtPct(ps) + " 的把握就值得挑戰。");
 }
 $("copy").onclick = () => { navigator.clipboard && navigator.clipboard.writeText($("say").textContent).then(() => { $("copied").textContent = "已複製"; setTimeout(() => $("copied").textContent = "", 1500); }); };
 // 例子
 const EX = [
   {n:"九局下平手：0 出局一壘有人或 1 出局無人（野球革命勝率係數表 69%／56%）", wa:69, wb:56, kind:"重播", rem:1, inn:9, half:1, diff:0},
   {n:"2026-06-07 味全對台鋼，八局下本壘攻防", wa:62.1, wb:12.7, kind:"重播", rem:2, inn:8, half:1, diff:-1},
-  {n:"八局下平手，1 好 1 壞的一顆球", wa:63.6, wb:61.3, kind:"好壞球", rem:1, inn:8, half:1, diff:0}];
-EX.forEach(e => { const b = document.createElement("button"); b.className = "btn ghost"; b.textContent = e.n; b.onclick = () => { $("wa").value = e.wa; $("wb").value = e.wb; $("vdirect").value = ""; st.kind = e.kind; st.rem = e.rem; st.half = e.half; setSeg("kind", e.kind); setSeg("rem", e.rem); setSeg("half", e.half); $("inn").value = e.inn; $("diff").value = e.diff; $("csrc").value = "builtin"; update(); }; $("examples").appendChild(b); });
+  {n:"八局下平手、0 出局無人，1 好 1 壞的一顆球", wa:63.6, wb:61.3, kind:"好壞球", rem:1, inn:8, half:1, diff:0}];
+EX.forEach(e => { const b = document.createElement("button"); b.className = "btn ghost"; b.textContent = e.n; b.onclick = () => { $("wa").value = e.wa; $("wb").value = e.wb; $("vdirect").value = ""; st.kind = e.kind; st.rem = e.rem; st.half = e.half; setSeg("kind", e.kind); setSeg("rem", e.rem); setSeg("half", e.half); $("inn").value = e.inn; $("diff").value = e.diff; $("csrc").value = "builtin"; $("count").value = e.count || "其他球數"; $("onb").value = e.onb || "無人"; update(); }; $("examples").appendChild(b); });
 // 門檻卡
 function drawCards(){
   const head = "<tr><th></th>" + [1,2,3,4,5,6,7,8,9].map(i => "<th>" + i + " 局</th>").join("") + "</tr>";
@@ -241,11 +272,20 @@ const PRE = {
   "中職舊制（成功也扣）": () => ({lam: D.重播.到達率.reduce((a,b)=>a+b,0), mu: D.重播.平均把握, shape:"重播", scale:1, R:2, ret:0})};
 let cst = {R:2, ret:1, label:"中職重播"};
 Object.keys(PRE).forEach(n => { const b = document.createElement("button"); b.className = "btn ghost"; b.textContent = n; b.onclick = () => { const p = PRE[n](); $("cLam").value = p.lam.toFixed(3); $("cMu").value = p.mu.toFixed(3); $("cShape").value = p.shape; $("cScale").value = p.scale; cst.R = p.R; cst.ret = p.ret; cst.label = n; setSeg("cR", p.R); setSeg("cRet", p.ret); runCustom(); }; $("presets").appendChild(b); });
-$("cR").querySelectorAll("button").forEach(b => b.onclick = () => { cst.R = +b.dataset.v; setSeg("cR", cst.R); });
-$("cRet").querySelectorAll("button").forEach(b => b.onclick = () => { cst.ret = +b.dataset.v; setSeg("cRet", cst.ret); });
-["cLam","cMu","cShape","cScale"].forEach(id => $(id).addEventListener("input", () => { cst.label = "自訂"; }));
+$("cR").querySelectorAll("button").forEach(b => b.onclick = () => { cst.R = +b.dataset.v; cst.label = "自訂"; setSeg("cR", cst.R); runCustom(); });
+$("cRet").querySelectorAll("button").forEach(b => b.onclick = () => { cst.ret = +b.dataset.v; cst.label = "自訂"; setSeg("cRet", cst.ret); runCustom(); });
+["cLam","cMu","cShape","cScale"].forEach(id => $(id).addEventListener("input", () => { cst.label = "自訂"; runCustom(); }));
 function runCustom(){
-  const shape = $("cShape").value, base = D[shape], tot = +$("cLam").value, mu = Math.min(0.99, Math.max(0.01, +$("cMu").value)), sc = +$("cScale").value || 1;
+  const err_ = (function(){
+    const g = id => { const s = $(id).value.trim(); return s === "" ? NaN : +s; }, lam_ = g("cLam"), mu_ = g("cMu"), sc_ = g("cScale");
+    if (!Number.isFinite(lam_) || lam_ <= 0) return "每隊每場的爭議次數要填大於 0 的數字（不能是 0 或空白）。";
+    if (!Number.isFinite(mu_) || mu_ < 0.01 || mu_ > 0.99) return "平均把握要填 0.01 到 0.99 之間的數字，例如 0.3。";
+    if (!Number.isFinite(sc_) || sc_ <= 0) return "判決價值倍率要填大於 0 的數字（不能是 0 或空白；1 是內建的大小）。";
+    const a_ = D[$("cShape").value].到達率, s_ = a_.reduce((x, y) => x + y, 0); if (Math.max(...a_) / s_ * lam_ / 20 > 1) return "爭議次數太多，超出這個簡化模型能算的範圍。";
+    return ""; })();
+  if (err_){ st.custom = null; $("cMsg").textContent = err_ + "下面是改之前的結果，還沒有更新。"; $("cSummary").style.opacity = $("cTable").style.opacity = ".45"; if ($("csrc").value === "custom") update(); return false; }
+  $("cSummary").style.opacity = $("cTable").style.opacity = "";
+  const shape = $("cShape").value, base = D[shape], tot = +$("cLam").value, mu = Math.min(0.99, Math.max(0.01, +$("cMu").value)), sc = +$("cScale").value;
   const s0 = base.到達率.reduce((a,b)=>a+b,0), lam = base.到達率.map(x => x / s0 * tot), vq = base.判決價值分位數.map(row => row.map(x => x * sc));
   const res = solve(lam, mu, vq, cst.R, !!cst.ret); res.label = cst.label; res.retain = !!cst.ret; st.custom = res;
   const f = x => x.toFixed(x < 0.1 ? 3 : 2);
@@ -254,12 +294,57 @@ function runCustom(){
   for (let i = 0; i < 9; i++){ const t = i * 2; h += "<tr><th>" + (i + 1) + " 局上</th>" + Array.from({length: cst.R}, (_, k) => "<td>" + f(res.C[k + 1][t]) + "</td>").join("") + "<td>" + fmtPct(cst.ret ? res.C[1][t] / (5 + res.C[1][t]) * 100 : res.C[1][t] / 5 * 100) + "</td></tr>"; }
   $("cTable").innerHTML = h + "</table>";
   $("cCheck").textContent = "對照：完整模型（分分差）在開賽平手時，中職重播是 " + D.重播.C[1][0][8].toFixed(2) + "／" + D.重播.C[2][0][8].toFixed(2) + "，好壞球試算是 " + D.好壞球.C[1][0][8].toFixed(2) + "／" + D.好壞球.C[2][0][8].toFixed(2) + "（最後一次／第二次）。簡化版不分分差，中後段局數是各分差的平均；簡化版的輸入也比較簡單，數字和完整模型略有不同，只適合看方向。";
-  $("cMsg").textContent = "已重算（" + cst.label + "）";
+  $("cMsg").textContent = "已重算（" + cst.label + "）"; if ($("csrc").value === "custom") update();
+  return true;
 }
 $("cRun").onclick = runCustom;
-$("cUse").onclick = () => { if (!st.custom) runCustom(); $("csrc").value = "custom"; update(); $("tabs").querySelector('[data-t="calc"]').click(); };
+$("cUse").onclick = () => { if (!runCustom()) return; if (st.rem > st.custom.R){ st.rem = 1; setSeg("rem", 1); } $("csrc").value = "custom"; update(); $("tabs").querySelector('[data-t="calc"]').click(); };
 $("ver").textContent = "資料版本：" + D.版本;
-drawCards(); (function(){ const p = PRE["中職重播"](); $("cLam").value = p.lam.toFixed(3); $("cMu").value = p.mu.toFixed(3); })(); setSeg("rem", 2); st.rem = 1; setSeg("rem", 1); st.half = 1; setSeg("half", 1); update(); runCustom(); $("cMsg").textContent = "已先用中職重播的係數算好；改數字之後按「重算」";
+drawCards(); (function(){ const p = PRE["中職重播"](); $("cLam").value = p.lam.toFixed(3); $("cMu").value = p.mu.toFixed(3); })(); setSeg("rem", 2); st.rem = 1; setSeg("rem", 1); st.half = 1; setSeg("half", 1); update(); runCustom(); $("cMsg").textContent = "已先用中職重播的係數算好；改數字或規則後會自動重算";
 </script>
-</body>
+<script>(function(){
+  var $=function(i){return document.getElementById(i)},bar=document.createElement("button");bar.type="button";bar.id="mbar";bar.setAttribute("aria-label","跳到結果");bar.innerHTML="<b></b><span></span>";document.body.appendChild(bar);
+  var live=document.createElement("div");live.setAttribute("role","status");live.style.cssText="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)";document.body.appendChild(live);
+  function mb(){var p=$("pstar").textContent,v=$("verdict").textContent,ok=p!=="–"&&p.length<8;bar.querySelector("b").textContent=ok?p:"–";setTimeout(function(){live.textContent=bar.textContent},0);
+    bar.querySelector("span").textContent=ok?"門檻｜把握 "+$("confOut").textContent+"："+v:$("pstarWords").textContent;bar.classList.toggle("off",$("calc").classList.contains("hide"))}
+  ["pstar","verdict","pstarWords","confOut"].forEach(function(i){new MutationObserver(mb).observe($(i),{childList:true,characterData:true,subtree:true})});
+  $("tabs").addEventListener("click",function(){setTimeout(mb,0)});bar.addEventListener("click",function(){$("pstar").scrollIntoView({block:"center",behavior:"smooth"})});mb();
+})();</script><script>function paxInit(inp,cfg){
+  var wrap=document.createElement("div");wrap.className="paxwrap";inp.parentNode.insertBefore(wrap,inp);
+  var row=document.createElement("div");row.className="paxrow";wrap.appendChild(row);
+  function fire(){inp.dispatchEvent(new Event("input",{bubbles:true}))}
+  function mk(t,l,k){var b=document.createElement("button");b.type="button";b.className="paxbtn";b.textContent=t;b.setAttribute("aria-label",l);
+    b.onclick=function(){var s=+inp.step||1,v=Math.min(+inp.max,Math.max(+inp.min,(Math.round(+inp.value/s)+k)*s));inp.value=+v.toFixed(2);fire()};return b}
+  row.appendChild(mk("\u2212","把握減少一格",-1));row.appendChild(inp);row.appendChild(mk("\uFF0B","把握增加一格",1));
+  var ax=document.createElement("div");ax.className="pax";ax.innerHTML='<div class="paxbar"><i></i></div><span class="paxt"></span>';wrap.appendChild(ax);
+  var zb=document.createElement("button");zb.type="button";zb.className="paxz";wrap.appendChild(zb);
+  var bar=ax.querySelector(".paxbar"),mkr=bar.querySelector("i"),tx=ax.querySelector(".paxt"),step0=inp.step||"1";
+  function zoom(on){if(on){inp.value=Math.min(10,+inp.value);inp.max=10;inp.step=0.1}else{var v=+inp.value;inp.max=100;inp.step=step0;inp.value=+step0<1?v:Math.max(1,Math.round(v))}}
+  zb.onclick=function(){zoom(+inp.max!==10);fire()};
+  return function(t){
+    if(t==null||!isFinite(t)||t<0||t>100){ax.style.display=zb.style.display="none";inp.removeAttribute("aria-valuetext");if(+inp.max===10){zoom(false);fire()}return}
+    if(t>=5&&+inp.max===10){zoom(false);fire();return}
+    ax.style.display="";var x=Math.min(100,t/(+inp.max)*100);mkr.style.left=x+"%";bar.style.background="linear-gradient(to right,"+cfg.a+" "+x+"%,"+cfg.b+" "+x+"%)";
+    tx.textContent=cfg.label(t);if(x<55){tx.style.left="calc("+x+"% + 8px)";tx.style.right="auto"}else{tx.style.left="auto";tx.style.right="calc("+(100-x)+"% + 8px)"}
+    zb.style.display=t<5?"":"none";zb.textContent=+inp.max===10?"回到 0\u2013100% 的刻度":"門檻很低：把刻度放大到 0\u201310%";
+    inp.setAttribute("aria-valuetext","把握 "+inp.value+"%，"+(+inp.value>t?"高於門檻":"沒有超過門檻"))}
+}
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  var paint=paxInit($("conf"),{a:"var(--line)",b:"var(--t2)",label:function(t){return "門檻 "+fmtPct(t)}});
+  function go(){paint(window._ps)}["pstar","pstarWords","confOut"].forEach(function(i){new MutationObserver(go).observe($(i),{childList:true,characterData:true,subtree:true})});go();
+  $("conf").setAttribute("aria-label","改判的把握（%）");
+  /* 分頁寫進網址（#t-calc、#t-cards、#t-custom、#t-about） */
+  var T=["calc","cards","custom","about"];
+  $("tabs").addEventListener("click",function(e){var b=e.target.closest("button");if(b)try{history.replaceState(null,"",location.pathname+location.search+"#t-"+b.dataset.t)}catch(x){}});
+  function fromHash(){var h=location.hash.slice(3);if(location.hash.slice(0,3)==="#t-"&&T.indexOf(h)>=0){var b=$("tabs").querySelector('[data-t="'+h+'"]');if(b&&!b.classList.contains("on"))b.click()}}
+  window.addEventListener("hashchange",fromHash);fromHash();
+  /* 和完整模型的對照，移到重算結果的正下方 */
+  if($("cSummary")&&$("cCheck"))$("cSummary").parentNode.insertBefore($("cCheck"),$("cSummary").nextSibling);
+  /* 標籤連到輸入框；選取中的按鈕、結果給輔助工具讀得到 */
+  var n=0;document.querySelectorAll("label").forEach(function(l){if(l.htmlFor)return;var c=l.nextElementSibling;if(c&&/^(INPUT|SELECT)$/.test(c.tagName)){if(!c.id)c.id="f_"+(n++);l.htmlFor=c.id}});
+  function pressed(){document.querySelectorAll(".seg button,.tabs button").forEach(function(b){b.setAttribute("aria-pressed",b.classList.contains("on"))})}
+  document.addEventListener("click",function(){setTimeout(pressed,0)});pressed();
+  ["pstarWords","verdict"].forEach(function(i){$(i).setAttribute("aria-live","polite")});
+})();</script></body>
 </html>
