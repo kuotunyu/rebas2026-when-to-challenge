@@ -1111,7 +1111,7 @@ table.styled-table tr:hover{background:rgba(32,52,88,.04)}
       <!-- 信賴區間表 -->
       <div class="chart-card">
         <div class="chart-title">重播挑戰信賴區間</div>
-        <div class="data-table-container" id="ci-table-box" style="margin-top: 0;"></div><p class="tnote">小於 1 的值寫到小數三位，1 以上寫到兩位；第三位剛好是 5 的值保留三位，避免重複取整。</p>
+        <div class="data-table-container" id="ci-table-box" style="margin-top: 0;"></div><p class="tnote">小於 1 的值寫到小數三位，1 以上寫到兩位。</p>
       </div>
 
       <!-- 爭議倍數表 -->
@@ -2074,10 +2074,12 @@ table.styled-table tr:hover{background:rgba(32,52,88,.04)}
     var d=document.createElement("details");d.className="more2";var s=document.createElement("summary");s.textContent=label;d.appendChild(s);d.appendChild(m);t.after(d)}
   /* 可信度各表的小數位：1 以上最多兩位；小於 1 的照資料的三位顯示（提案 E-7 有列到三位，250 號檢查）；比例、把握、次數、倍數那幾欄不動。只改顯示 */
   function rh(x,n){return Number(Math.round(Number(x+"e"+n))+"e-"+n).toFixed(n)}
-  function fmt(id){var b=document.getElementById(id);if(!b)return;[].forEach.call(b.querySelectorAll("table"),function(t){if(t.dataset.f||!t.tHead)return;t.dataset.f="1";
+  function fmt(id){var b=document.getElementById(id);if(!b)return;var keep=[],done=0;[].forEach.call(b.querySelectorAll("table"),function(t){if(t.dataset.f||!t.tHead)return;t.dataset.f="1";done=1;
     var skip=[].map.call(t.tHead.rows[0].cells,function(c){return /比例|把握|係數|翻盤|次數|倍|每隊每場/.test(c.textContent)});
     [].forEach.call(t.tBodies[0].rows,function(r){if(r.cells.length!==skip.length)return;[].forEach.call(r.cells,function(c,i){var s=c.textContent.trim();if(skip[i]||!/^-?\d+\.\d{3,}$/.test(s))return;
-      var v=parseFloat(s);if(Math.abs(v)<1){if(!/^-?\d+\.\d{1,3}$/.test(s))c.textContent=rh(v,3);return}if(/^-?\d+\.\d\d5$/.test(s))return;c.textContent=rh(v,2)})})})}
+      var v=parseFloat(s);if(Math.abs(v)<1){if(!/^-?\d+\.\d{1,3}$/.test(s))c.textContent=rh(v,3);return}if(/^-?\d+\.\d\d5$/.test(s)){if(keep.indexOf(s)<0)keep.push(s);return}c.textContent=rh(v,2)})})});
+    /* 表下說明：1 以上卻寫到三位的格子，點名寫出來（主線 2026-11-18） */
+    var n=b.nextElementSibling;if(done&&n&&n.className==="tnote"){var base=n.dataset.b||(n.dataset.b=n.textContent);(n.dataset.k?n.dataset.k.split("、"):[]).reverse().forEach(function(x){if(keep.indexOf(x)<0)keep.unshift(x)});n.dataset.k=keep.join("、");n.textContent=base+(keep.length?keep.join("、")+" 第三位是 5，所以多寫一位。":"")}}
   function rules(){var t=tbl("abs-rules-table-box");if(!t)return;var g={},order=[];
     [].slice.call(t.tBodies[0].rows).forEach(function(r){var k=r.cells[0].textContent.trim();if(!g[k]){g[k]=[];order.push(k)}g[k].push(r)});
     var sets=order.map(function(k){var o={};g[k].forEach(function(r){var s=r.cells[1].textContent;if(s.indexOf("最低")>=0)o.lo=r;else if(s.indexOf("最高")>=0)o.hi=r;else o.base=r});return o});
