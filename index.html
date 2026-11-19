@@ -450,7 +450,7 @@ footer{border-top:1px solid var(--line);margin-top:28px;padding:20px 0 28px;colo
 
 <section id="anim">
 <h2>挑戰權價值：從九局結束往回推</h2>
-<p class="prose"><b class="em">九局打完，沒用掉的挑戰權就作廢，價值是 0</b>（好壞球是近似）。<b class="em">從這裡一個半局一個半局往回推</b>，所以挑戰權價值隨半局、分差、剩幾次而變。重播和好壞球各算各的。<button type="button" class="vlink" data-vt="25" aria-haspopup="dialog">▶ 看 3D 版本（18 秒）</button></p>
+<p class="prose"><b class="em">九局打完，沒用掉的挑戰權就作廢，價值是 0</b>（好壞球是近似）。<b class="em">從這裡一個半局一個半局往回推</b>，所以挑戰權價值隨半局、分差、剩幾次而變。重播和好壞球各算各的。<button type="button" class="vlink" data-vt="25" data-vend="43" aria-haspopup="dialog">▶ 看 3D 版本（18 秒）</button></p>
 <div class="panel">
 <div class="stage"><svg id="an1svg" role="img" aria-label="重播挑戰、比分平手時，挑戰權價值從九局結束的 0 往回推到一局上的動畫"></svg></div>
 <p class="an-cap" id="an1cap"></p>
@@ -1152,7 +1152,7 @@ mcard();calc();
   $("dw").setAttribute("aria-label","判決價值（勝率百分點）");$("c").setAttribute("aria-label","挑戰權價值（勝率百分點）");$("verdict").setAttribute("aria-live","polite")})();
 </script>
 <dialog id="vdlg" aria-labelledby="vdlgt"><div class="vd-h"><h2 id="vdlgt">動畫講解：挑戰門檻怎麼算（1 分 24 秒・無聲）</h2><button type="button" class="vd-x" aria-label="關閉影片">✕</button></div>
-<video id="vdv" controls playsinline preload="none" width="1280" height="720" aria-describedby="vdn"></video>
+<video id="vdv" controls playsinline preload="none" width="1920" height="1080" aria-describedby="vdn"></video>
 <div class="vd-ch" aria-label="跳到影片的段落"><button type="button" data-vt="0">問題</button><button type="button" data-vt="10">公式</button><button type="button" data-vt="25">從九局往回推</button><button type="button" data-vt="43">約五十倍</button><button type="button" data-vt="55">重播門檻卡</button><button type="button" data-vt="65">好壞球（試算）</button></div>
 <div class="vd-end" hidden><a class="p" href="#try">去查門檻</a><a class="s" href="demo/">打開互動 Demo</a></div>
 <p class="vd-n" id="vdn">影片無聲，說明文字都在畫面上；內容和本頁的文字相同。</p></dialog>
@@ -1160,8 +1160,8 @@ mcard();calc();
   /* 講解動畫：點了才載入影片（不點不下載），段落按鈕可以跳到指定秒數 */
   var d=document.getElementById("vdlg"),v=document.getElementById("vdv");if(!d||!v||!d.showModal)return;
   function seek(t){if(v.readyState>=1){try{v.currentTime=t}catch(e){}}else v.addEventListener("loadedmetadata",function(){try{v.currentTime=t}catch(e){}},{once:true});var p=v.play();if(p&&p.catch)p.catch(function(){})}   /* preload=none：要先播放才會載入，載入後再跳到指定秒數 */
-  var opener=null;function open(t){opener=document.activeElement;if(!v.getAttribute("src")){v.setAttribute("poster","figs/explainer_poster.jpg");v.setAttribute("src","figs/explainer.mp4")}if(!d.open)d.showModal();seek(t)}
-  [].forEach.call(document.querySelectorAll("button[data-vt]"),function(b){if(d.contains(b))b.addEventListener("click",function(){seek(+b.dataset.vt)});else b.addEventListener("click",function(){open(+b.dataset.vt)})});
+  var opener=null,stopAt=null;function open(t,e){stopAt=e||null;opener=document.activeElement;if(!v.getAttribute("src")){v.setAttribute("poster","figs/explainer_poster.jpg");v.setAttribute("src","figs/explainer.mp4")}if(!d.open)d.showModal();seek(t)}
+  [].forEach.call(document.querySelectorAll("button[data-vt]"),function(b){if(d.contains(b))b.addEventListener("click",function(){stopAt=null;seek(+b.dataset.vt)});else b.addEventListener("click",function(){open(+b.dataset.vt,b.dataset.vend?+b.dataset.vend:null)})});
   /* 關閉一律走同一個函式：暫停影片、關掉視窗、焦點回到原本的按鈕（不靠 close 事件，有些環境不會觸發） */
   function shut(){v.pause();if(d.open)d.close();if(opener&&opener.focus)opener.focus()}
   d.querySelector(".vd-x").addEventListener("click",shut);
@@ -1170,23 +1170,23 @@ mcard();calc();
   d.addEventListener("close",function(){v.pause()});
   /* 316 號：目前播到哪一段，段落按鈕就標出來；播完時出現下一步 */
   var ch=[].slice.call(d.querySelectorAll(".vd-ch button")),end=d.querySelector(".vd-end");
-  v.addEventListener("timeupdate",function(){var t=v.currentTime,cur=null;ch.forEach(function(b){if(t>=+b.dataset.vt-0.05)cur=b});ch.forEach(function(b){b.classList.toggle("on",b===cur);b.setAttribute("aria-current",b===cur?"true":"false")});if(end&&!v.ended)end.hidden=true});
+  v.addEventListener("play",function(){var n=d.querySelector(".vd-n");if(n&&n.dataset.o){n.textContent=n.dataset.o;delete n.dataset.o}});v.addEventListener("timeupdate",function(){if(stopAt&&v.currentTime>=stopAt){stopAt=null;v.pause();var n=d.querySelector(".vd-n");if(n){n.dataset.o=n.textContent;n.textContent="3D 片段播完了。要看完整影片，按播放鍵繼續，或點上面的段落。"}}var t=v.currentTime,cur=null;ch.forEach(function(b){if(t>=+b.dataset.vt-0.05)cur=b});ch.forEach(function(b){b.classList.toggle("on",b===cur);b.setAttribute("aria-current",b===cur?"true":"false")});if(end&&!v.ended)end.hidden=true});
   v.addEventListener("ended",function(){if(end)end.hidden=false});
   if(end)end.addEventListener("click",function(e){var a=e.target.closest("a");if(a&&a.getAttribute("href").charAt(0)==="#"){v.pause();if(d.open)d.close()}});
 })();</script>
 <script>(function(){
   /* 感知誤差對照（打者：被判好球、看到球在帶外 x 吋；捕手投手：被判壞球、看到球在帶內 x 吋）。資料和互動 Demo 同一張表（c10_demo_data.py；304、321、323 號從原始資料重算確認）。誤差帶寬＝基準感知誤差的正負一倍（圖示用） */
   var root=document.getElementById("sens");if(!root)return;
-  var T=[[21,22],[29,39],[38,57],[48,73],[57,86]],E=["2.5","1.7"],R=0,X=2,rb=root.querySelectorAll(".sens-role button"),xb=root.querySelectorAll(".sens-seg button");
+  var T=[[21,22],[29,39],[38,57],[48,73],[57,86]],E=["2.51","1.65"],R=0,X=2,rb=root.querySelectorAll(".sens-role button"),xb=root.querySelectorAll(".sens-seg button");
   function $(q){return root.querySelector(q)}
   function radio(list,key,val){[].forEach.call(list,function(b){var on=+b.dataset[key]===val;b.setAttribute("aria-checked",on?"true":"false");b.tabIndex=on?0:-1})}
   function draw(){var v=T[X],who=R===0?"打者":"捕手、投手",side=R===0?"好球帶外":"好球帶內",other=R===0?"好球帶內":"好球帶外",hw=+E[R]*30,er=$(".sens-err");radio(rb,"r",R);radio(xb,"x",X);
     $(".sens-q").innerHTML=(R===0?"打者看到球在好球帶外幾吋？":"捕手、投手看到球在好球帶內幾吋？")+"<span class=nw>（0 吋＝在邊線上）</span>";
     $(".sens-g").style.transform="translateX("+(R===0?1:-1)*X*30+"px)";
     er.setAttribute("x",200-hw);er.setAttribute("width",2*hw);
-    $(".sens-ek").textContent="眼睛的誤差（約 "+E[R]+" 吋）";
+    $(".sens-ek").textContent="眼睛的誤差（"+E[R]+" 吋）";
     $(".sens-num b").textContent=v[R]+"%";
-    $(".sens-why").textContent=who+"看到球"+(X===0?"在邊線上":"在"+side+" "+X+" 吋")+"。但眼睛的誤差約 "+E[R]+" 吋，量測的位置可能還在"+other+"；而且大部分的原判本來就是對的。";
+    $(".sens-why").textContent=who+"看到球"+(X===0?"在邊線上":"在"+side+" "+X+" 吋")+"。但眼睛的誤差有 "+E[R]+" 吋，量測的位置可能還在"+other+"；而且大部分的原判本來就是對的。";
     $(".sens-bh").textContent=(X===0?"同樣在邊線上":"同樣 "+X+" 吋")+"，兩種情況比一比";
     $(".sb-b").style.width=v[0]+"%";$(".sb-c").style.width=v[1]+"%";$(".sv-b").textContent=v[0]+"%";$(".sv-c").textContent=v[1]+"%";
     $(".sens-row.r0").classList.toggle("cur",R===0);$(".sens-row.r1").classList.toggle("cur",R===1)}
