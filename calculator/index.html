@@ -424,7 +424,7 @@ function runCustom(){
   let h = "<table><tr><th>時間點</th>" + Array.from({length: cst.R}, (_, i) => "<th>" + (i === 0 ? "最後一次" : "第 " + (i + 1) + " 次") + "的價值</th>").join("") + "<th>值 5 個百分點的判決，門檻（只剩 1 次）</th></tr>";
   for (let i = 0; i < 9; i++){ const t = i * 2; h += "<tr><th>" + (i + 1) + " 局上</th>" + Array.from({length: cst.R}, (_, k) => "<td>" + f(res.C[k + 1][t]) + "</td>").join("") + "<td>" + fmtPct(cst.ret ? res.C[1][t] / (5 + res.C[1][t]) * 100 : res.C[1][t] / 5 * 100) + "</td></tr>"; }
   $("cTable").innerHTML = h + "</table>";
-  $("cCheck").textContent = "對照：完整模型（分分差）在開賽平手時，中職重播是 " + D.重播.C[1][0][8].toFixed(2) + "／" + D.重播.C[2][0][8].toFixed(2) + "，好壞球試算是 " + D.好壞球.C[1][0][8].toFixed(2) + "／" + D.好壞球.C[2][0][8].toFixed(2) + "（最後一次／第二次）。簡化版不分分差，中後段局數是各分差的平均；簡化版的輸入也比較簡單，設定和完整模型不同，只適合看方向。";
+  $("cCheck").textContent = "對照：完整模型（依分差分開算）在開賽平手時，中職重播是 " + D.重播.C[1][0][8].toFixed(2) + "／" + D.重播.C[2][0][8].toFixed(2) + "，好壞球試算是 " + D.好壞球.C[1][0][8].toFixed(2) + "／" + D.好壞球.C[2][0][8].toFixed(2) + "（最後一次／第二次）。簡化版不分分差，中後段局數是各分差的平均；簡化版的輸入也比較簡單，設定和完整模型不同，只適合看方向。";
   $("cMsg").textContent = "已重算（" + cst.label + "）"; if ($("csrc").value === "custom") update();
   return true;
 }
