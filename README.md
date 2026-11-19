@@ -6,6 +6,8 @@
 
 2026 野革盃 台灣棒球數據黑客松參賽作品｜[網站](https://kuotunyu.github.io/rebas2026-when-to-challenge/)｜[互動 Demo](https://kuotunyu.github.io/rebas2026-when-to-challenge/demo/)｜[挑戰門檻計算機](https://kuotunyu.github.io/rebas2026-when-to-challenge/calculator/)｜[門檻卡 A6 列印版](https://kuotunyu.github.io/rebas2026-when-to-challenge/card/)
 
+![天平兩邊相等時，就是挑戰的門檻：p* ＝ C ÷（ΔW ＋ C）](figs/explainer.gif)
+
 ## 門檻
 
 ```text
