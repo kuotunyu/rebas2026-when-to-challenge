@@ -2369,7 +2369,7 @@ table.styled-table tr:hover{background:rgba(32,52,88,.04)}
     var tm=null;new MutationObserver(function(){clearTimeout(tm);tm=setTimeout(function(){var t=bar.textContent.replace(/\s+/g," ").trim();if(t&&live.textContent!==t)live.textContent=t},500)}).observe(bar,{childList:true,characterData:true,subtree:true})}
 })();</script><script>(function(){
   /* 288 號：手機、平板用 Tab 移動時，焦點元件若被底部固定列擋住、或在橫滑列裡看不到，就捲到看得到的位置 */
-  document.addEventListener("focusin",function(e){var el=e.target;if(!el||!el.getBoundingClientRect||window.innerWidth>899||el.classList&&el.classList.contains("skip-main"))return;
+  document.addEventListener("focusin",function(e){var el=e.target;if(!el||!el.getBoundingClientRect||window.innerWidth>899||el.classList&&el.classList.contains("skip-main")||el.tabIndex<0||(el.matches&&!el.matches(":focus-visible")))return;  /* 只處理鍵盤 Tab 的焦點：手機點按鈕時焦點會落到 tabindex=-1 的主內容區，不能因此捲動整頁 */
     if(el.closest&&el.closest("#tab,#mbar,.sitenav,nav"))return;
     setTimeout(function(){var r=el.getBoundingClientRect(),h=window.innerHeight,w=window.innerWidth;if(!r.width&&!r.height)return;
       if(r.left<0||r.right>w){try{el.scrollIntoView({block:"nearest",inline:"nearest"})}catch(x){}r=el.getBoundingClientRect()}
