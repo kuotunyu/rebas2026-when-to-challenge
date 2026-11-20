@@ -57,6 +57,7 @@
 - [互動 Demo](https://kuotunyu.github.io/rebas2026-when-to-challenge/demo/)：決策沙盤（選局面，查判決價值、挑戰權價值和門檻）、門檻卡、規則試算、可信度檢驗
 - [挑戰門檻計算機](https://kuotunyu.github.io/rebas2026-when-to-challenge/calculator/)：填同一隊在兩種判決結果下的勝率，再選局數、分差和剩餘次數，算出判決價值和門檻
 - [門檻卡 A6 列印版](https://kuotunyu.github.io/rebas2026-when-to-challenge/card/)：兩張雙面共 4 頁
+- [推導與證明（數學與方法）](https://kuotunyu.github.io/rebas2026-when-to-challenge/math/)：門檻公式的推導、挑戰權價值往回推的遞迴式、卡片一格的門檻（公式和提案附錄 F 相同）
 - [網站檔案（GitHub）](https://github.com/kuotunyu/rebas2026-when-to-challenge)：只有網頁和模型輸出表；分析程式決賽時交出
 
 ## 常見問題
