@@ -694,17 +694,17 @@ function paxInit(inp,cfg){
     zb.style.display=t<5?"":"none";zb.textContent=+inp.max===10?"回到 0–100% 的刻度":"門檻很低：把刻度放大到 0–10%";
     inp.setAttribute("aria-valuetext","把握 "+inp.value+"%，"+(+inp.value>t?"高於門檻":"沒有超過門檻"))}
 }
-const PAXP=paxInit($("p"),{a:"var(--line)",b:"var(--t2)",label:t=>"門檻 "+(t<1?t.toFixed(2):t.toFixed(1))+"%"});
+const PAXP=paxInit($("p"),{a:"var(--line)",b:"var(--t2)",label:t=>"門檻 "+(t<0.1?t.toFixed(3):t.toFixed(2))+"%"});
 function calc(){
   const dw=parseFloat($("dw").value),c=parseFloat($("c").value),p=parseFloat($("p").value)/100;
   const ok=dw>=0&&dw<=100&&c>=0,th=ok?(dw+c>0?c/(dw+c):1):NaN;   /* 304 號：ΔW 和 C 都是 0 時依論文約定門檻記為 100% */
-  $("fout").textContent=ok?(dw+c>0?(100*th).toFixed(1)+"%":"無唯一門檻"):"–";$("pv").textContent=(+$("p").value).toFixed(1).replace(/\.0$/,"");
+  $("fout").textContent=ok?(dw+c>0?(100*th).toFixed(th<0.001?3:2)+"%":"無唯一門檻"):"–";$("pv").textContent=(+$("p").value).toFixed(1).replace(/\.0$/,"");
   if(!ok){$("verdict").textContent="請填判決價值（0 到 100）和挑戰權價值（0 以上）。";["beam","panL","panR"].forEach(x=>$(x).style.transform="");$("tL").textContent="賺";$("tR").textContent="賠";PAXP(null);return}
   const gain=p*dw,loss=(1-p)*c,net=gain-loss,ang=Math.max(-12,Math.min(12,(loss-gain)/(Math.max(gain,loss)||1)*12));   /* 數字大的一邊往下沉 */
   $("beam").style.transform="rotate("+ang.toFixed(2)+"deg)";$("panL").style.transform="rotate("+(-ang).toFixed(2)+"deg)";$("panR").style.transform="rotate("+(-ang).toFixed(2)+"deg)";
   $("panL").style.transformOrigin="70px 72px";$("panR").style.transformOrigin="330px 72px";
   $("tL").textContent="賺 "+gain.toFixed(2);$("tR").textContent="賠 "+loss.toFixed(2);
-  $("verdict").innerHTML=dw+c===0?"判決價值和挑戰權價值都是 0：挑不挑戰，期望淨收益都是 0，沒有唯一的門檻。":Math.abs(p-th)<1e-9?"剛好打平：把握等於門檻 "+(100*th).toFixed(1)+"%。":(p>th?"<b>值得挑戰。</b>把握 "+(100*p).toFixed(1)+"% 高於門檻 "+(100*th).toFixed(th<0.01?2:1)+"%，預期多 "+net.toFixed(2)+" 個百分點。":"<b>不值得挑戰。</b>把握 "+(100*p).toFixed(1)+"% 低於門檻 "+(100*th).toFixed(th<0.01?2:1)+"%，預期少 "+(-net).toFixed(2)+" 個百分點。");
+  $("verdict").innerHTML=dw+c===0?"判決價值和挑戰權價值都是 0：挑不挑戰，期望淨收益都是 0，沒有唯一的門檻。":Math.abs(p-th)<1e-9?"剛好打平：把握等於門檻 "+(100*th).toFixed(th<0.001?3:2)+"%。":(p>th?"<b>值得挑戰。</b>把握 "+(100*p).toFixed(1)+"% 高於門檻 "+(100*th).toFixed(th<0.001?3:2)+"%，預期多 "+net.toFixed(2)+" 個百分點。":"<b>不值得挑戰。</b>把握 "+(100*p).toFixed(1)+"% 低於門檻 "+(100*th).toFixed(th<0.001?3:2)+"%，預期少 "+(-net).toFixed(2)+" 個百分點。");
   PAXP(100*th);   /* 放在最後：它可能會改滑桿的值並重算 */
 }
 ["dw","c","p"].forEach(x=>$(x).addEventListener("input",calc));
